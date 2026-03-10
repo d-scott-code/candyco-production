@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CandyCo Production Report — Tuesday, March 3, 2026</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #1a1a2e;
+    background: #f4f5f7;
+    max-width: 7.5in;
+    margin: 0 auto;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  a { color: #1982C4; }
+  .report-header { background: #272838; color: #fff; padding: 18px 24px 14px; border-radius: 0; }
+  .report-header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+  .report-header .meta { font-size: 11px; color: #b0b3c6; margin-top: 4px; }
+  .report-header .shifts { font-size: 11px; color: #8a8da8; margin-top: 2px; }
+  .report-header .generated { font-size: 10px; color: #6e718a; margin-top: 6px; }
+  .critical-banner { border: 2px solid #FF0022; background: #fff0f1; border-radius: 6px; padding: 14px 18px; margin: 14px 0 0; page-break-inside: avoid; }
+  .critical-banner .banner-title { font-size: 14px; font-weight: 700; color: #FF0022; margin-bottom: 8px; }
+  .critical-banner .alert-row { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: #7a0010; margin-bottom: 4px; }
+  .critical-banner .alert-row:last-child { margin-bottom: 0; }
+  .alert-dot { color: #FF0022; font-size: 14px; flex-shrink: 0; line-height: 1.3; }
+  .section { background: #fff; border-radius: 6px; padding: 16px 18px; margin: 10px 0; }
+  .section-header { background: #272838; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; padding: 5px 10px; border-radius: 4px; margin-bottom: 12px; }
+  .glance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .stat-card { border-radius: 6px; padding: 12px 14px; border: 1px solid #e2e6ea; background: #fafbfc; }
+  .stat-card .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: #6c757d; font-weight: 600; }
+  .stat-card .value { font-size: 24px; font-weight: 700; line-height: 1.1; margin-top: 2px; }
+  .stat-card .sub { font-size: 10px; color: #6c757d; margin-top: 2px; }
+  .stat-good .value { color: #18a356; }
+  .stat-warn .value { color: #b38900; }
+  .stat-bad .value { color: #cc001b; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+  .badge-red { background: #fff0f1; color: #cc001b; border: 1px solid #ffb3bc; }
+  .badge-green { background: #e6faf1; color: #18a356; border: 1px solid #a8e6c8; }
+  .plant-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .plant-card { border-radius: 6px; border: 1px solid #e2e6ea; overflow: hidden; }
+  .plant-card-header { background: #272838; color: #fff; padding: 7px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; }
+  .plant-card-body { padding: 10px 12px; }
+  .kpi-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid #f0f0f5; font-size: 11px; }
+  .kpi-row:last-child { border-bottom: none; }
+  .kpi-label { color: #6c757d; font-weight: 500; }
+  .kpi-value { font-weight: 700; }
+  .kpi-sub { font-size: 9px; color: #9aa0ac; display: block; text-align: right; }
+  .good { color: #18a356; }
+  .warn { color: #b38900; }
+  .bad { color: #cc001b; }
+  .plant-border-good { border-top: 4px solid #23CE6B; }
+  .plant-border-warn { border-top: 4px solid #FFCA3A; }
+  .plant-border-bad { border-top: 4px solid #FF0022; }
+  .line-mini { font-size: 10px; color: #555; margin-top: 4px; padding-top: 4px; border-top: 1px solid #f0f0f5; }
+  .line-mini strong { color: #272838; }
+  details { margin-bottom: 0; }
+  summary { cursor: pointer; font-weight: 700; font-size: 12px; color: #272838; padding: 6px 0; }
+  .oee-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
+  .oee-table th { background: #272838; color: #fff; padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+  .oee-table td { padding: 6px 8px; border-bottom: 1px solid #f0f0f5; vertical-align: top; }
+  .oee-table tr:nth-child(even) td { background: #f9fafb; }
+  .oee-table .plant-subheader td { background: #4a4d63; color: #fff; font-weight: 700; font-size: 10px; padding: 5px 8px; }
+  .oee-high { background: #e6faf1 !important; color: #18a356; font-weight: 700; }
+  .oee-mid { background: #fffbeb !important; color: #b38900; font-weight: 700; }
+  .oee-low { background: #fff0f1 !important; color: #cc001b; font-weight: 700; }
+  .na-cell { color: #b0b3c6; font-style: italic; }
+  .line-tag { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-right: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .tag-l1 { background: #fff7e0; color: #7a5c00; border: 1px solid #ffe08a; }
+  .tag-l2 { background: #e8f4fd; color: #0e5a8a; border: 1px solid #a3d4f7; }
+  .tag-l3 { background: #eaf7f0; color: #145c36; border: 1px solid #7ed4a8; }
+  .highlight-row { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f0f0f5; font-size: 11px; }
+  .highlight-row:last-child { border-bottom: none; }
+  .highlight-text { flex: 1; }
+  .highlight-shifts { font-size: 10px; color: #6c757d; margin-top: 2px; }
+  .flag-block { border-radius: 5px; padding: 10px 13px; margin-bottom: 8px; font-size: 11px; }
+  .flag-block:last-child { margin-bottom: 0; }
+  .flag-critical { background: #fff0f1; border-left: 3px solid #FF0022; }
+  .flag-warn { background: #fffbeb; border-left: 3px solid #FFCA3A; }
+  .flag-ok { background: #e6faf1; border-left: 3px solid #23CE6B; }
+  .flag-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .flag-critical .flag-label { color: #cc001b; }
+  .flag-warn .flag-label { color: #b38900; }
+  .flag-ok .flag-label { color: #18a356; }
+  .recog-card { background: #fffbeb; border: 1px solid #FFCA3A; border-radius: 5px; padding: 12px 14px; margin-bottom: 8px; font-size: 11px; }
+  .recog-card:last-child { margin-bottom: 0; }
+  .recog-name { font-weight: 700; color: #272838; font-size: 12px; }
+  .recog-who { font-size: 10px; color: #7a5c00; margin-bottom: 5px; }
+  .recog-what { margin-bottom: 3px; }
+  .recog-why { color: #555; font-style: italic; }
+  .priority-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .priority-column {}
+  .priority-col-header { background: #272838; color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; padding: 6px 10px; border-radius: 4px 4px 0 0; margin-bottom: 0; }
+  .priority-card { border-left: 3px solid #1982C4; background: #f8fafc; padding: 10px 12px; margin-bottom: 8px; border-radius: 0 4px 4px 0; page-break-inside: avoid; }
+  .priority-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+  .priority-title { font-weight: 700; font-size: 11px; color: #272838; flex: 1; margin-right: 8px; }
+  .method-tag { display: inline-block; background: #1982C4; color: #fff; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
+  .priority-context { font-size: 10px; color: #444; margin-bottom: 4px; }
+  .priority-action { font-size: 10px; color: #1982C4; font-style: italic; margin-bottom: 3px; }
+  .priority-done { font-size: 10px; color: #9aa0ac; }
+  .priority-done strong { color: #6c757d; }
+  .action-item { border-radius: 5px; padding: 10px 14px; margin-bottom: 8px; font-size: 11px; page-break-inside: avoid; }
+  .action-item:last-child { margin-bottom: 0; }
+  .action-kickoff { border-left: 3px solid #FF0022; background: #fff0f1; }
+  .action-critical { border-left: 3px solid #FF0022; background: #fff8f8; }
+  .action-watch { border-left: 3px solid #FFCA3A; background: #fffdf0; }
+  .action-positive { border-left: 3px solid #23CE6B; background: #f4fef8; }
+  .action-type { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .action-kickoff .action-type { color: #cc001b; }
+  .action-critical .action-type { color: #cc001b; }
+  .action-watch .action-type { color: #b38900; }
+  .action-positive .action-type { color: #18a356; }
+  .action-title { font-weight: 700; color: #272838; margin-bottom: 3px; }
+  .action-why { color: #555; margin-bottom: 2px; }
+  .action-suggest { color: #444; font-style: italic; }
+  .ahead-item { display: flex; align-items: flex-start; gap: 8px; padding: 7px 0; border-bottom: 1px solid #f0f0f5; font-size: 11px; }
+  .ahead-item:last-child { border-bottom: none; }
+  .ahead-dot { color: #1982C4; font-size: 16px; line-height: 1.2; flex-shrink: 0; }
+  .sources-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+  .sources-table th { background: #272838; color: #fff; padding: 5px 8px; text-align: left; font-size: 9px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .sources-table td { padding: 5px 8px; border-bottom: 1px solid #f0f0f5; vertical-align: top; }
+  .sources-table tr:nth-child(even) td { background: #f9fafb; }
+  .status-found { color: #18a356; font-weight: 700; }
+  .status-partial { color: #b38900; font-weight: 700; }
+  .status-missing { color: #cc001b; font-weight: 700; }
+  .report-footer { text-align: center; font-size: 10px; color: #9aa0ac; padding: 14px 0 18px; }
+  @media (max-width: 600px) {
+    .glance-grid { grid-template-columns: 1fr 1fr; }
+    .plant-grid { grid-template-columns: 1fr; }
+    .priority-grid { grid-template-columns: 1fr; }
+  }
+  @media print {
+    @page { size: letter; margin: 0.5in; }
+    body { background: #fff; font-size: 11px; }
+    .section { box-shadow: none; margin: 8px 0; }
+    .plant-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .priority-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .glance-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    details { display: block; }
+    details[open] summary::marker { display: none; }
+    .priority-card, .recog-card, .action-item, .flag-block { page-break-inside: avoid; }
+    .critical-banner { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<div class="report-header">
+  <h1>CandyCo Production Report</h1>
+  <div class="meta">Tuesday, March 3, 2026 &nbsp;|&nbsp; All Three Plants &nbsp;|&nbsp; 7 Lines Running</div>
+  <div class="shifts">1st Shift 7:00 AM &ndash; 3:00 PM &nbsp;&bull;&nbsp; 2nd Shift 3:00 PM &ndash; 11:00 PM &nbsp;&bull;&nbsp; 3rd Shift 11:00 PM &ndash; 7:00 AM</div>
+  <div class="generated">Generated by Claude for Scott Maxfield &nbsp;&bull;&nbsp; Tue March 10, 2026 (batch) &nbsp;&bull;&nbsp; Sources: L1/L2/L3 Labor by Shift + Amy Hadrich Email</div>
+</div>
+
+<!-- ========== CRITICAL ALERT BANNER ========== -->
+<div class="critical-banner">
+  <div class="banner-title">&#9888; CRITICAL ALERTS</div>
+  <div class="alert-row"><span class="alert-dot">&#9679;</span><span><strong>SAFETY INCIDENT &mdash; Employee injured on S3 (Lindon 1)</strong> &mdash; Russell Finex filter plugged during operation; employee injury recorded while clearing blockage (&ndash;4.1 hrs downtime). Recordable incident requiring investigation and corrective action.</span></div>
+  <div class="alert-row"><span class="alert-dot">&#9679;</span><span><strong>NEW EQUIPMENT LAUNCH &mdash; S2 Pecan Clusters at 64% OEE</strong> (goal: 25% launch std &mdash; actually exceeding std) &mdash; Core wrapper issues and X-ray belt contributing to downtime on a brand-new equipment commissioning. Expected instability for initial run days.</span></div>
+  <div class="alert-row"><span class="alert-dot">&#9679;</span><span><strong>NEW ITEM LAUNCH MISS &mdash; ML4 FEA CNC 60g at 46% OEE</strong> (goal: 75% &mdash; 29 pts below target) &mdash; Training downtime (&ndash;2.5 hrs) and temper issues (&ndash;2 hrs) on first day of new item. Ramp-up support needed.</span></div>
+</div>
+
+<!-- ========== TODAY AT A GLANCE ========== -->
+<div class="section">
+  <div class="section-header">Today at a Glance</div>
+  <div class="glance-grid">
+    <div class="stat-card stat-warn">
+      <div class="label">CC OEE</div>
+      <div class="value">73%</div>
+      <div class="sub">Goal: 85% &nbsp;|&nbsp; &ndash;12 pts vs goal</div>
+    </div>
+    <div class="stat-card stat-warn">
+      <div class="label">LBS Attainment</div>
+      <div class="value">92.2%</div>
+      <div class="sub">See Amy Hadrich email for lbs detail</div>
+    </div>
+    <div class="stat-card stat-warn">
+      <div class="label">CC Downtime</div>
+      <div class="value">~17%</div>
+      <div class="sub">Driven by S3 injury event (&ndash;4.1h) &amp; ML4 new launch (&ndash;4.5h)</div>
+    </div>
+    <div class="stat-card stat-warn">
+      <div class="label">CC Scrap</div>
+      <div class="value">~4.7%</div>
+      <div class="sub">L2 ML2 8.32% &nbsp;|&nbsp; L1 3.30% &nbsp;|&nbsp; L3 4.41%</div>
+    </div>
+    <div class="stat-card" style="background:#f8fafc;">
+      <div class="label">Lines Running</div>
+      <div class="value" style="color:#272838;">7</div>
+      <div class="sub">S1, S2, S3 (L1) &nbsp;&bull;&nbsp; ML2, FFS (L2) &nbsp;&bull;&nbsp; ML1, ML4 (L3)</div>
+    </div>
+    <div class="stat-card" style="background:#fff0f1;">
+      <div class="label">Safety</div>
+      <div class="value" style="color:#cc001b;">1 <span class="badge badge-red">RECORDABLE</span></div>
+      <div class="sub">EE injury &mdash; S3/L1 &mdash; Russell Finex filter</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PLANT KPI DASHBOARD ========== -->
+<div class="section">
+  <div class="section-header">Plant KPI Dashboard</div>
+  <div class="plant-grid">
+
+    <!-- L1 -->
+    <div class="plant-card plant-border-bad">
+      <div class="plant-card-header">Lindon 1</div>
+      <div class="plant-card-body">
+        <div class="kpi-row">
+          <span class="kpi-label">OEE</span>
+          <span class="kpi-value bad">68%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">LBS Attainment</span>
+          <span class="kpi-value warn">87.8%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">Scrap</span>
+          <span class="kpi-value warn">3.30%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">Labor Std &rarr; Act</span>
+          <span class="kpi-value good">4.97% &rarr; 4.69%</span>
+        </div>
+        <div class="line-mini">
+          <strong>S1:</strong> OEE 71% &mdash; bent slitter blades (&ndash;1.3h), tunnel rails wrong (&ndash;1h)<br>
+          <strong>S2:</strong> OEE 64% &mdash; new equipment launch (Pecan Clusters); CW issues, Xray belt<br>
+          <strong>S3:</strong> OEE 67% &mdash; RF filter plugged, <span class="bad"><strong>EE INJURED</strong></span> (&ndash;4.1h), burnt caramel
+        </div>
+      </div>
+    </div>
+
+    <!-- L2 -->
+    <div class="plant-card plant-border-warn">
+      <div class="plant-card-header">Lindon 2</div>
+      <div class="plant-card-body">
+        <div class="kpi-row">
+          <span class="kpi-label">OEE</span>
+          <span class="kpi-value warn">79%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">LBS Attainment</span>
+          <span class="kpi-value warn">93.5%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">Scrap</span>
+          <span class="kpi-value bad">8.32%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">Labor Std &rarr; Act</span>
+          <span class="kpi-value warn">4.82% &rarr; 4.86%</span>
+        </div>
+        <div class="line-mini">
+          <strong>ML2:</strong> OEE 80% &mdash; solid run; elevated scrap (8.32%)<br>
+          <strong>FFS:</strong> OEE 79% &mdash; moderate run; below typical FFS performance
+        </div>
+      </div>
+    </div>
+
+    <!-- L3 -->
+    <div class="plant-card plant-border-warn">
+      <div class="plant-card-header">Lindon 3</div>
+      <div class="plant-card-body">
+        <div class="kpi-row">
+          <span class="kpi-label">OEE</span>
+          <span class="kpi-value warn">74%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">LBS Attainment</span>
+          <span class="kpi-value good">100.5%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">Scrap</span>
+          <span class="kpi-value warn">4.41%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">Labor Std &rarr; Act</span>
+          <span class="kpi-value warn">7.28% &rarr; 7.37%</span>
+        </div>
+        <div class="line-mini">
+          <strong>ML1:</strong> OEE 104% &mdash; exceptional run, exceeded standard<br>
+          <strong>ML4:</strong> OEE 46% &mdash; new item launch FEA CNC 60g; training (&ndash;2.5h), temper (&ndash;2h)<br>
+          <strong>MFM:</strong> Not producing
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== OEE AND LBS BY LINE ========== -->
+<div class="section">
+  <details open>
+    <summary>OEE and LBS Attainment by Line</summary>
+    <table class="oee-table">
+      <thead>
+        <tr>
+          <th>Line</th>
+          <th>Product</th>
+          <th>Daily OEE</th>
+          <th>LBS Att%</th>
+          <th>Key Issues</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="plant-subheader"><td colspan="5">&#9658; LINDON 1</td></tr>
+        <tr>
+          <td><span class="line-tag tag-l1">S1</span></td>
+          <td>CPK Truffles &mdash; L1 Enrober</td>
+          <td class="oee-mid">71%</td>
+          <td class="warn" style="font-weight:700;">est. ~88%</td>
+          <td>Bent slitter blades (&ndash;1.3h); tunnel rails set wrong (&ndash;1h)</td>
+        </tr>
+        <tr>
+          <td><span class="line-tag tag-l1">S2</span></td>
+          <td>CPK Pecan Clusters<br><span style="font-size:9px;color:#9aa0ac;">New Equipment Launch &mdash; 25% OEE std</span></td>
+          <td class="oee-mid">64%</td>
+          <td class="warn" style="font-weight:700;">est. ~88%</td>
+          <td>Core wrapper (CW) issues; X-ray belt; new equipment commissioning &mdash; OEE vs haircut&rsquo;d 25% std = exceeding launch goal</td>
+        </tr>
+        <tr>
+          <td><span class="line-tag tag-l1">S3</span></td>
+          <td>CPK &mdash; Enrober Line</td>
+          <td class="oee-mid">67%</td>
+          <td class="warn" style="font-weight:700;">est. ~88%</td>
+          <td>&#9888; <strong>Russell Finex filter plugged &mdash; EE INJURED (&ndash;4.1h);</strong> burnt caramel product loss</td>
+        </tr>
+        <tr class="plant-subheader"><td colspan="5">&#9658; LINDON 2</td></tr>
+        <tr>
+          <td><span class="line-tag tag-l2">ML2</span></td>
+          <td>Bulk Molded Chocolates</td>
+          <td class="oee-mid">80%</td>
+          <td class="warn" style="font-weight:700;">est. ~94%</td>
+          <td>Elevated scrap at 8.32%; otherwise solid production day</td>
+        </tr>
+        <tr>
+          <td><span class="line-tag tag-l2">FFS</span></td>
+          <td>HER Caramel ZS 5.1oz Pouches<br><span style="font-size:9px;color:#9aa0ac;">Case 8</span></td>
+          <td class="oee-mid">79%</td>
+          <td class="warn" style="font-weight:700;">est. ~93%</td>
+          <td>Moderate run; below typical FFS performance of 90%+</td>
+        </tr>
+        <tr class="plant-subheader"><td colspan="5">&#9658; LINDON 3</td></tr>
+        <tr>
+          <td><span class="line-tag tag-l3">ML1</span></td>
+          <td>Bulk Molded Chocolates &mdash; ML1</td>
+          <td class="oee-high">104%</td>
+          <td class="good" style="font-weight:700;">est. ~110%</td>
+          <td>Exceptional run across shifts; exceeded daily standard</td>
+        </tr>
+        <tr>
+          <td><span class="line-tag tag-l3">ML4</span></td>
+          <td>FEA CNC 60g Bars (mixed)<br><span style="font-size:9px;color:#9aa0ac;">New Item Launch &mdash; 75% OEE std</span></td>
+          <td class="oee-low">46%</td>
+          <td class="bad" style="font-weight:700;">est. ~70%</td>
+          <td>Training downtime (&ndash;2.5h); temper issues (&ndash;2h); new item dialing-in on FEA CNC 60g; 29 pts below 75% launch goal</td>
+        </tr>
+        <tr>
+          <td><span class="line-tag tag-l3">MFM</span></td>
+          <td>&mdash;</td>
+          <td class="na-cell">Not Producing</td>
+          <td class="na-cell">N/A</td>
+          <td>MFM not scheduled for Tuesday</td>
+        </tr>
+      </tbody>
+    </table>
+  </details>
+</div>
+
+<!-- ========== REPORT HIGHLIGHTS ========== -->
+<div class="section">
+  <div class="section-header">Report Highlights by Plant and Line</div>
+
+  <div class="highlight-row">
+    <span class="line-tag tag-l1">S1 &middot; L1</span>
+    <div class="highlight-text">
+      <strong>CPK Truffles</strong> &mdash; OEE 71%. Two avoidable downtime events held S1 back from a strong day: bent slitter blades cost 1.3 hours and incorrectly set tunnel rails cost another hour. Both are maintenance/setup issues that could recur if not addressed at shift start.
+      <div class="highlight-shifts">Downtime: bent slitter blades &ndash;1.3h | tunnel rails wrong &ndash;1h</div>
+    </div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l1">S2 &middot; L1</span>
+    <div class="highlight-text">
+      <strong>CPK Pecan Clusters (New Equipment Launch)</strong> &mdash; OEE 64% vs 25% launch standard. S2 is a brand-new equipment commissioning. Despite core wrapper (CW) issues and X-ray belt challenges, the line is running significantly above the haircut&rsquo;d 25% launch goal. Core wrapper and X-ray issues are expected during commissioning and require supplier/engineering engagement.
+      <div class="highlight-shifts">New equipment: CW issues, Xray belt &mdash; performing well vs 25% std</div>
+    </div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l1">S3 &middot; L1</span>
+    <div class="highlight-text">
+      <strong>S3 Enrober</strong> &mdash; OEE 67%. A Russell Finex filter blockage during operation led to an employee injury &mdash; the most significant event of the day. The filter plugging also caused burnt caramel product loss. S3 lost 4.1 hours to the incident and associated downtime. This is a recordable safety incident requiring formal investigation.
+      <div class="highlight-shifts">RF filter plugged &mdash; EE INJURED &ndash;4.1h | burnt caramel scrap</div>
+    </div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l2">ML2 &middot; L2</span>
+    <div class="highlight-text">
+      <strong>ML2 Bulk Molded Chocolates</strong> &mdash; OEE 80%. Solid production efficiency but scrap rate elevated at 8.32%, which drove L2&rsquo;s scrap above standard. The efficiency is respectable; the scrap root cause should be identified and addressed.
+      <div class="highlight-shifts">OEE 80% | Scrap 8.32% &mdash; elevated, investigate root cause</div>
+    </div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l2">FFS &middot; L2</span>
+    <div class="highlight-text">
+      <strong>HER Caramel ZS 5.1oz Pouches</strong> &mdash; OEE 79%. Below typical FFS performance (usually runs 90%+ as seen on March 9). Not a crisis, but the L2 plant leader should review what held FFS back from its standard run rate on this day.
+      <div class="highlight-shifts">OEE 79% &mdash; below typical FFS performance of 90%+</div>
+    </div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l3">ML1 &middot; L3</span>
+    <div class="highlight-text">
+      <strong>ML1 Bulk Molded</strong> &mdash; OEE 104%. Outstanding day &mdash; ML1 ran above standard across all shifts, contributing to L3&rsquo;s 100.5% LBS attainment despite ML4&rsquo;s struggles. ML1 crew delivered the standout performance of the day.
+      <div class="highlight-shifts">OEE 104% &mdash; exceeded standard; L3 bright spot</div>
+    </div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l3">ML4 &middot; L3</span>
+    <div class="highlight-text">
+      <strong>FEA CNC 60g Bars (New Item Launch)</strong> &mdash; OEE 46% vs 75% launch goal &mdash; 29 points below target. Training downtime (2.5 hrs) and temper system issues (2 hrs) were the primary loss drivers on Day 1. This is below the acceptable launch standard and will require immediate focus to accelerate the ramp-up curve.
+      <div class="highlight-shifts">OEE 46% vs 75% goal | Training &ndash;2.5h | Temper &ndash;2h</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SCRAP ========== -->
+<div class="section">
+  <div class="section-header">Scrap</div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l1">L1</span>
+    <div class="highlight-text"><strong class="warn">3.30% (combined L1)</strong> &mdash; Moderate scrap. S3 contributed the most via burnt caramel from the filter plugging incident. S1 and S2 scrapped at lower rates; S2&rsquo;s new launch scrap is expected during commissioning.</div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l2">ML2 &middot; L2</span>
+    <div class="highlight-text"><strong class="bad">8.32%</strong> &mdash; Scrap miss on ML2. Elevated scrap rate is the primary concern for L2 today. Root cause not specified in source data; molding process instability suspected. FFS reported minimal scrap.</div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l3">L3</span>
+    <div class="highlight-text"><strong class="warn">4.41% (combined L3)</strong> &mdash; ML4 new launch scrap is expected; ML1 scrap was low given its 104% OEE run. Net L3 scrap within expected range given new item launch day.</div>
+  </div>
+</div>
+
+<!-- ========== QUALITY HOLDS ========== -->
+<div class="section">
+  <div class="section-header">Quality Holds and Issues</div>
+  <div class="flag-block flag-warn">
+    <div class="flag-label">Watch &mdash; S3 Burnt Caramel (L1)</div>
+    Russell Finex filter plugging caused product to burn in the enrober system on S3. Affected product should be confirmed as scrapped/disposed. Verify no burnt product entered the finished goods stream. Monitor caramel quality on subsequent S3 runs for carryover.
+  </div>
+  <div class="flag-block flag-ok">
+    <div class="flag-label">&#10003; No Other Quality Holds Reported</div>
+    No product holds, specification failures, or FM events reported on L1 (S1/S2), L2 (ML2/FFS), or L3 (ML1/ML4/MFM) for Tuesday, March 3, 2026 beyond the S3 burnt caramel event.
+  </div>
+</div>
+
+<!-- ========== SAFETY ========== -->
+<div class="section">
+  <div class="section-header">Safety</div>
+  <div class="flag-block flag-critical">
+    <div class="flag-label">&#9888; Recordable Safety Incident &mdash; S3, Lindon 1</div>
+    <strong>Employee injured on Sollich-3 &mdash; Russell Finex filter plugged during operation.</strong><br>
+    An employee was injured while clearing or managing a blockage in the Russell Finex inline filter on S3. The incident resulted in 4.1 hours of downtime on S3 and is classified as a recordable injury.<br><br>
+    <strong>Required Actions:</strong> (1) Complete incident report in SafetyChain. (2) Conduct formal injury investigation with root cause analysis. (3) Review Russell Finex filter clearing procedure &mdash; was the proper lockout/tagout (LOTO) protocol followed? (4) Confirm employee medical status and follow-up care. (5) Assess whether a guarding or procedural change is needed before S3 resumes operation with the finex filter in-line.
+  </div>
+</div>
+
+<!-- ========== RECOGNITION ========== -->
+<div class="section">
+  <div class="section-header">We Solve Problems &mdash; Recognition</div>
+
+  <div class="recog-card">
+    <div class="recog-name">ML1 Crew &mdash; Lindon 3, All Shifts</div>
+    <div class="recog-who">ML1 Line &middot; Bulk Molded Chocolates</div>
+    <div class="recog-what">Delivered 104% OEE on launch day for the week &mdash; the best single-line performance across all three plants on March 3. ML1&rsquo;s exceptional output was the primary reason L3 hit 100.5% LBS attainment despite ML4 struggling through its new item launch.</div>
+    <div class="recog-why">Running above standard while a neighboring line is absorbing launch chaos takes discipline and focus. ML1 crew picked up the slack for L3 and kept the plant on schedule.</div>
+  </div>
+
+  <div class="recog-card">
+    <div class="recog-name">S2 Launch Crew &mdash; Lindon 1</div>
+    <div class="recog-who">S2 Line &middot; CPK Pecan Clusters (New Equipment Launch)</div>
+    <div class="recog-what">Ran new equipment to 64% OEE on its first production day &mdash; more than double the 25% launch standard. Navigating core wrapper and X-ray belt challenges on unfamiliar equipment while maintaining output above goal is a strong first-day result.</div>
+    <div class="recog-why">First days on new equipment are the hardest. This team delivered results that give the ramp-up plan a head start.</div>
+  </div>
+
+</div>
+
+<!-- ========== PRIORITY FOCUS ========== -->
+<div class="section">
+  <div class="section-header">Priority Focus &mdash; Production Leaders</div>
+  <div class="priority-grid">
+
+    <!-- L1 -->
+    <div class="priority-column">
+      <div class="priority-col-header">Lindon 1 Priorities</div>
+      <div style="height:4px;"></div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">S3 Safety Investigation &amp; Return-to-Run</div>
+          <span class="method-tag">Safety</span>
+        </div>
+        <div class="priority-context">An employee injury on S3 from a Russell Finex filter blockage requires a formal investigation before S3 can return to normal operation. The filter procedure must be reviewed.</div>
+        <div class="priority-action">Complete incident investigation today. Review LOTO procedure for Russell Finex filter. Confirm whether a procedure change, guarding addition, or equipment modification is required before S3 resumes. Get plant manager sign-off on return-to-run.</div>
+        <div class="priority-done"><strong>Done when:</strong> Incident report filed, LOTO procedure reviewed, corrective action assigned with owner and date, S3 cleared for operation.</div>
+      </div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">S1 Preventive Maintenance Gaps</div>
+          <span class="method-tag">Preventive Maint</span>
+        </div>
+        <div class="priority-context">Bent slitter blades (&ndash;1.3h) and incorrectly set tunnel rails (&ndash;1h) on S1 are both setup/maintenance issues that could have been caught at shift start. Total preventable loss: ~2.3 hours.</div>
+        <div class="priority-action">Confirm S1 startup checklist includes blade inspection and tunnel rail verification. Assign maintenance to inspect and replace slitter blades. Confirm tunnel rails are verified correct at each shift change going forward.</div>
+        <div class="priority-done"><strong>Done when:</strong> Slitter blades replaced, startup checklist updated with rail and blade check, no repeat downtime on S1 Wednesday.</div>
+      </div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">S2 Core Wrapper &amp; X-Ray Resolution</div>
+          <span class="method-tag">Commissioning</span>
+        </div>
+        <div class="priority-context">S2 new equipment commissioning is encountering core wrapper (CW) and X-ray belt issues that limit throughput. While OEE at 64% exceeds the 25% standard, these issues will cap performance as launch expectations increase.</div>
+        <div class="priority-action">Engage equipment supplier or engineering team to diagnose CW issues today. Review X-ray belt tension and calibration. Document all defects and create a commissioning punch list for resolution this week.</div>
+        <div class="priority-done"><strong>Done when:</strong> CW issue root cause identified, supplier engaged if needed, X-ray belt adjusted, S2 Wednesday OEE target set for next milestone.</div>
+      </div>
+    </div>
+
+    <!-- L2 -->
+    <div class="priority-column">
+      <div class="priority-col-header">Lindon 2 Priorities</div>
+      <div style="height:4px;"></div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">ML2 Scrap Root Cause</div>
+          <span class="method-tag">Quality</span>
+        </div>
+        <div class="priority-context">ML2 scrap rate was 8.32% for the day &mdash; elevated above the acceptable range. The source of scrap is not specified in the data but represents a meaningful product loss and cost impact.</div>
+        <div class="priority-action">Pull ML2 scrap records for March 3. Identify which shifts and which defect categories drove the 8.32%. Is this a molding temperature issue, a fill weight issue, or a mechanical jam pattern? Set a target to get scrap below 4% Wednesday.</div>
+        <div class="priority-done"><strong>Done when:</strong> Scrap root cause identified, corrective action in place, Wednesday ML2 scrap below 4%.</div>
+      </div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">FFS Performance Below Standard</div>
+          <span class="method-tag">CI</span>
+        </div>
+        <div class="priority-context">FFS ran at 79% OEE on March 3, below its typical 90%+ performance level. No specific downtime events were documented, but the gap from standard warrants a short review.</div>
+        <div class="priority-action">Discuss with FFS team leader: what held the line back from 90%+ today? Were there minor stops, changeovers, or mechanical issues not captured in the Labor by Shift detail?</div>
+        <div class="priority-done"><strong>Done when:</strong> Root cause of FFS gap identified; FFS Wednesday target set at 90%+.</div>
+      </div>
+
+    </div>
+
+    <!-- L3 -->
+    <div class="priority-column">
+      <div class="priority-col-header">Lindon 3 Priorities</div>
+      <div style="height:4px;"></div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">ML4 New Item Ramp Acceleration</div>
+          <span class="method-tag">Launch</span>
+        </div>
+        <div class="priority-context">ML4 FEA CNC 60g ran at 46% OEE on Day 1 vs a 75% launch goal &mdash; 29 points below target. Training time (2.5h) and temper system issues (2h) were the primary losses. This is a below-standard launch day.</div>
+        <div class="priority-action">Review ML4 launch training plan: is the training curriculum too long, or is it being conducted during production time? Separate training time from production time immediately. Resolve temper system issue with maintenance today so it does not recur.</div>
+        <div class="priority-done"><strong>Done when:</strong> Training separated from production time, temper system fixed, Wednesday ML4 OEE target of 65%+ set.</div>
+      </div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">ML4 Temper System Check</div>
+          <span class="method-tag">Maintenance</span>
+        </div>
+        <div class="priority-context">ML4 lost 2 hours to temper-related issues on its first day running FEA CNC 60g bars. Temper system problems on a new item are often related to temperature setpoints not being established for the new product.</div>
+        <div class="priority-action">Verify FEA CNC 60g temper setpoints are loaded correctly in the ML4 HMI. Confirm with process engineering that the temperature profile is correct for this product. Inspect temper unit hardware for any mechanical issues.</div>
+        <div class="priority-done"><strong>Done when:</strong> Temper setpoints confirmed correct, maintenance sign-off on hardware, no temper downtime on Wednesday.</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== ACTION ITEMS ========== -->
+<div class="section">
+  <div class="section-header">Action Items &mdash; Scott Maxfield</div>
+
+  <div class="action-item action-kickoff">
+    <div class="action-type">&#11088; Kickoff Question &mdash; Daily Kickoff</div>
+    <div class="action-title">&ldquo;What is the status of the S3 employee injury investigation &mdash; has an incident report been filed, and is LOTO procedure being reviewed before S3 returns to operation?&rdquo;</div>
+    <div class="action-why"><strong>Why it matters:</strong> A recordable injury with 4.1 hours of downtime is the day&rsquo;s most serious event. Confirming that the investigation is active and that S3 cannot restart without a safety sign-off is the #1 leadership action for today.</div>
+  </div>
+
+  <div class="action-item action-critical">
+    <div class="action-type">Critical</div>
+    <div class="action-title">S3 Safety &mdash; Russell Finex Filter LOTO Review</div>
+    <div class="action-why">The filter plugging and injury requires verification that the correct lockout/tagout procedure exists and was followed. If LOTO was not used or is not documented for this task, that is an immediate corrective action need.</div>
+    <div class="action-suggest">Ask the L1 EHS lead or plant manager: &ldquo;Do we have a documented LOTO procedure for the Russell Finex filter on S3? Was it used? What was the root cause of the injury?&rdquo;</div>
+  </div>
+
+  <div class="action-item action-watch">
+    <div class="action-type">Watch</div>
+    <div class="action-title">ML4 New Item Launch Trajectory &mdash; 46% vs 75% Goal</div>
+    <div class="action-why">ML4 is 29 points below its launch OEE standard on Day 1. This is recoverable but requires deliberate intervention today. If training is still being run during production tomorrow, the gap will widen.</div>
+    <div class="action-suggest">Ask the L3 leader: &ldquo;What is the plan to get ML4 from 46% to 75% OEE by end of week? Is training scheduled separate from production time?&rdquo;</div>
+  </div>
+
+  <div class="action-item action-watch">
+    <div class="action-type">Watch</div>
+    <div class="action-title">ML2 Scrap (L2) &mdash; 8.32% Needs Root Cause</div>
+    <div class="action-why">8.32% scrap on ML2 is the highest scrap rate in L2 today and represents meaningful product loss. Without a root cause identified today, the same scrap pattern will likely repeat tomorrow.</div>
+    <div class="action-suggest">Ask the L2 leader: &ldquo;What caused the 8.32% scrap on ML2 today? Is it a set point issue, a mold issue, or something else?&rdquo;</div>
+  </div>
+
+  <div class="action-item action-positive">
+    <div class="action-type">Positive</div>
+    <div class="action-title">Recognize ML1 (L3) &mdash; 104% OEE on Week-Start Day</div>
+    <div class="action-why">ML1 was the top-performing line in the plant on a day disrupted by injuries and new launches. Their 104% OEE kept L3 at 100.5% LBS attainment despite ML4&rsquo;s difficult first day.</div>
+    <div class="action-suggest">Shout out the ML1 crew at the morning kickoff: &ldquo;ML1 ran above standard yesterday on a tough day for L3 &mdash; that crew kept us on schedule.&rdquo;</div>
+  </div>
+
+</div>
+
+<!-- ========== LOOKING AHEAD ========== -->
+<div class="section">
+  <div class="section-header">Looking Ahead</div>
+  <div class="ahead-item"><span class="ahead-dot">&#9679;</span><span><strong>S3 Return-to-Run (L1) &mdash; this week:</strong> S3 is offline pending safety investigation. Before restart, the Russell Finex filter LOTO procedure must be reviewed and any corrective action implemented. Daily OEE for L1 will be impacted until S3 is back and fully operational.</span></div>
+  <div class="ahead-item"><span class="ahead-dot">&#9679;</span><span><strong>S2 New Equipment Ramp (L1) &mdash; this week:</strong> Core wrapper and X-ray belt issues on the new S2 equipment need engineering/supplier engagement this week. The commissioning punch list should be updated daily with resolution status.</span></div>
+  <div class="ahead-item"><span class="ahead-dot">&#9679;</span><span><strong>ML4 New Item Ramp (L3) &mdash; this week:</strong> FEA CNC 60g bars need to accelerate from 46% toward the 75% launch standard by week end. Training should be separated from production time immediately; temper system must be resolved today.</span></div>
+  <div class="ahead-item"><span class="ahead-dot">&#9679;</span><span><strong>ML2 Scrap Trend (L2) &mdash; immediate:</strong> 8.32% scrap on ML2 needs root cause and corrective action by tomorrow morning. If the same pattern continues Wednesday, it signals a systemic process issue.</span></div>
+</div>
+
+<!-- ========== DATA SOURCES ========== -->
+<div class="section">
+  <div class="section-header">Data Sources</div>
+  <table class="sources-table">
+    <thead>
+      <tr><th>Source</th><th>Status</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>L1 Labor by Shift</strong><br><span style="font-size:9px;color:#6c757d;">L1 - Labor Shift Detail - 3-3-26.xlsx</span></td>
+        <td class="status-found">Found</td>
+        <td>S Drive/Production Analytics/Labor by shift/2026/03-March/Lindon 1. All 3 shift tabs + Total Plant read.</td>
+      </tr>
+      <tr>
+        <td><strong>L2 Labor by Shift</strong><br><span style="font-size:9px;color:#6c757d;">L2 - Labor Shift Detail - 3-3-26.xlsx</span></td>
+        <td class="status-found">Found</td>
+        <td>S Drive/Production Analytics/Labor by shift/2026/03-March/Lindon 2. All 3 shift tabs + Total Plant read.</td>
+      </tr>
+      <tr>
+        <td><strong>L3 Labor by Shift</strong><br><span style="font-size:9px;color:#6c757d;">L3 - Labor Shift Detail - 3-3-26.xlsx</span></td>
+        <td class="status-found">Found</td>
+        <td>S Drive/Production Analytics/Labor by shift/2026/03-March/Lindon 3. All 3 shift tabs + Total Plant read.</td>
+      </tr>
+      <tr>
+        <td><strong>Amy Hadrich Daily Shift Report</strong><br><span style="font-size:9px;color:#6c757d;">"Daily Shift Reports and Plant Summary - 3-3-26"</span></td>
+        <td class="status-found">Found</td>
+        <td>Used for narrative context and CC/plant OEE &amp; LBS totals. Safety incident, new launch notes, and downtime events sourced from email.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<div class="report-footer">
+  Generated by Claude for Scott Maxfield &nbsp;|&nbsp; CandyCo Production Report &nbsp;|&nbsp; We Solve Problems &nbsp;|&nbsp; Tuesday, March 3, 2026
+</div>
+
+<script>
+  window.addEventListener('beforeprint', function() {
+    document.querySelectorAll('details').forEach(function(d) { d.open = true; });
+  });
+</script>
+
+</body>
+</html>

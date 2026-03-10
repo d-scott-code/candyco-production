@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CandyCo Production Report — Friday, March 6, 2026</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #1a1a2e;
+    background: #f4f5f7;
+    max-width: 7.5in;
+    margin: 0 auto;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  a { color: #1982C4; }
+  .report-header { background: #272838; color: #fff; padding: 18px 24px 14px; border-radius: 0; }
+  .report-header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+  .report-header .meta { font-size: 11px; color: #b0b3c6; margin-top: 4px; }
+  .report-header .shifts { font-size: 11px; color: #8a8da8; margin-top: 2px; }
+  .report-header .generated { font-size: 10px; color: #6e718a; margin-top: 6px; }
+  .critical-banner { border: 2px solid #FF0022; background: #fff0f1; border-radius: 6px; padding: 14px 18px; margin: 14px 0 0; page-break-inside: avoid; }
+  .critical-banner .banner-title { font-size: 14px; font-weight: 700; color: #FF0022; margin-bottom: 8px; }
+  .critical-banner .alert-row { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: #7a0010; margin-bottom: 4px; }
+  .critical-banner .alert-row:last-child { margin-bottom: 0; }
+  .alert-dot { color: #FF0022; font-size: 14px; flex-shrink: 0; line-height: 1.3; }
+  .section { background: #fff; border-radius: 6px; padding: 16px 18px; margin: 10px 0; }
+  .section-header { background: #272838; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; padding: 5px 10px; border-radius: 4px; margin-bottom: 12px; }
+  .glance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .stat-card { border-radius: 6px; padding: 12px 14px; border: 1px solid #e2e6ea; background: #fafbfc; }
+  .stat-card .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: #6c757d; font-weight: 600; }
+  .stat-card .value { font-size: 24px; font-weight: 700; line-height: 1.1; margin-top: 2px; }
+  .stat-card .sub { font-size: 10px; color: #6c757d; margin-top: 2px; }
+  .stat-good .value { color: #18a356; }
+  .stat-warn .value { color: #b38900; }
+  .stat-bad .value { color: #cc001b; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+  .badge-red { background: #fff0f1; color: #cc001b; border: 1px solid #ffb3bc; }
+  .badge-yellow { background: #fffbeb; color: #b38900; border: 1px solid #ffe08a; }
+  .plant-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .plant-card { border-radius: 6px; border: 1px solid #e2e6ea; overflow: hidden; }
+  .plant-card-header { background: #272838; color: #fff; padding: 7px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; }
+  .plant-card-body { padding: 10px 12px; }
+  .kpi-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid #f0f0f5; font-size: 11px; }
+  .kpi-row:last-child { border-bottom: none; }
+  .kpi-label { color: #6c757d; font-weight: 500; }
+  .kpi-value { font-weight: 700; }
+  .kpi-sub { font-size: 9px; color: #9aa0ac; display: block; text-align: right; }
+  .good { color: #18a356; }
+  .warn { color: #b38900; }
+  .bad { color: #cc001b; }
+  .plant-border-good { border-top: 4px solid #23CE6B; }
+  .plant-border-warn { border-top: 4px solid #FFCA3A; }
+  .plant-border-bad { border-top: 4px solid #FF0022; }
+  .line-mini { font-size: 10px; color: #555; margin-top: 4px; padding-top: 4px; border-top: 1px solid #f0f0f5; }
+  .line-mini strong { color: #272838; }
+  details { margin-bottom: 0; }
+  summary { cursor: pointer; font-weight: 700; font-size: 12px; color: #272838; padding: 6px 0; }
+  .oee-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
+  .oee-table th { background: #272838; color: #fff; padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+  .oee-table td { padding: 6px 8px; border-bottom: 1px solid #f0f0f5; vertical-align: top; }
+  .oee-table tr:nth-child(even) td { background: #f9fafb; }
+  .oee-table .plant-subheader td { background: #4a4d63; color: #fff; font-weight: 700; font-size: 10px; padding: 5px 8px; }
+  .oee-high { background: #e6faf1 !important; color: #18a356; font-weight: 700; }
+  .oee-mid { background: #fffbeb !important; color: #b38900; font-weight: 700; }
+  .oee-low { background: #fff0f1 !important; color: #cc001b; font-weight: 700; }
+  .na-cell { color: #b0b3c6; font-style: italic; }
+  .line-tag { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-right: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .tag-l1 { background: #fff7e0; color: #7a5c00; border: 1px solid #ffe08a; }
+  .tag-l2 { background: #e8f4fd; color: #0e5a8a; border: 1px solid #a3d4f7; }
+  .tag-l3 { background: #eaf7f0; color: #145c36; border: 1px solid #7ed4a8; }
+  .highlight-row { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f0f0f5; font-size: 11px; }
+  .highlight-row:last-child { border-bottom: none; }
+  .highlight-text { flex: 1; }
+  .highlight-shifts { font-size: 10px; color: #6c757d; margin-top: 2px; }
+  .flag-block { border-radius: 5px; padding: 10px 13px; margin-bottom: 8px; font-size: 11px; }
+  .flag-block:last-child { margin-bottom: 0; }
+  .flag-critical { background: #fff0f1; border-left: 3px solid #FF0022; }
+  .flag-warn { background: #fffbeb; border-left: 3px solid #FFCA3A; }
+  .flag-ok { background: #e6faf1; border-left: 3px solid #23CE6B; }
+  .flag-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .flag-critical .flag-label { color: #cc001b; }
+  .flag-warn .flag-label { color: #b38900; }
+  .flag-ok .flag-label { color: #18a356; }
+  .recog-card { background: #fffbeb; border: 1px solid #FFCA3A; border-radius: 5px; padding: 12px 14px; margin-bottom: 8px; font-size: 11px; }
+  .recog-card:last-child { margin-bottom: 0; }
+  .recog-name { font-weight: 700; color: #272838; font-size: 12px; }
+  .recog-who { font-size: 10px; color: #7a5c00; margin-bottom: 5px; }
+  .recog-what { margin-bottom: 3px; }
+  .recog-why { color: #555; font-style: italic; }
+  .priority-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .priority-column {}
+  .priority-col-header { background: #272838; color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; padding: 6px 10px; border-radius: 4px 4px 0 0; margin-bottom: 0; }
+  .priority-card { border-left: 3px solid #1982C4; background: #f8fafc; padding: 10px 12px; margin-bottom: 8px; border-radius: 0 4px 4px 0; page-break-inside: avoid; }
+  .priority-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+  .priority-title { font-weight: 700; font-size: 11px; color: #272838; flex: 1; margin-right: 8px; }
+  .method-tag { display: inline-block; background: #1982C4; color: #fff; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
+  .priority-context { font-size: 10px; color: #444; margin-bottom: 4px; }
+  .priority-action { font-size: 10px; color: #1982C4; font-style: italic; margin-bottom: 3px; }
+  .priority-done { font-size: 10px; color: #9aa0ac; }
+  .priority-done strong { color: #6c757d; }
+  .action-item { border-radius: 5px; padding: 10px 14px; margin-bottom: 8px; font-size: 11px; page-break-inside: avoid; }
+  .action-item:last-child { margin-bottom: 0; }
+  .action-kickoff { border-left: 3px solid #FF0022; background: #fff0f1; }
+  .action-critical { border-left: 3px solid #FF0022; background: #fff8f8; }
+  .action-watch { border-left: 3px solid #FFCA3A; background: #fffdf0; }
+  .action-positive { border-left: 3px solid #23CE6B; background: #f4fef8; }
+  .action-type { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .action-kickoff .action-type { color: #cc001b; }
+  .action-critical .action-type { color: #cc001b; }
+  .action-watch .action-type { color: #b38900; }
+  .action-positive .action-type { color: #18a356; }
+  .action-title { font-weight: 700; color: #272838; margin-bottom: 3px; }
+  .action-why { color: #555; margin-bottom: 2px; }
+  .action-suggest { color: #444; font-style: italic; }
+  .ahead-item { display: flex; align-items: flex-start; gap: 8px; padding: 7px 0; border-bottom: 1px solid #f0f0f5; font-size: 11px; }
+  .ahead-item:last-child { border-bottom: none; }
+  .ahead-dot { color: #1982C4; font-size: 16px; line-height: 1.2; flex-shrink: 0; }
+  .sources-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+  .sources-table th { background: #272838; color: #fff; padding: 5px 8px; text-align: left; font-size: 9px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .sources-table td { padding: 5px 8px; border-bottom: 1px solid #f0f0f5; vertical-align: top; }
+  .sources-table tr:nth-child(even) td { background: #f9fafb; }
+  .status-found { color: #18a356; font-weight: 700; }
+  .status-partial { color: #b38900; font-weight: 700; }
+  .status-missing { color: #cc001b; font-weight: 700; }
+  .report-footer { text-align: center; font-size: 10px; color: #9aa0ac; padding: 14px 0 18px; }
+  @media (max-width: 600px) {
+    .glance-grid { grid-template-columns: 1fr 1fr; }
+    .plant-grid { grid-template-columns: 1fr; }
+    .priority-grid { grid-template-columns: 1fr; }
+  }
+  @media print {
+    @page { size: letter; margin: 0.5in; }
+    body { background: #fff; font-size: 11px; }
+    .section { box-shadow: none; margin: 8px 0; }
+    .plant-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .priority-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .glance-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    details { display: block; }
+    details[open] summary::marker { display: none; }
+    .priority-card, .recog-card, .action-item, .flag-block { page-break-inside: avoid; }
+    .critical-banner { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<div class="report-header">
+  <h1>CandyCo Production Report</h1>
+  <div class="meta">Friday, March 6, 2026 &nbsp;|&nbsp; All Three Plants &nbsp;|&nbsp; 7 Lines Running</div>
+  <div class="shifts">1st Shift 7:00 AM &ndash; 3:00 PM &nbsp;&bull;&nbsp; 2nd Shift 3:00 PM &ndash; 11:00 PM &nbsp;&bull;&nbsp; 3rd Shift 11:00 PM &ndash; 7:00 AM</div>
+  <div class="generated">Generated by Claude for Scott Maxfield &nbsp;&bull;&nbsp; Tue March 10, 2026 (batch) &nbsp;&bull;&nbsp; Sources: L1/L2/L3 Labor by Shift + Amy Hadrich Email</div>
+</div>
+
+<!-- ========== CRITICAL ALERT BANNER ========== -->
+<div class="critical-banner">
+  <div class="banner-title">&#9888; CRITICAL ALERTS</div>
+  <div class="alert-row"><span class="alert-dot">&#9679;</span><span><strong>FM EVENT &mdash; Nut and Washer Found in MMK Variety Pouch (MFM, Lindon 3, 2nd Shift)</strong> &mdash; A nut and washer were found inside a finished pouch on the MFM line during 2nd shift. This is the <strong>first of two FM events on MFM this week</strong> (a wingnut was found on Monday March 9). Two FM events on the same packaging line within five days is a systemic risk requiring a full equipment inspection and FSQA investigation.</span></div>
+  <div class="alert-row"><span class="alert-dot">&#9679;</span><span><strong>ML4 OEE REGRESSION &mdash; 59% OEE on Friday (down from 70% Thursday)</strong> &mdash; ML4 reversed its three-day improvement trend on the final day of the week, dropping 11 points to 59%. This setback is concerning given the 75% launch goal. Root cause must be identified before Monday.</span></div>
+  <div class="alert-row"><span class="alert-dot">&#9679;</span><span><strong>L2 SCRAP ELEVATED &mdash; 10.44% despite ML3 OEE improvement</strong> &mdash; ML3 improved to 84% OEE on Friday but L2 scrap remains above 10%. Scrap and OEE are not yet synchronized on ML3. Process parameters likely still not fully stabilized.</span></div>
+</div>
+
+<!-- ========== TODAY AT A GLANCE ========== -->
+<div class="section">
+  <div class="section-header">Today at a Glance</div>
+  <div class="glance-grid">
+    <div class="stat-card stat-warn">
+      <div class="label">CC OEE</div>
+      <div class="value">83%</div>
+      <div class="sub">Goal: 85% &nbsp;|&nbsp; &ndash;2 pts vs goal &nbsp;|&nbsp; Best CC OEE of week</div>
+    </div>
+    <div class="stat-card stat-warn">
+      <div class="label">LBS Attainment</div>
+      <div class="value">85.4%</div>
+      <div class="sub">L1 86.3% | L2 97.3% | L3 78.5%</div>
+    </div>
+    <div class="stat-card stat-warn">
+      <div class="label">CC Downtime</div>
+      <div class="value">~10%</div>
+      <div class="sub">S1 scrapers (&ndash;32min) | ML4 regression | FM stop on MFM</div>
+    </div>
+    <div class="stat-card stat-bad">
+      <div class="label">CC Scrap</div>
+      <div class="value">~6%</div>
+      <div class="sub">L2 10.44% &nbsp;|&nbsp; L3 8.82% (FM scrap) &nbsp;|&nbsp; L1 2.32%</div>
+    </div>
+    <div class="stat-card" style="background:#f8fafc;">
+      <div class="label">Lines Running</div>
+      <div class="value" style="color:#272838;">7</div>
+      <div class="sub">S1, S2, TW (L1) &nbsp;&bull;&nbsp; ML3, FFS (L2) &nbsp;&bull;&nbsp; ML4, MFM (L3)</div>
+    </div>
+    <div class="stat-card" style="background:#fff0f1;">
+      <div class="label">Quality Holds</div>
+      <div class="value" style="color:#cc001b;">1 <span class="badge badge-red">FM OPEN</span></div>
+      <div class="sub">Nut &amp; washer FM &mdash; MFM/L3 &mdash; MMK Variety Pouch (2nd shift)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PLANT KPI DASHBOARD ========== -->
+<div class="section">
+  <div class="section-header">Plant KPI Dashboard</div>
+  <div class="plant-grid">
+
+    <!-- L1 -->
+    <div class="plant-card plant-border-warn">
+      <div class="plant-card-header">Lindon 1</div>
+      <div class="plant-card-body">
+        <div class="kpi-row">
+          <span class="kpi-label">OEE</span>
+          <span class="kpi-value warn">82%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">LBS Attainment</span>
+          <span class="kpi-value warn">86.3%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">Scrap</span>
+          <span class="kpi-value good">2.32%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">Labor Std &rarr; Act</span>
+          <span class="kpi-value good">9.47% &rarr; 9.10%</span>
+        </div>
+        <div class="line-mini">
+          <strong>S1:</strong> OEE 79% &mdash; scrapers too tight (&ndash;32min)<br>
+          <strong>S2:</strong> OEE 90% &mdash; <span class="good">new equipment launch goal achieved!</span><br>
+          <strong>TW:</strong> OEE 80% &mdash; steady run on wrapper line
+        </div>
+      </div>
+    </div>
+
+    <!-- L2 -->
+    <div class="plant-card plant-border-good">
+      <div class="plant-card-header">Lindon 2</div>
+      <div class="plant-card-body">
+        <div class="kpi-row">
+          <span class="kpi-label">OEE</span>
+          <span class="kpi-value good">89%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">LBS Attainment</span>
+          <span class="kpi-value warn">97.3%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">Scrap</span>
+          <span class="kpi-value bad">10.44%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">Labor Std &rarr; Act</span>
+          <span class="kpi-value good">5.40% &rarr; 5.23%</span>
+        </div>
+        <div class="line-mini">
+          <strong>ML3:</strong> OEE 84% &mdash; <span class="good">major improvement from 66%!</span> &mdash; scrap still elevated<br>
+          <strong>FFS:</strong> OEE 94% &mdash; back to standard; best FFS day of week
+        </div>
+      </div>
+    </div>
+
+    <!-- L3 -->
+    <div class="plant-card plant-border-warn">
+      <div class="plant-card-header">Lindon 3</div>
+      <div class="plant-card-body">
+        <div class="kpi-row">
+          <span class="kpi-label">OEE</span>
+          <span class="kpi-value warn">78%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">LBS Attainment</span>
+          <span class="kpi-value warn">78.5%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">Scrap</span>
+          <span class="kpi-value bad">8.82%</span>
+        </div>
+        <div class="kpi-row">
+          <span class="kpi-label">Labor Std &rarr; Act</span>
+          <span class="kpi-value good">14.64% &rarr; 14.62%</span>
+        </div>
+        <div class="line-mini">
+          <strong>ML4:</strong> OEE 59% &mdash; <span class="bad">regression from 70% Thu; still ramping</span><br>
+          <strong>MFM:</strong> OEE 97% &mdash; exceptional run &mdash; <span class="bad">&#9888; nut &amp; washer FM event (2nd shift)</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== OEE AND LBS BY LINE ========== -->
+<div class="section">
+  <details open>
+    <summary>OEE and LBS Attainment by Line</summary>
+    <table class="oee-table">
+      <thead>
+        <tr>
+          <th>Line</th>
+          <th>Product</th>
+          <th>Daily OEE</th>
+          <th>LBS Att%</th>
+          <th>Key Issues</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="plant-subheader"><td colspan="5">&#9658; LINDON 1</td></tr>
+        <tr>
+          <td><span class="line-tag tag-l1">S1</span></td>
+          <td>CPK Truffles &mdash; L1 Enrober</td>
+          <td class="oee-mid">79%</td>
+          <td class="warn" style="font-weight:700;">est. ~86%</td>
+          <td>Scrapers set too tight (&ndash;32min); otherwise clean run; approaching 80%+ standard</td>
+        </tr>
+        <tr>
+          <td><span class="line-tag tag-l1">S2</span></td>
+          <td>CPK Pecan Clusters<br><span style="font-size:9px;color:#9aa0ac;">New Equipment Launch &mdash; 25% OEE std</span></td>
+          <td class="oee-high">90%</td>
+          <td class="good" style="font-weight:700;">est. ~100%</td>
+          <td>&#10003; <strong>Launch goal achieved!</strong> S2 hit 90% OEE on Day 4. Full ramp complete: 64% &rarr; 80% &rarr; 89% &rarr; 90%.</td>
+        </tr>
+        <tr>
+          <td><span class="line-tag tag-l1">TW</span></td>
+          <td>Wrapper Line &mdash; L1</td>
+          <td class="oee-mid">80%</td>
+          <td class="warn" style="font-weight:700;">est. ~86%</td>
+          <td>Steady production run; met planned efficiency for the wrapper line</td>
+        </tr>
+        <tr class="plant-subheader"><td colspan="5">&#9658; LINDON 2</td></tr>
+        <tr>
+          <td><span class="line-tag tag-l2">ML3</span></td>
+          <td>HER York 12g Dark ZS Bars<br><span style="font-size:9px;color:#9aa0ac;">Bulk Case 20lbs &mdash; Day 3 on product</span></td>
+          <td class="oee-high">84%</td>
+          <td class="warn" style="font-weight:700;">est. ~97%</td>
+          <td>&#10003; Major OEE improvement: 66% &rarr; 66% &rarr; 84%. Scrap still elevated at 10.44% despite OEE gain. Parameters not fully stabilized.</td>
+        </tr>
+        <tr>
+          <td><span class="line-tag tag-l2">FFS</span></td>
+          <td>HER Caramel ZS 5.1oz Pouches<br><span style="font-size:9px;color:#9aa0ac;">Case 8</span></td>
+          <td class="oee-high">94%</td>
+          <td class="good" style="font-weight:700;">est. ~97%</td>
+          <td>&#10003; Back to standard. Best FFS day of week. Smooth production run after three days below standard.</td>
+        </tr>
+        <tr class="plant-subheader"><td colspan="5">&#9658; LINDON 3</td></tr>
+        <tr>
+          <td><span class="line-tag tag-l3">ML4</span></td>
+          <td>FEA CNC 60g Bars<br><span style="font-size:9px;color:#9aa0ac;">New Item Launch &mdash; 75% OEE std</span></td>
+          <td class="oee-mid">59%</td>
+          <td class="bad" style="font-weight:700;">est. ~78%</td>
+          <td>OEE regression from 70% (Thu) to 59% (Fri). Still ramping; below 75% launch goal. Root cause of regression must be identified.</td>
+        </tr>
+        <tr>
+          <td><span class="line-tag tag-l3">MFM</span></td>
+          <td>MMK Seasonal Variety Pouches<br><span style="font-size:9px;color:#9aa0ac;">Truf Bite-Assorted Pouch</span></td>
+          <td class="oee-high">97%</td>
+          <td class="warn" style="font-weight:700;">est. ~78%</td>
+          <td>&#10003; Exceptional OEE. &#9888; <strong>Nut and washer found in finished pouch &mdash; FM event on 2nd shift.</strong> Investigation required immediately.</td>
+        </tr>
+      </tbody>
+    </table>
+  </details>
+</div>
+
+<!-- ========== REPORT HIGHLIGHTS ========== -->
+<div class="section">
+  <div class="section-header">Report Highlights by Plant and Line</div>
+
+  <div class="highlight-row">
+    <span class="line-tag tag-l1">S2 &middot; L1</span>
+    <div class="highlight-text">
+      <strong>CPK Pecan Clusters &mdash; New Equipment Launch Complete</strong> &mdash; S2 hit 90% OEE on Day 4, achieving and surpassing the standard production rate on a brand-new piece of equipment. Final ramp: 64% &rarr; 80% &rarr; 89% &rarr; 90%. This is one of the fastest and cleanest new equipment launch ramp-ups in recent memory. The S2 team accomplished in four days what typically takes weeks.
+      <div class="highlight-shifts">Day 4: 90% OEE &mdash; launch goal achieved and exceeded</div>
+    </div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l2">ML3 &middot; L2</span>
+    <div class="highlight-text">
+      <strong>HER York ZS 12g Bars (Day 3) &mdash; OEE Breakthrough</strong> &mdash; ML3 jumped from 66% (two days flat) to 84% OEE on Friday &mdash; an 18-point single-day improvement. The escalation on Thursday to process engineering appears to have worked. However, scrap at 10.44% has not yet followed the OEE improvement, suggesting process parameters are stabilizing but not yet fully optimized. Monday will be the true test.
+      <div class="highlight-shifts">OEE: 66% &rarr; 66% &rarr; 84% | Scrap still 10.44% &mdash; parameters not fully locked</div>
+    </div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l2">FFS &middot; L2</span>
+    <div class="highlight-text">
+      <strong>HER Caramel ZS 5.1oz Pouches &mdash; Back to Standard</strong> &mdash; FFS hit 94% OEE on Friday, recovering from three consecutive below-standard days (79%, 76%, 85%). The recovery to 94% confirms the earlier below-standard days were a correctable issue, not a systemic one. Best FFS performance of the week.
+      <div class="highlight-shifts">OEE 94% &mdash; FFS recovered to standard; best day of week</div>
+    </div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l3">MFM &middot; L3</span>
+    <div class="highlight-text">
+      <strong>MMK Seasonal Variety Pouches &mdash; 97% OEE with FM Event</strong> &mdash; MFM delivered an exceptional 97% OEE day. However, a nut and washer were found inside a finished pouch during 2nd shift, triggering an FM investigation. This is notable as a second FM event on MFM within one week (a wingnut was found on Monday March 9). The combination of two foreign material events on the same line in five days is a pattern that demands a thorough equipment inspection and systemic corrective action.
+      <div class="highlight-shifts">OEE 97% | &#9888; Nut &amp; washer FM event (2nd shift) &mdash; 2nd FM on MFM this week</div>
+    </div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l3">ML4 &middot; L3</span>
+    <div class="highlight-text">
+      <strong>FEA CNC 60g Bars (New Item Launch Day 4) &mdash; OEE Regression</strong> &mdash; ML4 dropped from 70% OEE (Thursday) to 59% OEE (Friday) &mdash; an 11-point regression on the last day of the week. After three days of continuous improvement, Friday&rsquo;s regression is concerning. The root cause must be identified this weekend or first thing Monday to reset the ramp plan.
+      <div class="highlight-shifts">OEE regression: 70% &rarr; 59% | 16 pts below 75% goal | Root cause unknown</div>
+    </div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l1">S1 / TW &middot; L1</span>
+    <div class="highlight-text">
+      <strong>S1 (79%) and TW (80%)</strong> &mdash; Both lines delivered solid, uneventful Friday runs. S1 lost 32 minutes to scrapers that were set too tight &mdash; a simple setup issue. TW ran steadily at 80% OEE with no significant events. L1&rsquo;s 82% overall OEE was its best day of the week, anchored by S2&rsquo;s launch achievement.
+      <div class="highlight-shifts">S1: 79% | TW: 80% | Clean end-of-week runs</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SCRAP ========== -->
+<div class="section">
+  <div class="section-header">Scrap</div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l1">L1</span>
+    <div class="highlight-text"><strong class="good">2.32% (combined L1)</strong> &mdash; Best week-end scrap performance. S1, S2, and TW all ran clean. L1 scrap has been consistently well-managed this week despite the S3 challenges. Scrap within standard.</div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l2">L2</span>
+    <div class="highlight-text"><strong class="bad">10.44% (combined L2, driven by ML3)</strong> &mdash; Despite ML3&rsquo;s OEE improvement to 84%, scrap remains elevated at double-digit levels. The OEE gain indicates throughput is improving, but product quality losses (likely from process parameter variability) have not yet caught up. FFS contributed minimal scrap. ML3 scrap reduction must be the L2 focus for next week.</div>
+  </div>
+  <div class="highlight-row">
+    <span class="line-tag tag-l3">L3</span>
+    <div class="highlight-text"><strong class="bad">8.82% (combined L3)</strong> &mdash; Elevated scrap driven by the FM event on MFM (pouch waste from the investigation stop) and ML4&rsquo;s OEE regression. The FM event contributed to both downtime and product waste as affected pouches were quarantined. This is not typical scrap behavior for L3 and should normalize Monday if the FM root cause is resolved.</div>
+  </div>
+</div>
+
+<!-- ========== QUALITY HOLDS ========== -->
+<div class="section">
+  <div class="section-header">Quality Holds and Issues</div>
+  <div class="flag-block flag-critical">
+    <div class="flag-label">&#9888; Foreign Material Event &mdash; OPEN Investigation &mdash; MFM, Lindon 3, 2nd Shift</div>
+    <strong>Nut and washer found inside finished MMK Seasonal Variety Pouch &mdash; MFM Line, Friday March 6, 2nd Shift</strong><br>
+    A nut and a washer were discovered inside a sealed finished pouch on the MFM packaging line during 2nd shift. This is a critical food safety event. All hardware found in finished products must be treated as a potential contamination until the source is identified and the affected product is quarantined.<br><br>
+    <strong>&#9888; PATTERN ALERT:</strong> This is the <strong>first of two FM events on MFM within one week</strong>. A wingnut was found on MFM on Monday March 9 in an MMK Seasonal Variety Pouch. Two hardware FM events on the same line, same product, within five operating days indicates a systemic equipment issue, not an isolated incident.<br><br>
+    <strong>Action Required:</strong> (1) Open FM investigation in SafetyChain immediately if not already done. (2) Identify and quarantine all pouches produced in the affected lot window (at minimum from shift start to discovery). (3) Conduct full MFM equipment inspection &mdash; focus on all fasteners, covers, and hardware that could have entered the product stream. (4) Perform torque check / hardware audit on all accessible MFM components. (5) Escalate to FSQA leadership: two FM events on one line in one week is a systemic issue requiring a root cause corrective action (RCCA) at the equipment level. (6) Determine whether MFM should be taken offline for a Level 4 inspection before next week&rsquo;s production.
+  </div>
+</div>
+
+<!-- ========== SAFETY ========== -->
+<div class="section">
+  <div class="section-header">Safety</div>
+  <div class="flag-block flag-ok">
+    <div class="flag-label">&#10003; No Employee Safety Incidents Reported</div>
+    No employee injuries, first-aid events, or near-miss reports were noted in any Labor by Shift file or Amy Hadrich&rsquo;s Daily Shift Report for Friday, March 6, 2026 across L1, L2, or L3. The FM event on MFM is a food safety matter handled through FSQA, not an employee safety incident.
+  </div>
+</div>
+
+<!-- ========== RECOGNITION ========== -->
+<div class="section">
+  <div class="section-header">We Solve Problems &mdash; Recognition</div>
+
+  <div class="recog-card">
+    <div class="recog-name">S2 Launch Crew &mdash; Lindon 1, Full Week</div>
+    <div class="recog-who">Sollich-2 &middot; CPK Pecan Clusters New Equipment Launch</div>
+    <div class="recog-what">Over four days, the S2 crew ramped a brand-new piece of equipment from 64% &rarr; 80% &rarr; 89% &rarr; 90% OEE, achieving the standard production rate by Day 4. This is an exceptional new equipment commissioning result. Core wrapper and X-ray belt challenges were navigated on the fly, and the crew delivered above-goal performance every single day against a 25% launch standard.</div>
+    <div class="recog-why">New equipment launches of this quality rarely happen this fast. The S2 crew demonstrated that prepared, motivated operators are the #1 driver of a successful launch. This result deserves formal recognition across the plant.</div>
+  </div>
+
+  <div class="recog-card">
+    <div class="recog-name">ML3 Team &mdash; Lindon 2, Friday Breakthrough</div>
+    <div class="recog-who">ML3 Line &middot; HER York 12g Dark ZS Bars</div>
+    <div class="recog-what">After two challenging days at 66% OEE, the ML3 team responded to the process engineering engagement with an 84% OEE performance on Friday &mdash; an 18-point single-day improvement. The crew showed responsiveness and adaptability when the right support was brought in.</div>
+    <div class="recog-why">Moving from flat-at-66% to 84% in one day shows the ML3 crew is capable of high performance; they needed clearer process guidance to unlock it. Next week&rsquo;s target should be 90%+ OEE and scrap below 5%.</div>
+  </div>
+
+  <div class="recog-card">
+    <div class="recog-name">FFS Crew &mdash; Lindon 2, Friday Recovery</div>
+    <div class="recog-who">FFS Line &middot; HER Caramel ZS 5.1oz Pouches</div>
+    <div class="recog-what">FFS rebounded to 94% OEE after three days below standard, closing the week on its best performance. Clean run, no reported downtime events, back to the efficiency the FFS line is known for.</div>
+    <div class="recog-why">Consistency is the hardest thing in manufacturing. FFS finishing the week at 94% is the right note to close on and sets the expectation for next week.</div>
+  </div>
+
+</div>
+
+<!-- ========== PRIORITY FOCUS ========== -->
+<div class="section">
+  <div class="section-header">Priority Focus &mdash; Production Leaders</div>
+  <div class="priority-grid">
+
+    <!-- L1 -->
+    <div class="priority-column">
+      <div class="priority-col-header">Lindon 1 Priorities</div>
+      <div style="height:4px;"></div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">S1 Scraper Setup Procedure</div>
+          <span class="method-tag">Setup Std</span>
+        </div>
+        <div class="priority-context">S1 lost 32 minutes to scrapers set too tight on Friday. Small setup errors like this are preventable with a documented startup verification step. This is the second setup-related downtime event on S1 this week (tunnel rails on Tuesday was another).</div>
+        <div class="priority-action">Add scraper tension verification to the S1 startup checklist. Confirm with the team leader that the current scraper setting procedure is documented and understood. Target: zero setup-related downtime on S1 next week.</div>
+        <div class="priority-done"><strong>Done when:</strong> Scraper setup step added to S1 checklist, team leader confirms procedure is documented, Monday S1 startup is clean.</div>
+      </div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">S2 Centerline Documentation</div>
+          <span class="method-tag">Centerlines</span>
+        </div>
+        <div class="priority-context">S2 achieved 90% OEE in its first week of operation. The settings and setup procedures that produced this result need to be captured in a centerline document this weekend before institutional knowledge is lost.</div>
+        <div class="priority-action">Assign someone from the S2 team or process engineering to document the current S2 Pecan Clusters centerline (all key parameters: temperatures, speeds, X-ray settings, core wrapper settings). This becomes the foundation for maintaining and replicating the 90% OEE performance.</div>
+        <div class="priority-done"><strong>Done when:</strong> S2 CPK Pecan Clusters centerline document drafted and filed with the L1 plant leader before Monday start.</div>
+      </div>
+
+    </div>
+
+    <!-- L2 -->
+    <div class="priority-column">
+      <div class="priority-col-header">Lindon 2 Priorities</div>
+      <div style="height:4px;"></div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">ML3 Scrap Root Cause &mdash; OEE and Scrap Misalignment</div>
+          <span class="method-tag">Quality</span>
+        </div>
+        <div class="priority-context">ML3 hit 84% OEE but 10.44% scrap &mdash; these two metrics are not aligned. Typically higher OEE correlates with lower scrap; when they diverge, it indicates a specific quality defect mode that&rsquo;s independent of throughput speed. A mold defect, fill weight drift, or specific product failure mode is likely.</div>
+        <div class="priority-action">Review ML3 scrap records for Friday by defect type. What specific defects are driving the 10.44%? Is it mold quality, enrobing coverage, weight out of spec, or another category? Assign a quality-specific corrective action for Monday independent of the OEE work.</div>
+        <div class="priority-done"><strong>Done when:</strong> Scrap defect type identified, Monday ML3 scrap target set at &lt;5%, specific parameter change documented to address the dominant defect type.</div>
+      </div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">FFS &mdash; Lock in 94% OEE Baseline</div>
+          <span class="method-tag">Centerlines</span>
+        </div>
+        <div class="priority-context">FFS closed at 94% OEE on Friday after three below-standard days. Whatever changed between Thursday 85% and Friday 94% should be documented so the improvement is maintained and not lost over the weekend.</div>
+        <div class="priority-action">Ask the FFS team leader what was different on Friday vs. Thursday. Confirm the run parameters are set correctly for Monday. If anything changed (speed, sealing temperature, film tension), document it in the FFS centerline.</div>
+        <div class="priority-done"><strong>Done when:</strong> FFS centerline confirmed for Monday, team leader can articulate what drove the Friday improvement, target for next week is 90%+.</div>
+      </div>
+
+    </div>
+
+    <!-- L3 -->
+    <div class="priority-column">
+      <div class="priority-col-header">Lindon 3 Priorities</div>
+      <div style="height:4px;"></div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">MFM Hardware Audit &mdash; Two FM Events in One Week</div>
+          <span class="method-tag">FSQA</span>
+        </div>
+        <div class="priority-context">Two FM events on MFM in one week (nut &amp; washer on March 6, wingnut on March 9) is a systemic risk. The MFM equipment must be fully audited for loose or missing fasteners, covers, and accessible hardware before resuming production next week.</div>
+        <div class="priority-action">Schedule a full MFM hardware audit this weekend or first thing Monday before production. Assign maintenance and FSQA to conduct the audit jointly. Perform a torque check on all accessible fasteners and covers. Document findings and corrective actions. MFM should not run at full speed next week until the audit is complete and cleared by FSQA.</div>
+        <div class="priority-done"><strong>Done when:</strong> Hardware audit complete, all fasteners torqued/replaced, FM investigation source identified, FSQA clearance for Monday production.</div>
+      </div>
+
+      <div class="priority-card">
+        <div class="priority-card-top">
+          <div class="priority-title">ML4 OEE Regression &mdash; Root Cause by Monday</div>
+          <span class="method-tag">RCA</span>
+        </div>
+        <div class="priority-context">ML4 dropped from 70% (Thursday) to 59% (Friday) on its fourth day of a new item launch. Three days of improvement followed by an 11-point regression suggests a new problem appeared on Friday. What happened Friday that didn&rsquo;t happen Thursday?</div>
+        <div class="priority-action">Review Friday ML4 downtime log in detail. What specific events drove the OEE drop? Was it a mechanical failure, a quality issue, a changeover, a material problem, or an operator issue? Identify the root cause and assign a corrective action before Monday 1st shift. ML4 should target 75%+ OEE on Monday.</div>
+        <div class="priority-done"><strong>Done when:</strong> ML4 Friday root cause identified, corrective action assigned and communicated, Monday target is 75%+ OEE.</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== ACTION ITEMS ========== -->
+<div class="section">
+  <div class="section-header">Action Items &mdash; Scott Maxfield</div>
+
+  <div class="action-item action-kickoff">
+    <div class="action-type">&#11088; Kickoff Question &mdash; Daily Kickoff</div>
+    <div class="action-title">&ldquo;MFM had a nut and washer in a pouch Friday night &mdash; has the FM investigation been opened, is product on hold, and is a hardware audit scheduled before Monday production?&rdquo;</div>
+    <div class="action-why"><strong>Why it matters:</strong> Two FM events on MFM in five days is a systemic equipment issue. Hardware found in finished product is the most serious food safety category. Monday morning is the window to confirm FSQA has controlled the situation and that MFM has been audited before resuming production.</div>
+  </div>
+
+  <div class="action-item action-critical">
+    <div class="action-type">Critical &mdash; Food Safety Pattern</div>
+    <div class="action-title">MFM Foreign Material Pattern &mdash; Nut/Washer (Mar 6) + Wingnut (Mar 9) = Systemic Risk</div>
+    <div class="action-why">Two hardware FM events on the same packaging line in the same week on the same product family is not a coincidence. The MFM equipment has a hardware retention problem. Until the source is identified and fixed, every pouch produced is at risk.</div>
+    <div class="action-suggest">Tell FSQA leadership: &ldquo;I want the MFM FM investigations for March 6 and March 9 reviewed together. Two hardware events on one line in a week is a systemic issue. I need a hardware audit completed and a root cause corrective action before MFM runs again at full speed.&rdquo;</div>
+  </div>
+
+  <div class="action-item action-watch">
+    <div class="action-type">Watch</div>
+    <div class="action-title">ML4 OEE Regression &mdash; Must Be Explained Before Monday</div>
+    <div class="action-why">ML4 going from 70% to 59% on the last day of the week erases Thursday&rsquo;s progress and leaves the new item launch below its 75% goal. If the regression cause isn&rsquo;t identified this weekend, Monday will repeat Friday&rsquo;s result.</div>
+    <div class="action-suggest">Ask the L3 leader: &ldquo;What happened on ML4 Friday that didn&rsquo;t happen Thursday? I need a root cause by Sunday evening and a corrective action before Monday 1st shift.&rdquo;</div>
+  </div>
+
+  <div class="action-item action-positive">
+    <div class="action-type">Positive &mdash; Week Closing Recognition</div>
+    <div class="action-title">Recognize S2 for Exceptional New Equipment Launch Ramp</div>
+    <div class="action-why">S2 went from first-ever production day to 90% OEE in four days. That is a remarkable achievement on new equipment. This result should be shared broadly &mdash; it sets a benchmark and gives the plant something to celebrate during a tough week.</div>
+    <div class="action-suggest">At the Monday kickoff or in a message to plant leaders today: &ldquo;S2 hit 90% OEE on its fourth day of operation on brand-new equipment. That&rsquo;s one of the best new equipment ramps we&rsquo;ve had. Recognize that crew.&rdquo;</div>
+  </div>
+
+</div>
+
+<!-- ========== LOOKING AHEAD ========== -->
+<div class="section">
+  <div class="section-header">Looking Ahead</div>
+  <div class="ahead-item"><span class="ahead-dot">&#9679;</span><span><strong>MFM FM Investigation Resolution (L3) &mdash; Weekend/Monday:</strong> The MFM hardware audit must be completed before Monday production begins. Two FM events in one week demands a systemic corrective action: a full fastener/hardware inspection, source identification, and FSQA sign-off. Do not allow MFM to run at speed until cleared.</span></div>
+  <div class="ahead-item"><span class="ahead-dot">&#9679;</span><span><strong>ML4 OEE Recovery (L3) &mdash; Monday:</strong> ML4 ended the week at 59% OEE after regressing from 70%. The root cause must be identified this weekend. Monday target is 75% OEE &mdash; the full launch standard. If ML4 can&rsquo;t hit it Monday, escalate the launch plan to process engineering for a structured ramp review.</span></div>
+  <div class="ahead-item"><span class="ahead-dot">&#9679;</span><span><strong>ML3 Scrap Reduction (L2) &mdash; Next Week:</strong> ML3 achieved 84% OEE on Friday but scrap remains at 10.44%. Next week&rsquo;s focus must be bringing scrap below 5% while maintaining or improving OEE. The specific defect mode driving scrap needs to be identified and corrected before Monday.</span></div>
+  <div class="ahead-item"><span class="ahead-dot">&#9679;</span><span><strong>S2 Centerline Documentation (L1) &mdash; Weekend:</strong> The S2 Pecan Clusters new equipment launch achieved 90% OEE in four days. All run parameters, settings, and key learnings must be captured in a centerline document this weekend to preserve and replicate the result starting Monday.</span></div>
+</div>
+
+<!-- ========== DATA SOURCES ========== -->
+<div class="section">
+  <div class="section-header">Data Sources</div>
+  <table class="sources-table">
+    <thead>
+      <tr><th>Source</th><th>Status</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>L1 Labor by Shift</strong><br><span style="font-size:9px;color:#6c757d;">L1 - Labor Shift Detail - 3-6-26.xlsx</span></td>
+        <td class="status-found">Found</td>
+        <td>S Drive/Production Analytics/Labor by shift/2026/03-March/Lindon 1. All 3 shift tabs + Total Plant read.</td>
+      </tr>
+      <tr>
+        <td><strong>L2 Labor by Shift</strong><br><span style="font-size:9px;color:#6c757d;">L2 - Labor Shift Detail - 3-6-26.xlsx</span></td>
+        <td class="status-found">Found</td>
+        <td>S Drive/Production Analytics/Labor by shift/2026/03-March/Lindon 2. All 3 shift tabs + Total Plant read.</td>
+      </tr>
+      <tr>
+        <td><strong>L3 Labor by Shift</strong><br><span style="font-size:9px;color:#6c757d;">L3 - Labor Shift Detail - 3-6-26.xlsx</span></td>
+        <td class="status-found">Found</td>
+        <td>S Drive/Production Analytics/Labor by shift/2026/03-March/Lindon 3. All 3 shift tabs + Total Plant read.</td>
+      </tr>
+      <tr>
+        <td><strong>Amy Hadrich Daily Shift Report</strong><br><span style="font-size:9px;color:#6c757d;">"Daily Shift Reports and Plant Summary - 3-6-26"</span></td>
+        <td class="status-found">Found</td>
+        <td>Used for narrative context and CC/plant OEE &amp; LBS totals. MFM FM event, ML3 breakthrough, S2 launch completion, ML4 regression, and downtime events sourced from email.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<div class="report-footer">
+  Generated by Claude for Scott Maxfield &nbsp;|&nbsp; CandyCo Production Report &nbsp;|&nbsp; We Solve Problems &nbsp;|&nbsp; Friday, March 6, 2026
+</div>
+
+<script>
+  window.addEventListener('beforeprint', function() {
+    document.querySelectorAll('details').forEach(function(d) { d.open = true; });
+  });
+</script>
+
+</body>
+</html>
