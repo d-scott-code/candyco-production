@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CandyCo Production</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f8fafc;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .app-header {
+      background: #272838;
+      color: white;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .app-title {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .app-title-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #23CE6B;
+      flex-shrink: 0;
+    }
+    .app-subtitle {
+      font-size: 11px;
+      color: #a8aabf;
+      margin-top: 3px;
+    }
+    .header-right {
+      font-size: 11px;
+      color: #a8aabf;
+      text-align: right;
+      line-height: 1.4;
+    }
+
+    /* ── Date nav bar ── */
+    .date-nav {
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: sticky;
+      top: 57px;
+      z-index: 99;
+    }
+    .nav-btn {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .nav-btn:hover:not(:disabled) { background: #e2e8f0; border-color: #cbd5e1; }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+    .date-select-wrapper { flex: 1; max-width: 300px; }
+    .date-select {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      background: white;
+      color: #1a1a1a;
+      cursor: pointer;
+    }
+    .date-select:focus { outline: 2px solid #1982C4; outline-offset: 1px; }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 12px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .badge-live    { background: #e6faf1; color: #18a356; }
+    .badge-recent  { background: #fffbeb; color: #b38900; }
+    .badge-archive { background: #f1f5f9; color: #64748b; }
+
+    /* ── State panels ── */
+    .state-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .state-icon  { font-size: 44px; margin-bottom: 16px; }
+    .state-title { font-size: 17px; font-weight: 600; color: #272838; margin-bottom: 8px; }
+    .state-desc  { font-size: 13px; color: #64748b; max-width: 340px; line-height: 1.6; }
+    .state-desc code {
+      background: #f1f5f9;
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    /* ── Report frame ── */
+    #report-frame {
+      width: 100%;
+      border: none;
+      display: block;
+      min-height: 600px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .app-header   { padding: 12px 14px; }
+      .date-nav     { padding: 8px 12px; top: 53px; gap: 6px; }
+      .app-title    { font-size: 14px; }
+      .header-right { display: none; }
+      .nav-btn      { padding: 6px 10px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="app-header">
+    <div>
+      <div class="app-title">
+        <div class="app-title-dot"></div>
+        CandyCo Production
+      </div>
+      <div class="app-subtitle" id="header-subtitle">Loading…</div>
+    </div>
+    <div class="header-right" id="header-right"></div>
+  </header>
+
+  <div class="date-nav">
+    <button class="nav-btn" id="btn-prev" onclick="navigateDate(-1)" disabled>‹ Older</button>
+    <div class="date-select-wrapper">
+      <select class="date-select" id="date-select" onchange="loadReport(this.value)">
+        <option value="">Loading…</option>
+      </select>
+    </div>
+    <button class="nav-btn" id="btn-next" onclick="navigateDate(1)" disabled>Newer ›</button>
+    <span class="badge badge-archive" id="report-badge" style="display:none;"></span>
+  </div>
+
+  <div id="state-panel" class="state-panel">
+    <div class="state-icon">⏳</div>
+    <div class="state-title">Loading</div>
+    <div class="state-desc">Fetching report archive…</div>
+  </div>
+
+  <iframe id="report-frame" style="display:none;" onload="onFrameLoad()"></iframe>
+
+  <script>
+    let dates = [];        // available dates, newest first
+    let currentIdx = 0;
+
+    // "2026-03-10" → "Monday, March 10"
+    function fmtDate(iso) {
+      const [y, m, d] = iso.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      const DAY   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      const MONTH = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      return `${DAY[dt.getDay()]}, ${MONTH[m-1]} ${d}`;
+    }
+
+    // Classify report freshness
+    function freshness(iso) {
+      const now = new Date();
+      const pad = n => String(n).padStart(2,'0');
+      const todayStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+      const yest = new Date(now); yest.setDate(now.getDate() - 1);
+      const yestStr = `${yest.getFullYear()}-${pad(yest.getMonth()+1)}-${pad(yest.getDate())}`;
+      if (iso === todayStr || iso === yestStr) return 'live';
+      const diffDays = (new Date(todayStr) - new Date(iso)) / 86400000;
+      return diffDays <= 7 ? 'recent' : 'archive';
+    }
+
+    function showState(icon, title, desc) {
+      document.getElementById('report-frame').style.display = 'none';
+      const p = document.getElementById('state-panel');
+      p.style.display = 'flex';
+      p.innerHTML = `
+        <div class="state-icon">${icon}</div>
+        <div class="state-title">${title}</div>
+        <div class="state-desc">${desc}</div>
+      `;
+    }
+
+    async function init() {
+      try {
+        const res = await fetch(`manifest.json?_=${Date.now()}`);
+        if (!res.ok) throw new Error('not found');
+        const data = await res.json();
+        dates = (data.reports || []).slice(0, 90); // cap at 90 days in picker
+
+        if (dates.length === 0) {
+          document.getElementById('header-subtitle').textContent = 'No reports yet';
+          document.getElementById('date-select').innerHTML = '<option value="">No reports available</option>';
+          showState('📋', 'No reports yet',
+            'The first report will appear here after the scheduled task runs tomorrow morning at 9:05 AM.');
+          return;
+        }
+
+        // Populate dropdown
+        const sel = document.getElementById('date-select');
+        sel.innerHTML = '';
+        dates.forEach((d, i) => {
+          const opt = document.createElement('option');
+          opt.value = d;
+          opt.textContent = fmtDate(d) + (i === 0 ? '  ← Latest' : '');
+          sel.appendChild(opt);
+        });
+
+        // Header meta
+        const count = data.reports ? data.reports.length : dates.length;
+        document.getElementById('header-subtitle').textContent =
+          `${count} report${count !== 1 ? 's' : ''} available`;
+
+        if (data.generated) {
+          const g = new Date(data.generated);
+          document.getElementById('header-right').innerHTML =
+            `Refreshed daily at 9:05 AM<br>Last: ${g.toLocaleDateString('en-US',{month:'short',day:'numeric'})} · ${g.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}`;
+        }
+
+        currentIdx = 0;
+        loadReport(dates[0]);
+
+      } catch (e) {
+        document.getElementById('header-subtitle').textContent = 'Setup required';
+        document.getElementById('date-select').innerHTML = '<option value="">—</option>';
+        showState('🔧', 'Almost there',
+          'Follow the steps in <code>README.md</code> to finish setting up your GitHub repo. Reports will appear here once the first scheduled run completes.');
+      }
+    }
+
+    function loadReport(date) {
+      if (!date) return;
+      currentIdx = dates.indexOf(date);
+      document.getElementById('date-select').value = date;
+
+      // Nav buttons
+      document.getElementById('btn-prev').disabled = currentIdx >= dates.length - 1;
+      document.getElementById('btn-next').disabled = currentIdx <= 0;
+
+      // Freshness badge
+      const badge = document.getElementById('report-badge');
+      const f = freshness(date);
+      badge.style.display = '';
+      if (f === 'live')    { badge.textContent = '● Live';      badge.className = 'badge badge-live'; }
+      else if (f === 'recent') { badge.textContent = 'This week'; badge.className = 'badge badge-recent'; }
+      else                 { badge.textContent = 'Archive';    badge.className = 'badge badge-archive'; }
+
+      // Load
+      showState('⏳', 'Loading report…', fmtDate(date));
+      document.getElementById('report-frame').src =
+        `reports/production-report-${date}.html?_=${Date.now()}`;
+    }
+
+    function onFrameLoad() {
+      const frame = document.getElementById('report-frame');
+      // Attempt to auto-size the iframe to its content (same-origin only)
+      try {
+        const h = frame.contentDocument.documentElement.scrollHeight;
+        frame.style.height = Math.max(h + 24, 600) + 'px';
+      } catch(e) {
+        frame.style.height = '900px';
+      }
+      document.getElementById('state-panel').style.display = 'none';
+      frame.style.display = 'block';
+    }
+
+    function navigateDate(dir) {
+      // dir: -1 = older, +1 = newer
+      const next = currentIdx + dir;
+      if (next >= 0 && next < dates.length) loadReport(dates[next]);
+    }
+
+    // Keyboard arrow navigation
+    document.addEventListener('keydown', e => {
+      if (e.target.tagName === 'SELECT') return;
+      if (e.key === 'ArrowLeft')  navigateDate(-1);
+      if (e.key === 'ArrowRight') navigateDate(1);
+    });
+
+    init();
+  </script>
+
+</body>
+</html>
