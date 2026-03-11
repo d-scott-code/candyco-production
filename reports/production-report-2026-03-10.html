@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CandyCo Production Report — Tuesday, March 10, 2026</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; font-size: 13px; color: #1a1a2e; background: #f4f5f7; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .container { max-width: 7.5in; margin: 0 auto; padding: 20px 24px 40px; }
+    .report-header { background: #272838; color: #fff; padding: 18px 24px; border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .report-header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+    .report-header .meta { font-size: 11px; opacity: 0.75; margin-top: 4px; }
+    .report-header .badge { background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .data-note { background: #e8f4fd; border-left: 4px solid #1982C4; padding: 10px 14px; border-radius: 0 6px 6px 0; margin-bottom: 14px; font-size: 12px; color: #0d4a6e; }
+    .data-note strong { font-weight: 700; }
+    .alert-banner { background: #fff0f2; border: 1.5px solid #FF0022; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; }
+    .alert-banner h3 { color: #FF0022; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .alert-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; font-size: 12px; color: #2c0a0f; }
+    .alert-item:last-child { margin-bottom: 0; }
+    .alert-badge { padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
+    .badge-critical { background: #FF0022; color: #fff; }
+    .badge-warn { background: #FFCA3A; color: #333; }
+    .badge-info { background: #1982C4; color: #fff; }
+    .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #6b7280; margin: 20px 0 10px; padding-bottom: 4px; border-bottom: 1px solid #e5e7eb; }
+    .stat-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 16px; }
+    .stat-card { background: #fff; border-radius: 8px; padding: 12px 10px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+    .stat-label { font-size: 10px; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+    .stat-value { font-size: 22px; font-weight: 800; line-height: 1; }
+    .stat-note { font-size: 10px; color: #9ca3af; margin-top: 3px; }
+    .val-high { color: #23CE6B; } .val-warn { color: #FFCA3A; } .val-bad { color: #FF0022; } .val-neutral { color: #6b7280; }
+    .plant-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .plant-card { background: #fff; border-radius: 8px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .plant-card.border-bad { border-top: 4px solid #FF0022; }
+    .plant-card.border-warn { border-top: 4px solid #FFCA3A; }
+    .plant-card.border-high { border-top: 4px solid #23CE6B; }
+    .plant-name { font-weight: 800; font-size: 14px; color: #272838; }
+    .plant-mgr { font-size: 10px; color: #9ca3af; margin-bottom: 8px; }
+    .kpi-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid #f3f4f6; font-size: 12px; }
+    .kpi-row:last-child { border-bottom: none; }
+    .kpi-key { color: #6b7280; } .kpi-val { font-weight: 700; }
+    .plant-lines { margin-top: 8px; }
+    .line-chip { display: inline-flex; align-items: center; gap: 3px; background: #f3f4f6; border-radius: 12px; padding: 2px 8px; font-size: 10px; margin: 2px 2px 2px 0; }
+    .chip-good { background: #d1fae5; color: #065f46; } .chip-warn { background: #fef9c3; color: #78350f; } .chip-bad { background: #fee2e2; color: #991b1b; }
+    .line-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+    .line-table th { background: #272838; color: #fff; padding: 6px 8px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .line-table td { padding: 6px 8px; border-bottom: 1px solid #f3f4f6; }
+    .line-table tr.plant-group-row td { background: #f8fafc; font-weight: 700; font-size: 11px; color: #272838; }
+    .oee-high { color: #23CE6B; font-weight: 700; } .oee-mid { color: #FFCA3A; font-weight: 700; }
+    .oee-low { color: #FF0022; font-weight: 700; } .oee-crit { color: #FF0022; font-weight: 900; font-size: 13px; }
+    .na-text { color: #9ca3af; font-style: italic; }
+    details summary { cursor: pointer; font-weight: 600; }
+    details summary::-webkit-details-marker { display: none; }
+    .highlight-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+    .highlight-table th { background: #272838; color: #fff; padding: 6px 10px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .highlight-table td { padding: 6px 10px; border-bottom: 1px solid #f3f4f6; vertical-align: top; }
+    .highlight-table tr:nth-child(even) td { background: #f9fafb; }
+    .flag-box { background: #fff; border-left: 4px solid #FF0022; border-radius: 0 8px 8px 0; padding: 10px 14px; margin-bottom: 8px; font-size: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .flag-box.warn { border-left-color: #FFCA3A; } .flag-box.info { border-left-color: #1982C4; } .flag-box.good { border-left-color: #23CE6B; }
+    .flag-title { font-weight: 700; margin-bottom: 3px; }
+    .priority-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .priority-col h4 { font-size: 12px; font-weight: 800; color: #272838; margin-bottom: 8px; border-bottom: 2px solid #272838; padding-bottom: 4px; }
+    .priority-card { background: #f8fafc; border-left: 4px solid #1982C4; border-radius: 0 8px 8px 0; padding: 10px 12px; margin-bottom: 8px; font-size: 11px; }
+    .priority-card .p-title { font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+    .priority-card .p-context { color: #4b5563; margin-bottom: 4px; line-height: 1.4; }
+    .priority-card .p-action { color: #1982C4; font-weight: 600; margin-bottom: 3px; }
+    .priority-card .p-done { color: #6b7280; font-style: italic; }
+    .method-tag { display: inline-block; background: #dbeafe; color: #1e40af; border-radius: 4px; padding: 1px 6px; font-size: 10px; font-weight: 700; margin-bottom: 4px; }
+    .action-section { background: #fff; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .kickoff-item { background: #fff0f2; border: 1.5px solid #FF0022; border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; font-size: 12px; }
+    .kickoff-label { font-size: 10px; font-weight: 800; color: #FF0022; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .flag-list { list-style: none; }
+    .flag-list li { padding: 5px 0; border-bottom: 1px solid #f3f4f6; font-size: 12px; display: flex; align-items: flex-start; gap: 6px; }
+    .flag-list li:last-child { border-bottom: none; }
+    .sources-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 8px; }
+    .sources-table th { background: #f3f4f6; color: #6b7280; padding: 5px 8px; text-align: left; font-size: 10px; text-transform: uppercase; }
+    .sources-table td { padding: 5px 8px; border-bottom: 1px solid #f3f4f6; }
+    .report-footer { background: #272838; color: rgba(255,255,255,0.6); text-align: center; padding: 12px; border-radius: 8px; font-size: 10px; margin-top: 24px; }
+    @media print {
+      body { background: #fff; }
+      .container { padding: 0; max-width: 100%; }
+      .plant-grid, .priority-grid { grid-template-columns: repeat(3,1fr) !important; }
+      .stat-grid { grid-template-columns: repeat(6,1fr) !important; }
+      .plant-card, .stat-card, .priority-card, .flag-box, .action-section { page-break-inside: avoid; }
+      details[open] { display: block !important; }
+    }
+  </style>
+  <script>
+    window.addEventListener('beforeprint', function() {
+      document.querySelectorAll('details').forEach(function(d) { d.open = true; });
+    });
+  </script>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="report-header">
+    <div>
+      <h1>CandyCo Production Report</h1>
+      <div class="meta">Tuesday, March 10, 2026 &nbsp;·&nbsp; Week 2 of March (3/9–3/14) &nbsp;·&nbsp; Generated March 11, 2026</div>
+    </div>
+    <div class="badge">3-10-26</div>
+  </header>
+
+  <!-- DATA NOTE -->
+  <div class="data-note">
+    <strong>📋 Data Note:</strong> Labor by Shift files for 3/10 had not been updated at report generation time.
+    <strong>LBS Attainment</strong> is sourced from Amy Hadrich's plant summary email (received 3/11, 8:29 AM MT) and is authoritative pending file entry.
+    <strong>Scrap %</strong> and <strong>Labor % vs Standard</strong> are not yet available.
+    OEE is sourced from the weekly OEE detail file (updated 3/11 8:12 AM MT, SafetyChain data), confirmed by Amy's email.
+  </div>
+
+  <!-- CRITICAL ALERT BANNER -->
+  <div class="alert-banner">
+    <h3>⚠️ Critical Alerts — 3/10/2026</h3>
+    <div class="alert-item">
+      <span class="alert-badge badge-critical">CRITICAL</span>
+      <span><strong>M4 (Feastables CNC 60g) — L3:</strong> OEE 43%, LBS 57.9% — 10+ cascading mechanical DT events (plugged nozzles, FW jam, mold jam, depositor overflow, lifting table alert). Second consecutive critical day (3/9: 58%). Rose Smuin/L3.</span>
+    </div>
+    <div class="alert-item">
+      <span class="alert-badge badge-critical">CRITICAL</span>
+      <span><strong>S2 (Dark Cookie Bark NEW ITEM) — L1:</strong> OEE 20%, thick viscosity chocolate stopped production early (−4.3 hr); 3rd shift cancelled. Day 2 of TAT launch in jeopardy. Curt Willis/L1.</span>
+    </div>
+    <div class="alert-item">
+      <span class="alert-badge badge-warn">WATCH</span>
+      <span><strong>M3 (York 12g Bars) — L2:</strong> OEE 63%, 8 mechanical DT events including cream wait (−1.4 hr), belt buildup (−57 min), aligner jams. Second consecutive day below 75% OEE. Alan Todd/L2.</span>
+    </div>
+  </div>
+
+  <!-- TODAY AT A GLANCE -->
+  <div class="section-title">Today at a Glance</div>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-label">CC OEE</div>
+      <div class="stat-value val-warn">71%</div>
+      <div class="stat-note">Goal: 84%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">LBS Attainment</div>
+      <div class="stat-value val-bad">76.2%</div>
+      <div class="stat-note">Amy's email</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Scrap</div>
+      <div class="stat-value val-neutral">—</div>
+      <div class="stat-note">Pending data</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Labor vs Std</div>
+      <div class="stat-value val-neutral">—</div>
+      <div class="stat-note">Pending data</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Lines Active</div>
+      <div class="stat-value" style="color:#272838;">6</div>
+      <div class="stat-note">S2 cancelled 3rd shift</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Quality Issues</div>
+      <div class="stat-value val-bad">1</div>
+      <div class="stat-note">S2 viscosity / launch</div>
+    </div>
+  </div>
+
+  <!-- PLANT KPI DASHBOARD -->
+  <div class="section-title">Plant KPI Dashboard</div>
+  <div class="plant-grid">
+    <!-- L1 -->
+    <div class="plant-card border-bad">
+      <div class="plant-name">Lindon 1</div>
+      <div class="plant-mgr">Ops Mgr: Curt Willis</div>
+      <div class="kpi-row"><span class="kpi-key">OEE</span><span class="kpi-val val-bad">65% ⚠️</span></div>
+      <div class="kpi-row"><span class="kpi-key">LBS Att</span><span class="kpi-val val-warn">87.2%</span></div>
+      <div class="kpi-row"><span class="kpi-key">Scrap</span><span class="kpi-val na-text">— pending</span></div>
+      <div class="kpi-row"><span class="kpi-key">Labor</span><span class="kpi-val na-text">— pending</span></div>
+      <div class="plant-lines">
+        <span class="line-chip chip-good">S3 111% ★</span>
+        <span class="line-chip chip-warn">S1 72%</span>
+        <span class="line-chip chip-bad">S2 20% 🚨</span>
+      </div>
+    </div>
+    <!-- L2 -->
+    <div class="plant-card border-warn">
+      <div class="plant-name">Lindon 2</div>
+      <div class="plant-mgr">Ops Mgr: Alan Todd</div>
+      <div class="kpi-row"><span class="kpi-key">OEE</span><span class="kpi-val val-warn">71% ⚠️</span></div>
+      <div class="kpi-row"><span class="kpi-key">LBS Att</span><span class="kpi-val val-bad">72.8%</span></div>
+      <div class="kpi-row"><span class="kpi-key">Scrap</span><span class="kpi-val na-text">— pending</span></div>
+      <div class="kpi-row"><span class="kpi-key">Labor</span><span class="kpi-val na-text">— pending</span></div>
+      <div class="plant-lines">
+        <span class="line-chip chip-good">FFS 90% ✓</span>
+        <span class="line-chip chip-bad">M3 63%</span>
+      </div>
+    </div>
+    <!-- L3 -->
+    <div class="plant-card border-warn">
+      <div class="plant-name">Lindon 3</div>
+      <div class="plant-mgr">Ops Mgr: Rose Smuin</div>
+      <div class="kpi-row"><span class="kpi-key">OEE</span><span class="kpi-val val-warn">71% ⚠️</span></div>
+      <div class="kpi-row"><span class="kpi-key">LBS Att</span><span class="kpi-val val-bad">57.9% 🚨</span></div>
+      <div class="kpi-row"><span class="kpi-key">Scrap</span><span class="kpi-val na-text">— pending</span></div>
+      <div class="kpi-row"><span class="kpi-key">Labor</span><span class="kpi-val na-text">— pending</span></div>
+      <div class="plant-lines">
+        <span class="line-chip chip-good">MFM 101% ★</span>
+        <span class="line-chip chip-bad">M4 43% 🚨</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- OEE & LBS BY LINE -->
+  <div class="section-title">OEE &amp; LBS by Line — 3/10/2026</div>
+  <details open>
+    <summary style="font-size:12px;color:#1982C4;margin-bottom:8px;">▾ Show line detail</summary>
+    <table class="line-table">
+      <thead>
+        <tr><th>Plant</th><th>Line</th><th>SKU / Product</th><th>OEE</th><th>LBS Att</th><th>Key Events</th></tr>
+      </thead>
+      <tbody>
+        <tr class="plant-group-row"><td colspan="6">Lindon 1 — Total OEE 65% &nbsp;|&nbsp; LBS 87.2% (Amy's email)</td></tr>
+        <tr>
+          <td>L1</td><td>S3</td><td>Coconut Cashew Clusters (TRJ)</td>
+          <td class="oee-high">111%</td><td class="oee-high">105.7%</td>
+          <td>Goal elevated to 90% std rate; plugged nozzles (−54 min); rate std needs formal revision</td>
+        </tr>
+        <tr>
+          <td>L1</td><td>S1</td><td>Plain Dark Truffles (CPK)</td>
+          <td class="oee-mid">72%</td><td class="oee-low">71.8%</td>
+          <td>Accumulation (−41 min); reheat longer than schedule (−2 hr)</td>
+        </tr>
+        <tr>
+          <td>L1</td><td>S2</td><td>Dark Cookie Bark (TAT) — NEW ITEM</td>
+          <td class="oee-crit">20%</td><td class="oee-low">78.8%</td>
+          <td>OEE goal 25%; late start-cleaning (−1.5 hr); accumulation (−1 hr); capture test (−1 hr); thick viscosity chocolate (−4.3 hr); 3rd shift cancelled</td>
+        </tr>
+        <tr class="plant-group-row"><td colspan="6">Lindon 2 — Total OEE 71% &nbsp;|&nbsp; LBS 72.8% (Amy's email)</td></tr>
+        <tr>
+          <td>L2</td><td>FFS</td><td>HER Caramel 5.1oz Pouches</td>
+          <td class="oee-high">90%</td><td class="oee-high">103.6%</td>
+          <td>Finished order; started cleaning</td>
+        </tr>
+        <tr>
+          <td>L2</td><td>M3</td><td>HER York 12g Bars</td>
+          <td class="oee-low">63%</td><td class="oee-low">72.8%</td>
+          <td>CILs (−57 min); empty molds-waiting for cream (−1.4 hr); belt tracking (−30 min); belt buildup-not spinning (−57 min); adjustments (−18 min); 1st aligner jams (−39 min); FW doubles (−17 min); FW jams (−19 min)</td>
+        </tr>
+        <tr class="plant-group-row"><td colspan="6">Lindon 3 — Total OEE 71% &nbsp;|&nbsp; LBS 57.9% (Amy's email)</td></tr>
+        <tr>
+          <td>L3</td><td>MFM</td><td>MMK Seasonal Assorted Pouches</td>
+          <td class="oee-high">101%</td><td class="oee-high">111.2%</td>
+          <td>Late start-waiting for trays (−11 min); C2 belt stopped (−7 min)</td>
+        </tr>
+        <tr>
+          <td>L3</td><td>M4</td><td>FEA CNC 60g Bars</td>
+          <td class="oee-crit">43%</td><td class="oee-crit">57.9%</td>
+          <td>TG setup (−15 min); one-shot adj (−16 min); melt chocolate (−54 min); QA color check (−10 min); capture test (−15 min); plugged nozzles (−30 min); depositor overflow (−10 min); FW jam (−15 min); mold jam (−13 min); lifting table alert (−12 min)</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:10px;color:#9ca3af;margin-top:4px;">OEE from SafetyChain/weekly OEE file (Labor Detail - OEE - WE 3-14-26.xlsx, updated 3/11 8:12 AM MT). LBS from Amy Hadrich email. Per-shift breakdowns not available pending Labor by Shift data entry.</p>
+  </details>
+
+  <!-- SHIFT HIGHLIGHTS -->
+  <div class="section-title">Shift Highlights</div>
+  <table class="highlight-table">
+    <thead>
+      <tr><th>Line</th><th>Product</th><th>Key Events</th><th>OEE</th><th>LBS Att</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>S2 / L1</strong></td>
+        <td>Dark Cookie Bark (TAT) — Day 2 launch</td>
+        <td>Thick viscosity chocolate stopped production (−4.3 hr); 3rd shift cancelled; OEE goal was 25% for new item</td>
+        <td class="oee-crit">20%</td><td class="oee-low">78.8%</td>
+      </tr>
+      <tr>
+        <td><strong>M4 / L3</strong></td>
+        <td>FEA CNC 60g Bars</td>
+        <td>10+ cascading mechanical events across shifts; second consecutive day of critical OEE (3/9: 58%)</td>
+        <td class="oee-crit">43%</td><td class="oee-crit">57.9%</td>
+      </tr>
+      <tr>
+        <td><strong>M3 / L2</strong></td>
+        <td>HER York 12g Bars</td>
+        <td>8 DT events including 1.4 hr cream wait (supply/scheduling) and belt/aligner/FW mechanical issues; second consecutive bad day</td>
+        <td class="oee-low">63%</td><td class="oee-low">72.8%</td>
+      </tr>
+      <tr>
+        <td><strong>S3 / L1</strong></td>
+        <td>Coconut Cashew Clusters</td>
+        <td>Allergen event (3/9) resolved; running at OEE 111%, LBS 105.7% — standard rate needs updating to reflect true capability</td>
+        <td class="oee-high">111%</td><td class="oee-high">105.7%</td>
+      </tr>
+      <tr>
+        <td><strong>S1 / L1</strong></td>
+        <td>Plain Dark Truffles (CPK)</td>
+        <td>Accumulation and reheat over-schedule repeating from 3/9; two-day pattern warrants maintenance inspection of S1 temper unit</td>
+        <td class="oee-mid">72%</td><td class="oee-low">71.8%</td>
+      </tr>
+      <tr>
+        <td><strong>FFS / L2</strong></td>
+        <td>HER Caramel 5.1oz</td>
+        <td>Finished order; started cleaning; OEE 90%; next product pending scheduling confirmation</td>
+        <td class="oee-high">90%</td><td class="oee-high">103.6%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SCRAP -->
+  <div class="section-title">Scrap</div>
+  <div class="flag-box info">
+    <div class="flag-title">Scrap Data Pending — 3/10/2026</div>
+    Scrap LBS and Scrap % not yet available for 3/10. Labor by Shift data entry typically occurs 5:30–6:00 PM MT.
+    From 3/9/2026: L2 scrap was <strong>9.4%</strong> (York dialing-in at startup — two consecutive days of elevated scrap risk given M3 continued mechanical issues).
+  </div>
+
+  <!-- QUALITY HOLDS -->
+  <div class="section-title">Quality Holds &amp; Issues</div>
+  <div class="flag-box warn">
+    <div class="flag-title">⚠️ S2 Dark Cookie Bark — Chocolate Viscosity Issue (L1, Day 2 of Launch)</div>
+    Thick viscosity chocolate caused early production stop (−4.3 hr) and 3rd shift cancellation. Root cause unconfirmed — may be chocolate temperature, supplier batch variance, formulation, or equipment setup.
+    FSQA/Engineering assessment required before S2 restart. <strong>Curt Willis to confirm 3/11 recovery plan.</strong>
+  </div>
+  <div class="flag-box good">
+    <div class="flag-title">✅ S3 Allergen Event (3/9) — Cleared</div>
+    S3 Coconut Cashew Clusters running at OEE 111% and LBS 105.7% on 3/10 — confirms allergen event from 3/9 has been resolved and line is fully operational.
+  </div>
+
+  <!-- SAFETY -->
+  <div class="section-title">Safety</div>
+  <div class="flag-box good">
+    <div class="flag-title">✅ No Safety Incidents — 3/10/2026</div>
+    No recordable incidents, near-misses, or safety events reported in Amy Hadrich's plant summary for 3-10-26.
+  </div>
+
+  <!-- PRIORITY FOCUS -->
+  <div class="section-title">Priority Focus — 3/11/2026</div>
+  <div class="priority-grid">
+    <!-- L1 -->
+    <div class="priority-col">
+      <h4>Lindon 1 — Curt Willis</h4>
+      <div class="priority-card">
+        <div class="method-tag">ROOT CAUSE</div>
+        <div class="p-title">1. S2 Dark Cookie Bark — Chocolate Viscosity</div>
+        <div class="p-context">3rd shift cancelled on Day 2 of TAT launch. Thick viscosity chocolate is the stated cause; root cause unconfirmed. Launch customer timeline at risk.</div>
+        <div class="p-action">→ Investigate chocolate temperature, supplier batch, formulation, and equipment setup. Loop in Kathleen Gilbert (FSQA) and Procurement if batch issue suspected.</div>
+        <div class="p-done">Done when: Root cause identified; 3/11 S2 restart schedule confirmed.</div>
+      </div>
+      <div class="priority-card">
+        <div class="method-tag">RELIABILITY</div>
+        <div class="p-title">2. S1 Reheat / Accumulation — Two-Day Pattern</div>
+        <div class="p-context">Accumulation and reheat over-schedule on both 3/9 (power outage context) and 3/10 (−41 min + −2 hr). Repeating pattern warrants maintenance inspection.</div>
+        <div class="p-action">→ Maintenance to inspect S1 temper unit and reheat circuit; confirm no residual damage from 3/9 power event.</div>
+        <div class="p-done">Done when: Inspection completed; S1 reheat duration returns to standard on 3/11.</div>
+      </div>
+      <div class="priority-card">
+        <div class="method-tag">STANDARDS</div>
+        <div class="p-title">3. S3 Standard Rate Revision</div>
+        <div class="p-context">S3 achieved OEE 111% and LBS 105.7% at actual rate 692 PPM vs standard 600 PPM. OEE >100% indicates standard is understated — inflated metric misleads planning.</div>
+        <div class="p-action">→ Engineering/IE to submit formal rate revision for S3 Coconut Cashew based on 3/9–3/10 actuals before next planning cycle.</div>
+        <div class="p-done">Done when: Updated rate standard submitted to Planning; OEE goal recalibrated.</div>
+      </div>
+    </div>
+    <!-- L2 -->
+    <div class="priority-col">
+      <h4>Lindon 2 — Alan Todd</h4>
+      <div class="priority-card">
+        <div class="method-tag">RELIABILITY</div>
+        <div class="p-title">1. M3 York Bars — Mechanical Deep Dive</div>
+        <div class="p-context">8 mechanical DT events on 3/10 following 7+ DT events on 3/9. Belt tracking, belt buildup, aligner jams, and FW jams are recurring. Two-day OEE average ~67%.</div>
+        <div class="p-action">→ Maintenance deep-dive on M3: belt alignment, aligner system, FW timing sensors. Full event log review from 3/9–3/10 before 3/11 production start.</div>
+        <div class="p-done">Done when: Root cause identified; M3 OEE recovers to ≥80% on 3/11.</div>
+      </div>
+      <div class="priority-card">
+        <div class="method-tag">SCHEDULING</div>
+        <div class="p-title">2. Cream Staging — Ingredient Supply Gap</div>
+        <div class="p-context">M3 waited 1.4 hr for cream on 3/10 (empty molds). This is a recurring supply/scheduling issue that adds OEE loss on top of mechanical issues.</div>
+        <div class="p-action">→ Operations to review cream prep schedule vs M3 startup; ensure ingredient staging leads line startup by sufficient margin.</div>
+        <div class="p-done">Done when: Staging schedule updated; zero ingredient wait on 3/11.</div>
+      </div>
+      <div class="priority-card">
+        <div class="method-tag">SCHEDULING</div>
+        <div class="p-title">3. FFS — Confirm Next Product</div>
+        <div class="p-context">FFS completed the Hershey Caramel 5.1oz order and started cleaning on 3/10. Line is idle pending next changeover. Unscheduled idle time will reduce weekly OEE.</div>
+        <div class="p-action">→ Confirm FFS next product and changeover schedule with Production Planning; ensure CO materials and crew are lined up for 3/11 startup.</div>
+        <div class="p-done">Done when: FFS 3/11 schedule confirmed; no unplanned idle time.</div>
+      </div>
+    </div>
+    <!-- L3 -->
+    <div class="priority-col">
+      <h4>Lindon 3 — Rose Smuin</h4>
+      <div class="priority-card">
+        <div class="method-tag">ROOT CAUSE</div>
+        <div class="p-title">1. M4 FEA CNC 60g — Emergency PM</div>
+        <div class="p-context">OEE 43% and LBS 57.9% on 3/10, worsening from 3/9 (OEE 58%). 10+ DT events spanning plugged nozzles, FW jam, mold jam, depositor overflow, and lifting table alert. Feastables is a key customer.</div>
+        <div class="p-action">→ Emergency PM on M4 before 3/11 production start. If 1st shift OEE does not recover to ≥70%, consider planned maintenance window. Root cause documentation required.</div>
+        <div class="p-done">Done when: PM completed; M4 OEE ≥70% on 3/11 1st shift.</div>
+      </div>
+      <div class="priority-card">
+        <div class="method-tag">RELIABILITY</div>
+        <div class="p-title">2. M4 Failure Pattern — PM Plan</div>
+        <div class="p-context">Plugged nozzles, mold jams, FW jams, and lifting table alerts recurred across both days. This is a systemic equipment health issue, not isolated events.</div>
+        <div class="p-action">→ Maintenance to compile full 2-day event log; identify highest-frequency failure modes; schedule targeted PM for M4 by end of this week.</div>
+        <div class="p-done">Done when: M4 PM plan documented and shared with Rose Smuin; preventive schedule confirmed.</div>
+      </div>
+      <div class="priority-card">
+        <div class="method-tag">FOLLOW-UP</div>
+        <div class="p-title">3. MFM Wingnut FM (3/9) — Investigation Status</div>
+        <div class="p-context">Wingnut was found in a finished MMK Variety Pouch on 3/9. MFM ran at OEE 101% on 3/10 — FM root cause investigation must be complete before continued production is considered cleared.</div>
+        <div class="p-action">→ Confirm with Kathleen Gilbert (FSQA): FM root cause identified? Affected lot disposition complete? Member's Mark notification decision made?</div>
+        <div class="p-done">Done when: FM investigation closed; lot disposition confirmed; customer notification decision documented.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION ITEMS -->
+  <div class="section-title">Action Items &amp; Kickoff Question</div>
+  <div class="action-section">
+    <div class="kickoff-item">
+      <div class="kickoff-label">🎯 Kickoff Question for Scott</div>
+      <strong>S2 Dark Cookie Bark — 3rd shift cancelled due to thick chocolate viscosity. What is the root cause and when does production resume?</strong>
+      Day 2 of the TAT (Tattooed Chef) new item launch is in jeopardy. Is this a chocolate supplier batch issue, a temperature/equipment problem, or a formulation gap? Curt Willis needs a confirmed recovery plan for 3/11 before the line restarts.
+    </div>
+    <ul class="flag-list">
+      <li><span class="alert-badge badge-critical">ACTION</span> <span><strong>M4 Emergency PM (L3)</strong> — Rose Smuin to schedule M4 maintenance before 3/11 production; 10+ DT events over 2 days cannot continue on Feastables account</span></li>
+      <li><span class="alert-badge badge-critical">ACTION</span> <span><strong>S2 Chocolate Viscosity Root Cause (L1)</strong> — Curt Willis / FSQA to diagnose before 3/11 restart; TAT launch customer timeline at risk</span></li>
+      <li><span class="alert-badge badge-warn">WATCH</span> <span><strong>S3 Standard Rate Revision (L1)</strong> — Engineering/IE to submit updated rate standard; OEE 111% reflects inaccurate baseline</span></li>
+      <li><span class="alert-badge badge-warn">WATCH</span> <span><strong>M3 Cream Staging (L2)</strong> — Operations to resolve ingredient scheduling; 1.4 hr empty molds wait is a recurring, avoidable OEE loss</span></li>
+      <li><span class="alert-badge badge-info">CONFIRM</span> <span><strong>MFM Wingnut FM — 3/9 (L3)</strong> — Kathleen Gilbert to confirm investigation status, lot disposition, and Member's Mark notification decision</span></li>
+    </ul>
+  </div>
+
+  <!-- LOOKING AHEAD -->
+  <div class="section-title">Looking Ahead — 3/11 and Rest of Week</div>
+  <div class="flag-box info">
+    <div class="flag-title">Week 2 OEE Trajectory</div>
+    2-day average CC OEE: ~68% (3/9: 66%, 3/10: 71%). Week 2 target: 84%. Recovery requires M4 emergency PM on L3 and S2 Dark Cookie Bark restart on L1 — both are on the critical path to hitting weekly targets.
+  </div>
+  <ul style="list-style:none;padding:0;margin-top:8px;">
+    <li style="padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:12px;">📌 <strong>S2 Dark Cookie Bark (L1):</strong> Resolve chocolate viscosity before 3/11 startup; confirm restart plan with Curt Willis</li>
+    <li style="padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:12px;">📌 <strong>M4 Feastables CNC 60g (L3):</strong> Emergency PM before 3/11 production start; OEE must recover to ≥70% to protect weekly LBS plan</li>
+    <li style="padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:12px;">📌 <strong>FFS (L2):</strong> Confirm next product and changeover schedule; avoid unplanned idle time post-Hershey Caramel order</li>
+    <li style="padding:5px 0;font-size:12px;">📌 <strong>S3 Rate Standard (L1):</strong> Engineering to formalize updated standard rate for Coconut Cashew Clusters; corrected baseline needed for planning accuracy</li>
+  </ul>
+
+  <!-- DATA SOURCES -->
+  <div class="section-title">Data Sources</div>
+  <table class="sources-table">
+    <thead>
+      <tr><th>Source</th><th>File / Reference</th><th>Last Modified</th><th>Used For</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Weekly OEE Detail</td>
+        <td>Labor Detail - OEE - WE 3-14-26.xlsx</td>
+        <td>3/11/26 8:12 AM MT</td>
+        <td>Per-line OEE for 3/10 (SafetyChain data) — authoritative</td>
+        <td style="color:#23CE6B;font-weight:700;">✓ Current</td>
+      </tr>
+      <tr>
+        <td>Amy Hadrich Email</td>
+        <td>Daily Shift Reports and Plant Summary - 3-10-26</td>
+        <td>3/11/26 8:29 AM MT</td>
+        <td>OEE, LBS Att, narrative, quality/safety — authoritative for 3/10 LBS</td>
+        <td style="color:#23CE6B;font-weight:700;">✓ Current</td>
+      </tr>
+      <tr>
+        <td>Labor by Shift — L1</td>
+        <td>L1 - Labor by Shift Detail - March - 2026.xlsx</td>
+        <td>3/10/26 5:30 PM</td>
+        <td>3/9 reference; 3/10 data not yet filed</td>
+        <td style="color:#FFCA3A;font-weight:700;">⏳ Pending</td>
+      </tr>
+      <tr>
+        <td>Labor by Shift — L2</td>
+        <td>L2 - Labor by Shift Detail - March - 2026.xlsx</td>
+        <td>3/10/26 5:43 PM</td>
+        <td>3/9 reference; 3/10 data not yet filed</td>
+        <td style="color:#FFCA3A;font-weight:700;">⏳ Pending</td>
+      </tr>
+      <tr>
+        <td>Labor by Shift — L3</td>
+        <td>L3 - Labor by Shift Detail - March - 2026.xlsx</td>
+        <td>3/10/26 6:04 PM</td>
+        <td>3/9 reference; 3/10 data not yet filed</td>
+        <td style="color:#FFCA3A;font-weight:700;">⏳ Pending</td>
+      </tr>
+      <tr>
+        <td>Context Files</td>
+        <td>company.md, glossary.md, design-system.md</td>
+        <td>Prior session</td>
+        <td>Plant structure, customer codes, brand colors</td>
+        <td style="color:#23CE6B;font-weight:700;">✓ Loaded</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    CandyCo Production Report &nbsp;·&nbsp; Tuesday, March 10, 2026 &nbsp;·&nbsp; Generated by Claude (Cowork) on 3/11/2026 &nbsp;·&nbsp; For internal operations use only
+  </div>
+
+</div>
+</body>
+</html>
