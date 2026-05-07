@@ -1,0 +1,2095 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>S'mores Material Analysis YTD 2026</title>
+<style>/* ============================================================
+   CandyCo Design System — Colors & Typography
+   Source of truth for visual foundations.
+   ============================================================ */
+
+/* ---------- BRAND FONTS (uploaded TTFs/OTF) ---------- */
+@font-face { font-family: "Assistant"; font-weight: 200; font-style: normal; font-display: swap;
+  src: url("fonts/Assistant-ExtraLight.ttf") format("truetype"); }
+@font-face { font-family: "Assistant"; font-weight: 300; font-style: normal; font-display: swap;
+  src: url("fonts/Assistant-Light.ttf") format("truetype"); }
+@font-face { font-family: "Assistant"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("fonts/Assistant-Regular.ttf") format("truetype"); }
+@font-face { font-family: "Assistant"; font-weight: 600; font-style: normal; font-display: swap;
+  src: url("fonts/Assistant-SemiBold.ttf") format("truetype"); }
+@font-face { font-family: "Assistant"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("fonts/Assistant-Bold.ttf") format("truetype"); }
+@font-face { font-family: "Assistant"; font-weight: 800; font-style: normal; font-display: swap;
+  src: url("fonts/Assistant-ExtraBold.ttf") format("truetype"); }
+
+@font-face { font-family: "Frank Ruhl Libre"; font-weight: 300; font-style: normal; font-display: swap;
+  src: url("fonts/FrankRuhlLibre-Light.ttf") format("truetype"); }
+@font-face { font-family: "Frank Ruhl Libre"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("fonts/FrankRuhlLibre-Regular.ttf") format("truetype"); }
+@font-face { font-family: "Frank Ruhl Libre"; font-weight: 500; font-style: normal; font-display: swap;
+  src: url("fonts/FrankRuhlLibre-Medium.ttf") format("truetype"); }
+@font-face { font-family: "Frank Ruhl Libre"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("fonts/FrankRuhlLibre-Bold.ttf") format("truetype"); }
+
+@font-face { font-family: "Yeseva One"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("fonts/YesevaOne-Regular.ttf") format("truetype"); }
+
+@font-face { font-family: "Minion Pro"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("fonts/MinionPro-Regular.otf") format("opentype"); }
+
+:root {
+  /* ---------- PRIMARY — SHADOW GREY ---------- */
+  --primary: #272838;
+  --primary-light: #3A3D50;
+  --primary-dark: #1A1C27;
+
+  /* ---------- SHADOW GREY SCALE ---------- */
+  --shadow-grey-50:  #F2F2F4;
+  --shadow-grey-100: #E0E1E6;
+  --shadow-grey-200: #C1C3CC;
+  --shadow-grey-300: #A2A5B3;
+  --shadow-grey-400: #83879A;
+  --shadow-grey-500: #646981;
+  --shadow-grey-600: #4E5268;
+  --shadow-grey-700: #3A3D50;
+  --shadow-grey-800: #272838;
+  --shadow-grey-900: #1A1C27;
+
+  /* ---------- BRAND ACCENTS ("The Four Candies") ---------- */
+  --emerald:        #23CE6B;  /* Sour apple / mint */
+  --steel-blue:     #1982C4;  /* Blue raspberry */
+  --golden-yellow:  #FFCA3A;  /* Lemon drop / butterscotch */
+  --racing-red:     #FF0022;  /* Cinnamon / cherry */
+
+  /* ---------- SURFACES & NEUTRALS ---------- */
+  --background:   #FFFFFF;
+  --secondary:    #F5F5F5;
+  --muted:        #E8E8E8;
+  --foreground:   #1E293B;
+  --muted-text:   #64748B;
+  --on-primary:   #FFFFFF;
+
+  /* ---------- SEMANTIC FG / BG ALIASES ---------- */
+  --fg-1: var(--foreground);          /* primary text */
+  --fg-2: var(--shadow-grey-600);     /* secondary text */
+  --fg-3: var(--muted-text);          /* tertiary / hints */
+  --fg-inverse: var(--on-primary);
+
+  --bg-1: var(--background);          /* page */
+  --bg-2: var(--secondary);           /* cards / panels */
+  --bg-3: var(--muted);               /* deep wells */
+  --bg-inverse: var(--primary);
+
+  --border-subtle: var(--shadow-grey-100);
+  --border-default: var(--shadow-grey-200);
+  --border-strong: var(--shadow-grey-300);
+
+  /* ---------- SEMANTIC STATUS ---------- */
+  --success: #23CE6B;
+  --warning: #FFCA3A;
+  --error:   #FF0022;
+  --info:    #1982C4;
+
+  --success-bg: #E8FAF0;
+  --warning-bg: #FFF7DB;
+  --error-bg:   #FFE5E9;
+  --info-bg:    #E3F1FB;
+
+  /* ---------- CAPACITY / UTILIZATION ---------- */
+  --util-ramping:     #1982C4;  /* < 40% capacity, ramping production */
+  --util-growing:     #23CE6B;  /* 40–70%, healthy growth */
+  --util-approaching: #FFCA3A;  /* 70–90%, capacity warning */
+  --util-full:        #FF0022;  /* > 90%, at/over capacity */
+
+  /* ---------- CHART PALETTE ---------- */
+  --chart-1: #272838;
+  --chart-2: #1982C4;
+  --chart-3: #23CE6B;
+  --chart-4: #FFCA3A;
+  --chart-5: #FF0022;
+
+  /* ---------- TYPOGRAPHY ---------- */
+  /* Brand fonts: Assistant (sans, UI), Frank Ruhl Libre (serif, body/editorial),
+     Yeseva One (display headlines), Minion Pro (legacy long-form serif). */
+  --font-sans:    "Assistant", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif:   "Frank Ruhl Libre", Georgia, "Times New Roman", serif;
+  --font-display: "Yeseva One", "Frank Ruhl Libre", Georgia, serif;
+  --font-mono:    ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --font-family: var(--font-sans);  /* legacy alias */
+  --font-size-base: 16px;
+  --font-weight-normal:   400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  /* Type scale — modular, factory-floor legible */
+  --fs-display: 4rem;       /* 64px — hero numbers, marketing display */
+  --fs-h1:      2.5rem;     /* 40px */
+  --fs-h2:      2rem;       /* 32px */
+  --fs-h3:      1.5rem;     /* 24px */
+  --fs-h4:      1.25rem;    /* 20px */
+  --fs-body:    1rem;       /* 16px */
+  --fs-small:   0.875rem;   /* 14px — table & form labels */
+  --fs-xs:      0.75rem;    /* 12px — captions, eyebrows */
+
+  --lh-tight: 1.05;
+  --lh-snug:  1.25;
+  --lh-base:  1.5;
+  --lh-loose: 1.7;
+
+  --tracking-tight:  -0.02em;
+  --tracking-normal: 0;
+  --tracking-eyebrow: 0.14em;  /* ALL-CAPS section labels */
+
+  /* ---------- SPACING ---------- */
+  --spacing-xs: 0.25rem;   /* 4 */
+  --spacing-sm: 0.5rem;    /* 8 */
+  --spacing-md: 1rem;      /* 16 */
+  --spacing-lg: 1.5rem;    /* 24 */
+  --spacing-xl: 2rem;      /* 32 */
+  --spacing-2xl: 3rem;     /* 48 */
+  --spacing-3xl: 4rem;     /* 64 */
+  --spacing-4xl: 6rem;     /* 96 */
+
+  /* ---------- RADII ---------- */
+  --radius-xs: 0.25rem;    /* 4px — tags, dots */
+  --radius-sm: 0.375rem;   /* 6px — inputs, small buttons */
+  --radius:    0.625rem;   /* 10px — default cards, buttons */
+  --radius-lg: 0.875rem;   /* 14px — feature cards */
+  --radius-xl: 1.25rem;    /* 20px — modals, hero panels */
+  --radius-pill: 999px;
+
+  /* ---------- ELEVATION ---------- */
+  --shadow-xs: 0 1px 2px rgba(39, 40, 56, 0.06);
+  --shadow-sm: 0 2px 4px rgba(39, 40, 56, 0.08), 0 1px 2px rgba(39, 40, 56, 0.04);
+  --shadow:    0 4px 12px rgba(39, 40, 56, 0.10), 0 2px 4px rgba(39, 40, 56, 0.06);
+  --shadow-lg: 0 12px 28px rgba(39, 40, 56, 0.12), 0 4px 8px rgba(39, 40, 56, 0.06);
+  --shadow-xl: 0 24px 48px rgba(39, 40, 56, 0.16), 0 8px 16px rgba(39, 40, 56, 0.08);
+  --shadow-inset: inset 0 1px 2px rgba(39, 40, 56, 0.08);
+  --shadow-focus: 0 0 0 3px rgba(25, 130, 196, 0.25);
+
+  /* ---------- MOTION ---------- */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasis: cubic-bezier(0.3, 0, 0, 1.2);
+  --ease-out:      cubic-bezier(0, 0, 0.2, 1);
+  --duration-fast:   120ms;
+  --duration-base:   200ms;
+  --duration-slow:   320ms;
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES
+   ============================================================ */
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-base);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, .h1 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h1);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-1);
+}
+h2, .h2 {
+  font-size: var(--fs-h2);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-tight);
+}
+h3, .h3 {
+  font-size: var(--fs-h3);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--lh-snug);
+}
+h4, .h4 {
+  font-size: var(--fs-h4);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--lh-snug);
+}
+
+.display, .display-serif {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 400;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.01em;
+}
+.editorial {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+p {
+  font-size: var(--fs-body);
+  line-height: var(--lh-base);
+  color: var(--fg-1);
+  text-wrap: pretty;
+}
+
+small, .small {
+  font-size: var(--fs-small);
+  color: var(--fg-2);
+}
+
+.eyebrow {
+  font-size: var(--fs-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+code, kbd, pre, .mono {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+}
+
+a {
+  color: var(--steel-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+a:hover { color: var(--primary); }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+}
+
+::selection {
+  background: var(--golden-yellow);
+  color: var(--primary);
+}
+/* ============================================================
+   CandyCo Design System — Report stylesheet
+   Default for any HTML report, briefing, or analysis.
+
+   Layout: discrete 8.5"×11" sheets in portrait. Each sheet is its
+   own visual page on screen and prints as one page on Letter paper.
+
+   Use:
+     1. Place this file alongside `colors_and_type.css` (already
+        @imported below), or copy its contents into your report.
+     2. Wrap each section in <section class="sheet">...</section>.
+     3. End each sheet with the `.sheet-footer` block for page numbers.
+     4. Place the official logo in the cover header.
+   ============================================================ */
+
+@import url('../colors_and_type.css');
+
+/* ---------- Page setup ---------- */
+@page { size: letter; margin: 0.5in; }
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-size: 9.5pt;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Typography (sentence case, weight + size hierarchy) ---------- */
+h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 24pt;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0 0 4pt 0;
+  color: var(--fg-1);
+}
+h2 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 14pt;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 0 0 6pt 0;
+  color: var(--fg-1);
+  page-break-after: avoid;
+}
+h3 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 11pt;
+  margin: 10pt 0 4pt 0;
+  color: var(--fg-1);
+  page-break-after: avoid;
+}
+h4 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 10pt;
+  margin: 4pt 0 3pt 0;
+  color: var(--fg-1);
+}
+p { margin: 3pt 0 7pt 0; }
+.editorial { font-family: var(--font-serif); font-weight: 400; }
+
+.eyebrow {
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  font-family: var(--font-sans);
+}
+
+.lead {
+  font-family: var(--font-serif);
+  font-size: 11pt;
+  line-height: 1.5;
+  color: var(--fg-2);
+  margin: 4pt 0 10pt 0;
+  font-weight: 400;
+  text-wrap: pretty;
+}
+
+/* ---------- Cover header (logo lockup + doc meta) ---------- */
+.cover-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--border-default);
+  padding-bottom: 10pt;
+  margin-bottom: 12pt;
+}
+.cover-head .brand img {
+  height: 38px;
+  width: auto;
+  display: block;
+}
+.cover-head .doc-meta {
+  font-size: 8.5pt;
+  color: var(--fg-2);
+  text-align: right;
+  line-height: 1.4;
+}
+
+/* ---------- Meta strip (4 columns of doc context) ---------- */
+.meta-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12pt;
+  padding: 8pt 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 12pt;
+}
+.meta-strip .item .eyebrow { margin-bottom: 2pt; font-size: 7.5pt; }
+.meta-strip .item .v { font-size: 9.5pt; font-weight: 600; color: var(--fg-1); }
+
+/* ---------- Hero callout (inverse Shadow Grey) ---------- */
+.hero {
+  background: var(--primary);
+  color: var(--fg-inverse);
+  border-radius: var(--radius-lg);
+  padding: 16pt 20pt;
+  margin: 8pt 0 12pt 0;
+  page-break-inside: avoid;
+}
+.hero .eyebrow { color: rgba(255,255,255,0.55); margin-bottom: 4pt; }
+.hero .headline {
+  font-family: var(--font-display);
+  font-size: 16pt;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  margin: 0;
+  color: var(--fg-inverse);
+}
+.hero .headline .accent { color: var(--golden-yellow); }
+
+/* ---------- Stat cards (numbers strip) ---------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10pt;
+  margin: 6pt 0 12pt 0;
+  page-break-inside: avoid;
+}
+.stat {
+  background: var(--bg-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 12pt 12pt 10pt 12pt;
+  box-shadow: var(--shadow-sm);
+}
+.stat .eyebrow { font-size: 7.5pt; margin-bottom: 6pt; }
+.stat .num {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 24pt;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+}
+.stat .sub {
+  margin-top: 6pt;
+  font-size: 8pt;
+  color: var(--fg-2);
+  line-height: 1.35;
+}
+
+/* ---------- Capsules (status pills with optional dot) ---------- */
+.cap {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-sans);
+  font-size: 8pt;
+  font-weight: 600;
+  padding: 1pt 7pt;
+  border-radius: var(--radius-pill);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.cap .dot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; }
+.cap.success { background: var(--success-bg); color: #176B3A; }
+.cap.warning { background: var(--warning-bg); color: #7A5800; }
+.cap.error   { background: var(--error-bg);   color: #A30016; }
+.cap.info    { background: var(--info-bg);    color: #0B5180; }
+.cap.neutral { background: var(--shadow-grey-50); color: var(--shadow-grey-700); }
+.cap.dark    { background: var(--primary); color: #fff; }
+.cap .dot.success { background: var(--success); }
+.cap .dot.warning { background: var(--warning); }
+.cap .dot.error   { background: var(--error); }
+.cap .dot.info    { background: var(--info); }
+
+/* ---------- Tables ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 4pt 0 10pt 0;
+  font-size: 8.5pt;
+  page-break-inside: avoid;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+thead th {
+  background: var(--shadow-grey-50);
+  color: var(--fg-1);
+  text-align: left;
+  font-weight: 600;
+  font-size: 8pt;
+  padding: 5pt 7pt;
+  border-bottom: 1px solid var(--border-default);
+}
+tbody td {
+  padding: 4pt 7pt;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+  color: var(--fg-1);
+}
+tbody tr:last-child td { border-bottom: none; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.totals td {
+  background: var(--shadow-grey-50);
+  font-weight: 700;
+  border-top: 1px solid var(--border-default);
+}
+.pos { color: #176B3A; font-weight: 600; }
+.neg { color: #A30016; font-weight: 600; }
+.neu { color: #7A5800; font-weight: 600; }
+
+/* ---------- Cards (charts, generic content blocks) ---------- */
+.card {
+  background: var(--bg-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 10pt 12pt 8pt 12pt;
+  margin: 6pt 0 10pt 0;
+  page-break-inside: avoid;
+}
+.card h4 { margin-top: 0; }
+.card .caption {
+  font-size: 7.5pt;
+  color: var(--fg-2);
+  margin-top: 4pt;
+  line-height: 1.4;
+}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8pt; }
+canvas { max-width: 100%; }
+
+/* ---------- Audience grid (multi-team callouts) ---------- */
+.audience-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10pt;
+  margin: 6pt 0 10pt 0;
+}
+.audience {
+  background: var(--bg-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 10pt 12pt;
+  box-shadow: var(--shadow-sm);
+  page-break-inside: avoid;
+}
+.audience .head {
+  display: flex;
+  align-items: center;
+  gap: 6pt;
+  margin-bottom: 6pt;
+  padding-bottom: 5pt;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.audience .head .icon { width: 18px; height: 18px; color: var(--fg-1); flex-shrink: 0; }
+.audience .head .title { font-weight: 700; font-size: 10pt; color: var(--fg-1); }
+.audience ul { margin: 4pt 0 0 0; padding-left: 14pt; font-size: 8.5pt; line-height: 1.5; }
+.audience li { margin-bottom: 3pt; color: var(--fg-1); }
+.audience li::marker { color: var(--shadow-grey-300); }
+
+/* ---------- Action assignment table ---------- */
+.actions thead th {
+  background: var(--primary);
+  color: var(--fg-inverse);
+  border-bottom-color: var(--primary);
+}
+.actions td.priority {
+  width: 22pt;
+  text-align: center;
+  font-weight: 800;
+  color: var(--fg-1);
+  font-variant-numeric: tabular-nums;
+}
+.actions td.owner { font-weight: 600; color: var(--primary); }
+
+/* ---------- Footnote (sources, confidence, notes) ---------- */
+.footnote {
+  font-family: var(--font-serif);
+  font-size: 8pt;
+  color: var(--fg-2);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 6pt;
+  margin-top: 12pt;
+  line-height: 1.5;
+}
+.footnote strong { color: var(--fg-1); font-family: var(--font-sans); font-weight: 600; }
+
+/* ============================================================
+   SHEET (PAGE) — discrete 8.5×11 page on screen, one page in print.
+   This is the load-bearing layout pattern for every CandyCo report.
+   ============================================================ */
+.sheet {
+  background: var(--bg-1);
+  width: 8.5in;
+  min-height: 11in;
+  padding: 0.5in;
+  box-sizing: border-box;
+  page-break-after: always;
+  page-break-inside: avoid;
+  overflow: hidden;
+  position: relative;
+}
+.sheet:last-child { page-break-after: auto; }
+
+.sheet-footer {
+  position: absolute;
+  bottom: 0.25in;
+  left: 0.5in;
+  right: 0.5in;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7.5pt;
+  color: var(--fg-3);
+  font-family: var(--font-sans);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 6pt;
+}
+.sheet-footer .doc { color: var(--fg-2); }
+.sheet-footer .page-no {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--fg-1);
+}
+
+/* ---------- Print ---------- */
+@media print {
+  body { font-size: 9.5pt; background: white; padding: 0; margin: 0; }
+  .no-print { display: none; }
+  .hero, .stat, .card, .audience { box-shadow: none; }
+  .sheet {
+    width: auto;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .sheet-footer { bottom: 0; left: 0; right: 0; }
+}
+
+/* ---------- Screen (paged preview) ---------- */
+@media screen {
+  body { background: var(--shadow-grey-50); padding: 24px 0; }
+  .doc-frame {
+    width: 8.5in;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .sheet {
+    box-shadow: 0 4px 18px rgba(39, 40, 56, 0.16);
+    border-radius: 4px;
+  }
+}
+</style>
+
+<style>
+  /* ====== Custom additions for this report — print-friendly, single font ====== */
+
+  /* Force a single font everywhere (override base CSS that uses Frank Ruhl / Yeseva) */
+  html, body, h1, h2, h3, h4, h5, h6, p, td, th, li, span, .num, .val, .delta, .headline, .lead, .accent {
+    font-family: "Assistant", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  }
+  h1 { font-size: 22pt; font-weight: 800; }
+  h2 { font-size: 14pt; font-weight: 700; margin-top: 12pt; }
+  h3 { font-size: 11pt; font-weight: 700; margin-top: 14pt; margin-bottom: 6pt; }
+  h4 { margin: 0; font-weight: 700; font-size: 10.5pt; }
+
+  /* Simple variance tinting (kept subtle) */
+  td.pos        { color: #15803d; }
+  td.neg        { color: #b45309; }
+  td.neg-strong { color: #b91c1c; font-weight: 600; }
+
+  .appendix-block table { font-size: 8.5pt; }
+  .appendix-block th    { font-size: 8pt; }
+  .appendix-block td    { padding: 3pt 6pt; }
+
+  /* No yellow/gold anywhere — accent uses red */
+  .accent { color: #FF0022 !important; font-weight: 700; }
+  table { margin: 8pt 0; }
+  p.caption { font-size: 8pt; color: var(--fg-3); margin: 4pt 0 8pt 0; line-height: 1.4; }
+
+  /* Landscape sheets for wide appendix tables (matches cycle count team's report layout) */
+  .sheet.landscape {
+    width: 14in !important;
+    min-height: 8.5in !important;
+    padding: 0.5in 0.55in !important;
+  }
+  .sheet.landscape h2 { font-size: 13pt; }
+  .run-meta-strip { display: flex; gap: 30pt; margin: 4pt 0 10pt 0; padding: 6pt 10pt; background: #FAF9F4; border-left: 3pt solid #272838; -webkit-print-color-adjust: exact; print-color-adjust: exact; color-adjust: exact; }
+  .run-meta-strip .meta-item { font-size: 9pt; }
+  .run-meta-strip .meta-label { color: #6B7080; font-weight: 600; }
+  .run-meta-strip .meta-val { color: #272838; font-weight: 700; }
+  table.appendix-wide { width: 100%; font-size: 7.5pt; border-collapse: collapse; margin: 4pt 0; }
+  table.appendix-wide thead th { background: #DDE5F0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; padding: 3pt 4pt; vertical-align: bottom; border: 0.5pt solid #B8C5DA; font-weight: 700; font-size: 7pt; line-height: 1.2; }
+  table.appendix-wide thead th.ap-grouphead { background: #C5D4E8 !important; text-align: center; }
+  table.appendix-wide tbody td { padding: 4pt 4pt; border-bottom: 0.5pt solid #E0E1E6; vertical-align: middle; }
+  table.appendix-wide tbody td.ap-input { font-weight: 700; color: #272838; }
+  table.appendix-wide tbody td.ap-desc { font-weight: 600; }
+  table.appendix-wide tbody tr.totals td { background: #F5F4EE !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; color-adjust: exact; border-top: 1pt solid #272838; border-bottom: 1pt solid #272838; font-weight: 700; }
+  table.appendix-wide tbody tr:last-child td { border-top: 0.5pt solid #C8D0E0; }
+
+  /* Bold-bordered "Total Scrap as % of Revenue" goal box */
+  .goal-box {
+    margin: 12pt 0 8pt 0;
+    padding: 10pt 14pt;
+    border: 2.5pt solid #272838;
+    border-radius: 4pt;
+    background: #FAFAF6 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  .goal-row { display: flex; gap: 24pt; align-items: stretch; justify-content: space-between; }
+  .goal-cell { flex: 1; }
+  .goal-cell.goal-headline { flex: 1.3; padding-left: 18pt; border-left: 2pt solid #272838; }
+  .goal-label { font-size: 8pt; color: #6B7080; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4pt; }
+  .goal-value { font-size: 14pt; font-weight: 800; color: #272838; }
+  .goal-cell.goal-headline .goal-value { font-size: 18pt; }
+  .goal-box.goal-good .goal-cell.goal-headline .goal-value { color: #15803d; }
+  .goal-box.goal-warn .goal-cell.goal-headline .goal-value { color: #b45309; }
+  .goal-box.goal-bad .goal-cell.goal-headline .goal-value { color: #b91c1c; }
+
+  /* Hero — outlined card with dark text on light background.
+     Forces print-color preservation so PDF/print renders identically to screen. */
+  .hero {
+    padding: 14pt 18pt;
+    background: #F5F4EE !important;
+    color: #272838 !important;
+    border-left: 6pt solid #272838 !important;
+    border-radius: 4pt;
+    margin: 8pt 0 14pt 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  .hero .eyebrow { color: #6B7080 !important; margin-bottom: 6pt; }
+  .hero .headline {
+    color: #272838 !important;
+    font-size: 13pt;
+    line-height: 1.4;
+    margin: 4pt 0 0 0;
+    font-weight: 600;
+  }
+  .hero .headline strong { color: #272838 !important; font-weight: 800; }
+  .hero .accent { color: #B91C1C !important; font-weight: 800; }
+
+  /* KPI cells — rounded, transparent, colored left border for status */
+  .kpi-cell, .stat, .deco-card, .audience, .footnote, .card {
+    background: transparent !important;
+    border: 1px solid var(--border, #E0E1E6) !important;
+    border-radius: 8pt !important;
+  }
+  .kpi-cell.over  { border-left: 4px solid #FF0022 !important; }
+  .kpi-cell.under { border-left: 4px solid #23CE6B !important; }
+  .kpi-cell.info  { border-left: 4px solid #1982C4 !important; }
+  .kpi-cell .val  { font-weight: 700; }
+  .kpi-cell .val.over, .kpi-cell .val.under { color: var(--fg-1, #272838) !important; }
+
+  /* Capsules — outlined, no fill, no dot */
+  .cap         { background: transparent !important; border: 1px solid var(--border, #E0E1E6); color: var(--fg-1, #272838) !important; font-weight: 600; padding: 1px 6px; border-radius: 6px; }
+  .cap.error   { border-color: #FF0022; }
+  .cap.warning { border-color: #1982C4; } /* yellow → steel-blue */
+  .cap.success { border-color: #23CE6B; }
+  .cap.info    { border-color: #1982C4; }
+  .cap.dark    { border-color: var(--fg-1, #272838); }
+  .cap .dot    { display: none !important; }
+
+  .meta-strip { background: transparent !important; border: 1px solid var(--border, #E0E1E6); border-radius: 8pt; padding: 8pt 12pt; }
+
+  /* ====== Page-break behavior — keep tables and charts whole ====== */
+  /* If a table or chart can't fit in remaining space, push to next page */
+  table, figure, .card, canvas, .chart-card, .deco-card, .audience, .stat, .kpi-cell {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  /* Keep heading + immediately following block (table/chart) together */
+  h2, h3, h4 { page-break-after: avoid; break-after: avoid-page; }
+  thead { display: table-header-group; }   /* repeat header if table is forced to split (rare) */
+  tr    { page-break-inside: avoid; break-inside: avoid; }
+
+  /* ====== Sheet sizing — flexbox so footer flows at end (no overlap) ====== */
+  .sheet {
+    box-shadow: none !important;
+    border: 1px solid var(--border, #E0E1E6);
+    width: 8.5in;
+    min-height: 11in;
+    max-height: none !important;
+    padding: 0.5in 0.5in 0.4in 0.5in;
+    box-sizing: border-box;
+    page-break-after: always !important;
+    break-after: page !important;
+    overflow: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .sheet:last-child { page-break-after: auto !important; break-after: auto !important; }
+
+  /* Footer flows after content (no longer absolute) so it can't overlap body text */
+  .sheet-footer {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    margin-top: auto !important;       /* auto margin pushes to bottom when content is short */
+    padding-top: 8pt;
+    border-top: 1px solid var(--border, #E0E1E6);
+    width: 100% !important;
+  }
+
+  /* Slightly tighter typography helps each sheet fit on one printed page */
+  p, li, td, th { font-size: 9pt; }
+  table         { font-size: 9pt; }
+  .caption      { font-size: 8.5pt; }
+
+  @media print {
+    @page { size: letter portrait; margin: 0.5in; }
+    html, body { background: white !important; }
+    .doc-frame { background: none !important; padding: 0 !important; }
+    .sheet {
+      box-shadow: none !important;
+      border: none !important;
+      width: auto !important;
+      max-width: 7.5in !important;
+      min-height: 9.8in !important;     /* slightly less than printable area to leave room for footer */
+      max-height: none !important;
+      padding: 0 0 0.25in 0 !important;
+      margin: 0 auto !important;
+      page-break-after: always !important;
+      break-after: page !important;
+      overflow: visible !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    .sheet:last-child { page-break-after: auto !important; }
+    .sheet-footer {
+      position: relative !important;
+      bottom: auto !important;
+      margin-top: auto !important;
+      padding-top: 8pt;
+      border-top: 1px solid var(--border, #E0E1E6);
+    }
+    table, figure, .card, canvas, .deco-card, .audience, .stat, .kpi-cell {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+    body { -webkit-print-color-adjust: economy; print-color-adjust: economy; }
+  }
+</style>
+
+</head>
+<body>
+<div class="doc-frame">
+<section class="sheet">
+<div class="cover-head">
+  <div class="brand"><img src="data:image/png;base64,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" alt="CandyCo"></div>
+  <div class="doc-meta">
+    <div class="eyebrow" style="font-size: 7pt;">Operations · CEO desk</div>
+    <div>2026-05-07 &nbsp;·&nbsp; Lindon · L1 Caramel/Eco · YTD 2026</div>
+  </div>
+</div>
+
+<h1>S'mores Material Usage — Comprehensive Run Analysis</h1>
+<p class="lead">Decomposes YTD 2026 S'mores material variance into BOM consumption, reported scrap, production adjustment, cycle count, and overfill in finished pouches. Identifies where each run is losing material and how runs compare. Distribution: CEO, Plant Manager, FSQA, Finance.</p>
+
+<div class="meta-strip">
+  <div class="item"><div class="eyebrow">Subject</div><div class="v">KKL S'mores Clusters · 30539/30555/30713/30773</div></div>
+  <div class="item"><div class="eyebrow">Line</div><div class="v">L1 Caramel + L2 Eco</div></div>
+  <div class="item"><div class="eyebrow">Period</div><div class="v">Jan 9 – May 2, 2026</div></div>
+  <div class="item"><div class="eyebrow">Pouches built</div><div class="v">1,653,637</div></div>
+</div>
+
+<h2>Executive summary</h2>
+<div class="hero">
+  <div class="eyebrow">The single most important finding</div>
+  <p class="headline">YTD chocolate consumption ran <span class="accent">146,994 lbs over BOM</span> — roughly <strong>43,700 lbs went into customer pouches as overfill</strong> and <strong>103,294 lbs is true production loss</strong> (Production Adjustment + Scrap).</p>
+</div>
+
+<div class="stats">
+  <div class="stat">
+    <div class="eyebrow">Chocolate over BOM</div>
+    <div class="num">146,994</div>
+    <div class="sub">lbs · $558,578 · -11.2% vs BOM</div>
+  </div>
+  <div class="stat">
+    <div class="eyebrow">Pouch overfill (all ingredients)</div>
+    <div class="num">90,290</div>
+    <div class="sub">lbs into finished pouches · $275,665</div>
+  </div>
+  <div class="stat">
+    <div class="eyebrow">Best run (chocolate)</div>
+    <div class="num">Run 2</div>
+    <div class="sub">-9.2% vs BOM · Jan 24 – Feb 7</div>
+  </div>
+  <div class="stat">
+    <div class="eyebrow">Worst run (chocolate)</div>
+    <div class="num">Run 4</div>
+    <div class="sub">-12.4% vs BOM · Apr 24 – May 2</div>
+  </div>
+</div>
+
+<h3>Top three improvement opportunities</h3>
+<table>
+  <thead>
+    <tr><th style="width: 26%;">Opportunity</th><th style="width: 18%;">Lbs / impact</th><th>Why it matters</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Chocolate true production loss</strong></td>
+      <td><span class="cap error"><span class="dot error"></span>~103,294 lbs · $392,516</span></td>
+      <td>Of 146,994 lbs chocolate over BOM, ~103,294 lbs is true loss (PA + Scrap), not overfill. This is the unaccounted &quot;slop&quot; — tank residuals, tunnel cleanouts, enrober purges, end-of-run drainage.</td>
+    </tr>
+    <tr>
+      <td><strong>Overfill in finished pouches</strong></td>
+      <td><span class="cap warning"><span class="dot warning"></span>~90,290 lbs · $275,665</span></td>
+      <td>Avg pouch net runs 25 g over the BOM-summed target (746 g). That's material we paid for and gave to the customer. Chocolate share alone is 43,700 lbs / $166,062.</td>
+    </tr>
+    <tr>
+      <td><strong>Replicate Run 2 chocolate efficiency</strong></td>
+      <td><span class="cap success"><span class="dot success"></span>~25,953 lbs · $98,622 (annualized at YTD pace)</span></td>
+      <td>Run 2 ran -9.2% on chocolate vs -12.1% avg on the other three runs — and had the lowest pouch overfill (18 g/pouch vs 27 g avg). Worth investigating what was different about Run 2: SKU mix, run length, settings, operators.</td>
+    </tr>
+  </tbody>
+</table>
+<div class="sheet-footer"><span class="doc">S'mores Material Analysis</span><span class="page-no">Page 1 of 9</span></div>
+</section>
+<section class="sheet">
+<h2>Per-run comparison</h2>
+<p>The clean run framing: <strong>4 actual S'mores production runs</strong> in 2026 YTD. The earlier &quot;Run 3 (2/16)&quot; was zero finished goods and is reframed as Non-Production Activity (sheet 5). The earlier Run 4 + Run 5 are merged into the consolidated Run 3 (Mar 26 – Apr 11, separated only by a weekend).</p>
+
+<h3>Variance vs BOM by ingredient — % over/under</h3>
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2" style="width:14%;">Run</th>
+      <th rowspan="2" class="num" style="width:6%;">Days</th>
+      <th rowspan="2" class="num" style="width:11%;">Pouches</th>
+      <th colspan="5" class="num">Variance vs BOM (%)</th>
+      <th rowspan="2" class="num" style="width:11%;">Net cost variance</th>
+    </tr>
+    <tr>
+      <th class="num">Choc</th>
+      <th class="num">Graham</th>
+      <th class="num">Caramel</th>
+      <th class="num">Marsh</th>
+      <th class="num">Pouch</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td><strong>Run 1</strong><br><span style="font-size:8pt;color:var(--fg-3);">Jan 9 – Jan 17</span></td>
+  <td class="num">9</td>
+  <td class="num">335,258</td>
+  <td class="num neg-strong">-12.0%</td>
+  <td class="num pos">+1.7%</td>
+  <td class="num neg">-1.7%</td>
+  <td class="num neg">-3.5%</td>
+  <td class="num neg-strong">-26.5%</td>
+  <td class="num neg-strong"><strong>$154,182</strong></td>
+</tr>
+<tr>
+  <td><strong>Run 2</strong><br><span style="font-size:8pt;color:var(--fg-3);">Jan 24 – Feb 7</span></td>
+  <td class="num">12</td>
+  <td class="num">508,355</td>
+  <td class="num neg">-9.2%</td>
+  <td class="num neg-strong">-12.9%</td>
+  <td class="num neg">-2.9%</td>
+  <td class="num pos">+16.0%</td>
+  <td class="num neg-strong">-21.2%</td>
+  <td class="num neg-strong"><strong>$139,245</strong></td>
+</tr>
+<tr>
+  <td><strong>Run 3</strong><br><span style="font-size:8pt;color:var(--fg-3);">Mar 26 – Apr 11</span></td>
+  <td class="num">11</td>
+  <td class="num">431,329</td>
+  <td class="num neg-strong">-11.8%</td>
+  <td class="num neg-strong">-11.4%</td>
+  <td class="num neg">-4.1%</td>
+  <td class="num pos">+14.3%</td>
+  <td class="num neg">-3.0%</td>
+  <td class="num neg-strong"><strong>$140,961</strong></td>
+</tr>
+<tr>
+  <td><strong>Run 4</strong><br><span style="font-size:8pt;color:var(--fg-3);">Apr 24 – May 2</span></td>
+  <td class="num">8</td>
+  <td class="num">378,695</td>
+  <td class="num neg-strong">-12.4%</td>
+  <td class="num neg-strong">-28.3%</td>
+  <td class="num neg">-2.4%</td>
+  <td class="num pos">+12.5%</td>
+  <td class="num neg-strong">-11.7%</td>
+  <td class="num neg-strong"><strong>$164,112</strong></td>
+</tr>
+    <tr class="totals">
+      <td><strong>YTD Total</strong></td>
+      <td class="num">40</td>
+      <td class="num">1,653,637</td>
+      <td class="num neg-strong"><strong>-11.2%</strong></td>
+      <td class="num neg-strong"><strong>-13.0%</strong></td>
+      <td class="num neg"><strong>-2.9%</strong></td>
+      <td class="num pos"><strong>+10.8%</strong></td>
+      <td class="num neg-strong"><strong>-15.4%</strong></td>
+      <td class="num neg-strong"><strong>$598,500</strong></td>
+    </tr>
+  </tbody>
+</table>
+<p class="caption">Negative % = consumed more than BOM. Positive % = saved (under BOM, often a marshmallow inv-add from cycle count). Marshmallow shows positive variance because cycle counts have repeatedly added back inventory.</p>
+
+<h3>Cost variance by ingredient — $ over/under BOM</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width:14%;">Run</th>
+      <th class="num" style="width:11%;">Pouches</th>
+      <th class="num">Chocolate</th>
+      <th class="num">Graham</th>
+      <th class="num">Caramel</th>
+      <th class="num">Marsh</th>
+      <th class="num">Pouch</th>
+      <th class="num">Net</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td><strong>Run 1</strong><br><span style="font-size:8pt;color:var(--fg-3);">Jan 9 – Jan 17</span></td>
+  <td class="num">335,258</td>
+  <td class="num neg-strong">$121,141</td>
+  <td class="num pos">$2,237</td>
+  <td class="num neg-strong">$4,546</td>
+  <td class="num neg-strong">$9,403</td>
+  <td class="num neg-strong">$21,329</td>
+  <td class="num neg-strong"><strong>$154,182</strong></td>
+</tr>
+<tr>
+  <td><strong>Run 2</strong><br><span style="font-size:8pt;color:var(--fg-3);">Jan 24 – Feb 7</span></td>
+  <td class="num">508,355</td>
+  <td class="num neg-strong">$141,398</td>
+  <td class="num neg-strong">$26,155</td>
+  <td class="num neg-strong">$11,507</td>
+  <td class="num pos">$65,739</td>
+  <td class="num neg-strong">$25,923</td>
+  <td class="num neg-strong"><strong>$139,245</strong></td>
+</tr>
+<tr>
+  <td><strong>Run 3</strong><br><span style="font-size:8pt;color:var(--fg-3);">Mar 26 – Apr 11</span></td>
+  <td class="num">431,329</td>
+  <td class="num neg-strong">$154,269</td>
+  <td class="num neg-strong">$19,605</td>
+  <td class="num neg-strong">$14,012</td>
+  <td class="num pos">$50,077</td>
+  <td class="num neg-strong">$3,152</td>
+  <td class="num neg-strong"><strong>$140,961</strong></td>
+</tr>
+<tr>
+  <td><strong>Run 4</strong><br><span style="font-size:8pt;color:var(--fg-3);">Apr 24 – May 2</span></td>
+  <td class="num">378,695</td>
+  <td class="num neg-strong">$141,770</td>
+  <td class="num neg-strong">$42,831</td>
+  <td class="num neg-strong">$7,200</td>
+  <td class="num pos">$38,328</td>
+  <td class="num neg-strong">$10,640</td>
+  <td class="num neg-strong"><strong>$164,112</strong></td>
+</tr>
+    <tr class="totals">
+      <td><strong>YTD Total</strong></td>
+      <td class="num">1,653,637</td>
+      <td class="num"><strong>$558,578</strong></td>
+      <td class="num"><strong>$86,354</strong></td>
+      <td class="num"><strong>$37,265</strong></td>
+      <td class="num"><strong>$144,741</strong></td>
+      <td class="num"><strong>$61,044</strong></td>
+      <td class="num"><strong>$598,500</strong></td>
+    </tr>
+  </tbody>
+</table>
+<p class="caption">Costs use NetSuite item average cost ($3.80/lb chocolate, $2.38/lb graham, $1.83/lb caramel, $3.23/lb marsh, $0.24/each pouch). Marshmallow shows as savings ($) because YTD cycle count adjustments added back ~45k lbs.</p>
+
+<div class="sheet-footer"><span class="doc">S'mores Material Analysis</span><span class="page-no">Page 2 of 9</span></div>
+</section>
+<section class="sheet">
+<h2>Variance attribution framework</h2>
+<p>Where the variance is coming from, broken down by reason. <strong>BOM Allocation</strong> is what should have been consumed. Negative numbers in the reason columns mean material was removed from inventory beyond BOM (loss). Positive means inventory was added back (cycle count, donations).</p>
+
+<h3>Chocolate (10232) — the $606k YTD problem</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width:11%;">Run</th>
+      <th class="num">BOM allocation</th>
+      <th class="num">Reported Scrap</th>
+      <th class="num">Production Adj</th>
+      <th class="num">Cycle Count</th>
+      <th class="num">Quality Fail</th>
+      <th class="num">Other</th>
+      <th class="num">Total Adj</th>
+      <th class="num">Var %</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td><strong>Run 1</strong></td>
+  <td class="num">266,725</td>
+  <td class="num neg">-2,857</td>
+  <td class="num neg-strong">-29,022</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num"><strong>-31,879</strong></td>
+  <td class="num neg-strong"><strong>-12.0%</strong></td>
+</tr>
+<tr>
+  <td><strong>Run 2</strong></td>
+  <td class="num">404,437</td>
+  <td class="num neg">-8,961</td>
+  <td class="num neg-strong">-28,199</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num">-50</td>
+  <td class="num"><strong>-37,210</strong></td>
+  <td class="num neg"><strong>-9.2%</strong></td>
+</tr>
+<tr>
+  <td><strong>Run 3</strong></td>
+  <td class="num">343,157</td>
+  <td class="num neg">-5,505</td>
+  <td class="num neg-strong">-35,382</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num">289</td>
+  <td class="num"><strong>-40,597</strong></td>
+  <td class="num neg-strong"><strong>-11.8%</strong></td>
+</tr>
+<tr>
+  <td><strong>Run 4</strong></td>
+  <td class="num">301,282</td>
+  <td class="num neg">-3,505</td>
+  <td class="num neg-strong">-27,803</td>
+  <td class="num">-6,000</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num"><strong>-37,308</strong></td>
+  <td class="num neg-strong"><strong>-12.4%</strong></td>
+</tr>
+<tr class="totals">
+  <td><strong>YTD Total</strong></td>
+  <td class="num"><strong>1,315,601</strong></td>
+  <td class="num neg"><strong>-20,828</strong></td>
+  <td class="num neg-strong"><strong>-120,406</strong></td>
+  <td class="num"><strong>-6,000</strong></td>
+  <td class="num"><strong>0</strong></td>
+  <td class="num"><strong>239</strong></td>
+  <td class="num"><strong>-146,994</strong></td>
+  <td class="num neg-strong"><strong>-11.2%</strong></td>
+</tr>
+  </tbody>
+</table>
+<p class="caption"><strong>Production Adjustment is consistently the dominant chocolate loss bucket every run.</strong> ~80% of total chocolate variance is PA — the unaccounted &quot;slop&quot;. Reported scrap is well-controlled (~3,500–4,500 lbs/run, 1–2% of BOM). Adjustments tied to non-S'mores production on the line have been excluded from these totals.</p>
+
+<h3>Pouch (40674) — sealed-pouch loss</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width:11%;">Run</th>
+      <th class="num">BOM (each)</th>
+      <th class="num">Reported Scrap</th>
+      <th class="num">Production Adj</th>
+      <th class="num">Cycle Count</th>
+      <th class="num">Quality Fail</th>
+      <th class="num">Other</th>
+      <th class="num">Total Adj</th>
+      <th class="num">Var %</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td><strong>Run 1</strong></td>
+  <td class="num">335,258</td>
+  <td class="num neg">-23,702</td>
+  <td class="num neg-strong">-26,000</td>
+  <td class="num">-16,000</td>
+  <td class="num">0</td>
+  <td class="num">-23,170</td>
+  <td class="num"><strong>-88,872</strong></td>
+  <td class="num neg-strong"><strong>-26.5%</strong></td>
+</tr>
+<tr>
+  <td><strong>Run 2</strong></td>
+  <td class="num">508,355</td>
+  <td class="num neg">-60,751</td>
+  <td class="num neg-strong">-8,579</td>
+  <td class="num">-38,683</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num"><strong>-108,013</strong></td>
+  <td class="num neg-strong"><strong>-21.2%</strong></td>
+</tr>
+<tr>
+  <td><strong>Run 3</strong></td>
+  <td class="num">431,329</td>
+  <td class="num neg">-6,784</td>
+  <td class="num neg-strong">-22,349</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num">16,000</td>
+  <td class="num"><strong>-13,133</strong></td>
+  <td class="num neg"><strong>-3.0%</strong></td>
+</tr>
+<tr>
+  <td><strong>Run 4</strong></td>
+  <td class="num">378,695</td>
+  <td class="num neg">-12,443</td>
+  <td class="num neg-strong">-31,891</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num"><strong>-44,334</strong></td>
+  <td class="num neg-strong"><strong>-11.7%</strong></td>
+</tr>
+<tr class="totals">
+  <td><strong>YTD Total</strong></td>
+  <td class="num"><strong>1,653,637</strong></td>
+  <td class="num neg"><strong>-103,680</strong></td>
+  <td class="num neg-strong"><strong>-88,819</strong></td>
+  <td class="num"><strong>-54,683</strong></td>
+  <td class="num"><strong>0</strong></td>
+  <td class="num"><strong>-7,170</strong></td>
+  <td class="num"><strong>-254,352</strong></td>
+  <td class="num neg-strong"><strong>-15.4%</strong></td>
+</tr>
+  </tbody>
+</table>
+<p class="caption">Pouch is a count item (each), not weight. Same pattern: PA dominates over reported scrap. The 254k YTD pouch over-consumption is mostly off-form (sealed-pouch dumps at shift change, matrix machine setup waste).</p>
+
+<div class="sheet-footer"><span class="doc">S'mores Material Analysis</span><span class="page-no">Page 3 of 9</span></div>
+</section>
+<section class="sheet">
+<h2>Run-to-run consistency</h2>
+<p>Are we losing material in the same places every run, or does it vary? This view tells us whether the variance is structural (process baked it in) or special-cause (one bad run pulling the average).</p>
+
+<h3>Variance % vs BOM, run by run</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Ingredient</th>
+      <th class="num">Run 1</th>
+      <th class="num">Run 2</th>
+      <th class="num">Run 3</th>
+      <th class="num">Run 4</th>
+      <th class="num">Avg</th>
+      <th class="num">Range</th>
+      <th>Pattern</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td><strong>Milk Chocolate Clasen</strong></td>
+  <td class="num neg-strong">-12.0%</td><td class="num neg">-9.2%</td><td class="num neg-strong">-11.8%</td><td class="num neg-strong">-12.4%</td>
+  <td class="num"><strong>-11.3%</strong></td>
+  <td class="num">3.2 pts</td>
+  <td>Consistent</td>
+</tr>
+<tr>
+  <td><strong>Ground Grahams</strong></td>
+  <td class="num pos">+1.7%</td><td class="num neg-strong">-12.9%</td><td class="num neg-strong">-11.4%</td><td class="num neg-strong">-28.3%</td>
+  <td class="num"><strong>-12.7%</strong></td>
+  <td class="num">29.9 pts</td>
+  <td>Highly variable</td>
+</tr>
+<tr>
+  <td><strong>Caramel Vanilla LWA</strong></td>
+  <td class="num neg">-1.7%</td><td class="num neg">-2.9%</td><td class="num neg">-4.1%</td><td class="num neg">-2.4%</td>
+  <td class="num"><strong>-2.8%</strong></td>
+  <td class="num">2.4 pts</td>
+  <td>Consistent</td>
+</tr>
+<tr>
+  <td><strong>Marshmallow mini</strong></td>
+  <td class="num neg">-3.5%</td><td class="num pos">+16.0%</td><td class="num pos">+14.3%</td><td class="num pos">+12.5%</td>
+  <td class="num"><strong>+9.8%</strong></td>
+  <td class="num">19.4 pts</td>
+  <td>Highly variable</td>
+</tr>
+<tr>
+  <td><strong>Pouch — 30539 (US Costco)</strong></td>
+  <td class="num neg-strong">-26.5%</td><td class="num neg-strong">-21.2%</td><td class="num neg">-3.0%</td><td class="num neg-strong">-11.7%</td>
+  <td class="num"><strong>-15.6%</strong></td>
+  <td class="num">23.5 pts</td>
+  <td>Highly variable</td>
+</tr>
+  </tbody>
+</table>
+<p class="caption">Range = max − min variance % across the 4 runs. Tighter range means the loss is structural (every run loses about the same amount). Wide range suggests special-cause variance (specific runs drove the YTD number).</p>
+
+<h3>Pouch overpack — extra material going INTO finished pouches</h3>
+<p>Pouch fill weight target (BOM-summed): <strong>745.6 g/pouch</strong>. Anything over that means we packed extra ingredients into the bag — material that left inventory but ended up in finished goods, not as scrap or PA.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Run</th>
+      <th class="num">N obs</th>
+      <th class="num">Avg pouch g</th>
+      <th class="num">Overpack g/pouch</th>
+      <th class="num">Pouches</th>
+      <th class="num">Total overpack lbs</th>
+      <th>Note</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+  <td><strong>Run 1</strong></td>
+  <td class="num">136</td>
+  <td class="num">768.2</td>
+  <td class="num neg">+22.6</td>
+  <td class="num">335,258</td>
+  <td class="num neg">16,686</td>
+  <td><span style="font-size:8pt;color:var(--fg-3);">Jan 9 – Jan 17</span></td>
+</tr>
+<tr>
+  <td><strong>Run 2</strong></td>
+  <td class="num">138</td>
+  <td class="num">763.5</td>
+  <td class="num neg">+17.9</td>
+  <td class="num">508,355</td>
+  <td class="num neg">20,085</td>
+  <td><span style="font-size:8pt;color:var(--fg-3);">Jan 24 – Feb 7</span></td>
+</tr>
+<tr>
+  <td><strong>Run 3</strong></td>
+  <td class="num">84</td>
+  <td class="num">776.9</td>
+  <td class="num neg">+31.3</td>
+  <td class="num">431,329</td>
+  <td class="num neg">29,792</td>
+  <td><span style="font-size:8pt;color:var(--fg-3);">Mar 26 – Apr 11</span></td>
+</tr>
+<tr>
+  <td><strong>Run 4</strong></td>
+  <td class="num">123</td>
+  <td class="num">774.0</td>
+  <td class="num neg">+28.4</td>
+  <td class="num">378,695</td>
+  <td class="num neg">23,728</td>
+  <td><span style="font-size:8pt;color:var(--fg-3);">Apr 24 – May 2</span></td>
+</tr>
+</tbody>
+</table>
+<p class="caption">Overpack is consistent across all four runs at ~25 g per pouch over BOM target. Across YTD pouches, that's ~90,290 lbs of extra material in finished goods. <strong>This is real consumption that doesn't show up as InvAdjst.</strong> It's split across all four ingredients in BOM proportion.</p>
+
+<div class="card" style="margin-top: 12pt;">
+  <div class="eyebrow">Interpretation</div>
+  <h4>What's loss vs. what's overpack vs. what's process slop</h4>
+  <p style="margin: 6pt 0 0 0;">YTD chocolate variance is <strong>146,994 lbs over BOM ($558,578)</strong>. Of this, the overpack analysis above implies <strong>~43,700 lbs of chocolate ($166,062)</strong> is sitting in finished pouches as overfill — material we didn't lose, we just gave it away to the customer. The remaining <strong>~103,294 lbs ($392,516)</strong> is true production loss — tank residuals, tunnel cleanouts, enrober purges. Splitting the chocolate problem this way: <strong>~28% overpack (a pricing/spec decision), ~72% process loss (a maintenance/process decision)</strong>. Both are addressable, but they have different owners and different fixes.</p>
+</div>
+
+<div class="sheet-footer"><span class="doc">S'mores Material Analysis</span><span class="page-no">Page 4 of 9</span></div>
+</section>
+<section class="sheet">
+<h2>Non-Production Activity — Feb 16, 2026</h2>
+<p>NetSuite WOCompl confirms <strong>zero S'mores pouches were completed between Feb 8 and Mar 25</strong>, a 47-day gap. Material activity on 2/16 was associated with other production on the line and has been excluded from S'mores per-run variance.</p>
+
+<h3>S'mores-only material activity on 2/16</h3>
+<p>The line did see a brief S'mores material event on 2/16 — small amounts of caramel, marshmallow, and graham (all S'mores-exclusive ingredients) were scrapped. Likely a short startup attempt or tank purge that didn't yield finished goods.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th class="num">Lbs scrapped</th>
+      <th class="num">$ impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Graham (21084)</td><td class="num">55</td><td class="num">$131</td></tr>
+    <tr><td>Marshmallow (10088)</td><td class="num">82</td><td class="num">$265</td></tr>
+    <tr><td>Caramel (21135)</td><td class="num">670</td><td class="num">$1226</td></tr>
+    <tr class="totals"><td><strong>Total</strong></td><td class="num"><strong>807</strong></td><td class="num"><strong>$1622</strong></td></tr>
+  </tbody>
+</table>
+<p class="caption">~$1,700 in S'mores material scrapped on 2/16. Treated as a between-runs cost; not bucketed against any production run because no pouches were built. Chocolate activity on this date has been excluded as it was tied to other production on the line.</p>
+
+<h3>Excluded days from Run 3 window</h3>
+<p>The combined Run 3 window (3/26–4/11) includes 4/10–4/11, but S'mores production stopped 4/9. Chocolate adjustments on 4/10–4/11 have been excluded from the S'mores variance because they were tied to other production on the line, not S'mores activity.</p>
+
+<div class="sheet-footer"><span class="doc">S'mores Material Analysis</span><span class="page-no">Page 5 of 9</span></div>
+</section>
+<section class="sheet landscape">
+<h2>Run 1 — Inventory Adjustments Detail</h2>
+<p style="margin-bottom: 4pt;"><strong>Window:</strong> Jan 9 – Jan 17 &nbsp;·&nbsp; <strong>Production days:</strong> 9 &nbsp;·&nbsp; <strong>SKUs:</strong> 30539</p>
+
+<div class="run-meta-strip">
+  <div class="meta-item"><span class="meta-label">Produced Pallets:</span> <span class="meta-val">1,391</span></div>
+  <div class="meta-item"><span class="meta-label">Produced Pouches:</span> <span class="meta-val">335,258</span></div>
+  <div class="meta-item"><span class="meta-label">Production $ (at Selling Price):</span> <span class="meta-val">$3,267,089</span></div>
+</div>
+
+<table class="appendix-wide">
+  <thead>
+    <tr>
+      <th rowspan="2">Input</th>
+      <th rowspan="2">Description</th>
+      <th rowspan="2" class="num">Ingredient<br>Cost</th>
+      <th rowspan="2" class="num">BOM<br>(lbs/pouch)</th>
+      <th rowspan="2" class="num">BOM<br>Consumption (lbs)</th>
+      <th rowspan="2" class="num">Actual<br>Consumption (lbs)</th>
+      <th rowspan="2" class="num">Variance</th>
+      <th colspan="4" class="ap-grouphead">Inventory Adjustments (lbs)</th>
+      <th rowspan="2" class="num">Total<br>Adjustments<br>(lbs)</th>
+      <th rowspan="2" class="num">Inv. Adj. %<br>of Consumption</th>
+      <th rowspan="2" class="num">Cost Consumed<br>in Production</th>
+      <th rowspan="2" class="num">Total<br>Adjustments<br>($)</th>
+    </tr>
+    <tr>
+      <th class="num">Quality Fail</th>
+      <th class="num">Cycle Count</th>
+      <th class="num">Production<br>Adjustment</th>
+      <th class="num">Scrap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td class="ap-input">10088</td>
+  <td class="ap-desc">Marshmallow mini</td>
+  <td class="num">$3.23</td>
+  <td class="num">0.2505</td>
+  <td class="num">83,985</td>
+  <td class="num">84,301</td>
+  <td class="num">+0.4%</td>
+  <td class="num">—</td>
+  <td class="num">(180)</td>
+  <td class="num">466</td>
+  <td class="num">(3,197)</td>
+  <td class="num"><strong>(2,911)</strong></td>
+  <td class="num"><strong>-3.5%</strong></td>
+  <td class="num">$272,291</td>
+  <td class="num"><strong>$(9,403)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">10232</td>
+  <td class="ap-desc">Milk Chocolate Clasen</td>
+  <td class="num">$3.80</td>
+  <td class="num">0.7956</td>
+  <td class="num">266,725</td>
+  <td class="num">267,718</td>
+  <td class="num">+0.4%</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">(29,022)</td>
+  <td class="num">(2,857)</td>
+  <td class="num"><strong>(31,879)</strong></td>
+  <td class="num"><strong>-11.9%</strong></td>
+  <td class="num">$1,017,330</td>
+  <td class="num"><strong>$(121,141)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">21084</td>
+  <td class="ap-desc">Ground Grahams</td>
+  <td class="num">$2.38</td>
+  <td class="num">0.1682</td>
+  <td class="num">56,377</td>
+  <td class="num">56,910</td>
+  <td class="num">+0.9%</td>
+  <td class="num">—</td>
+  <td class="num">(695)</td>
+  <td class="num">4,614</td>
+  <td class="num">(2,979)</td>
+  <td class="num"><strong>940</strong></td>
+  <td class="num"><strong>+1.7%</strong></td>
+  <td class="num">$135,446</td>
+  <td class="num"><strong>$2,237</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">21135</td>
+  <td class="ap-desc">Caramel Vanilla LWA</td>
+  <td class="num">$1.83</td>
+  <td class="num">0.4295</td>
+  <td class="num">143,997</td>
+  <td class="num">144,578</td>
+  <td class="num">+0.4%</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">2,125</td>
+  <td class="num">(4,609)</td>
+  <td class="num"><strong>(2,484)</strong></td>
+  <td class="num"><strong>-1.7%</strong></td>
+  <td class="num">$264,579</td>
+  <td class="num"><strong>$(4,546)</strong></td>
+</tr>
+<tr class="totals">
+  <td colspan="2"><strong>Total Pounds / $</strong></td>
+  <td class="num"></td>
+  <td class="num"><strong>1.6438</strong></td>
+  <td class="num"><strong>551,084</strong></td>
+  <td class="num"><strong>553,508</strong></td>
+  <td class="num"><strong>+0.4%</strong></td>
+  <td class="num"><strong>—</strong></td>
+  <td class="num"><strong>(875)</strong></td>
+  <td class="num"><strong>(21,817)</strong></td>
+  <td class="num"><strong>(13,642)</strong></td>
+  <td class="num"><strong>(36,335)</strong></td>
+  <td class="num"><strong>-6.6%</strong></td>
+  <td class="num"><strong>$1,689,646</strong></td>
+  <td class="num"><strong>$(132,853)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">40674</td>
+  <td class="ap-desc">Pouch — 30539 (US Costco)</td>
+  <td class="num">$0.24</td>
+  <td class="num">1</td>
+  <td class="num">335,258</td>
+  <td class="num">335,258</td>
+  <td class="num">+0.0%</td>
+  <td class="num">—</td>
+  <td class="num">(16,000)</td>
+  <td class="num">(26,000)</td>
+  <td class="num">(23,702)</td>
+  <td class="num"><strong>(88,872)</strong></td>
+  <td class="num"><strong>-26.5%</strong></td>
+  <td class="num">$80,462</td>
+  <td class="num"><strong>$(21,329)</strong></td>
+</tr>
+  </tbody>
+</table>
+
+<div class="goal-box goal-warn">
+  <div class="goal-row">
+    <div class="goal-cell">
+      <div class="goal-label">Total Adjustments ($) — net</div>
+      <div class="goal-value">$(154,182)</div>
+    </div>
+    <div class="goal-cell">
+      <div class="goal-label">Production Revenue (at Selling Price)</div>
+      <div class="goal-value">$3,267,089</div>
+    </div>
+    <div class="goal-cell goal-headline">
+      <div class="goal-label">Total Scrap as % of Revenue Produced</div>
+      <div class="goal-value">-4.7%</div>
+    </div>
+  </div>
+</div>
+
+<p class="caption" style="margin-top: 8pt;">Numbers in parentheses indicate inventory removed (loss). Source: NetSuite WOCompl (component lines, seq &gt; 3, qty &lt; 0) + InvAdjst (custbody_atlas_inv_adj_reason). Pouches consumed reflect all S'mores pouch SKUs used in this run window (40674 / 40730-V2 / 40860 by SKU mix). Selling prices sourced from NetSuite CustInvc on pallet SKUs (rate ÷ 240 pouches/pallet): 30539 $9.745, 30555/30713/30773 $9.510. Total Scrap as % of Revenue Produced computed as net Total Adjustments ($) ÷ Revenue.</p>
+
+<div class="sheet-footer"><span class="doc">S'mores Material Analysis</span><span class="page-no">Page 6 of 9</span></div>
+</section>
+<section class="sheet landscape">
+<h2>Run 2 — Inventory Adjustments Detail</h2>
+<p style="margin-bottom: 4pt;"><strong>Window:</strong> Jan 24 – Feb 7 &nbsp;·&nbsp; <strong>Production days:</strong> 12 &nbsp;·&nbsp; <strong>SKUs:</strong> 30555, 30713, 30539</p>
+
+<div class="run-meta-strip">
+  <div class="meta-item"><span class="meta-label">Produced Pallets:</span> <span class="meta-val">2,117</span></div>
+  <div class="meta-item"><span class="meta-label">Produced Pouches:</span> <span class="meta-val">508,355</span></div>
+  <div class="meta-item"><span class="meta-label">Production $ (at Selling Price):</span> <span class="meta-val">$4,920,049</span></div>
+</div>
+
+<table class="appendix-wide">
+  <thead>
+    <tr>
+      <th rowspan="2">Input</th>
+      <th rowspan="2">Description</th>
+      <th rowspan="2" class="num">Ingredient<br>Cost</th>
+      <th rowspan="2" class="num">BOM<br>(lbs/pouch)</th>
+      <th rowspan="2" class="num">BOM<br>Consumption (lbs)</th>
+      <th rowspan="2" class="num">Actual<br>Consumption (lbs)</th>
+      <th rowspan="2" class="num">Variance</th>
+      <th colspan="4" class="ap-grouphead">Inventory Adjustments (lbs)</th>
+      <th rowspan="2" class="num">Total<br>Adjustments<br>(lbs)</th>
+      <th rowspan="2" class="num">Inv. Adj. %<br>of Consumption</th>
+      <th rowspan="2" class="num">Cost Consumed<br>in Production</th>
+      <th rowspan="2" class="num">Total<br>Adjustments<br>($)</th>
+    </tr>
+    <tr>
+      <th class="num">Quality Fail</th>
+      <th class="num">Cycle Count</th>
+      <th class="num">Production<br>Adjustment</th>
+      <th class="num">Scrap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td class="ap-input">10088</td>
+  <td class="ap-desc">Marshmallow mini</td>
+  <td class="num">$3.23</td>
+  <td class="num">0.2505</td>
+  <td class="num">127,348</td>
+  <td class="num">127,574</td>
+  <td class="num">+0.2%</td>
+  <td class="num">—</td>
+  <td class="num">616</td>
+  <td class="num">23,635</td>
+  <td class="num">(3,898)</td>
+  <td class="num"><strong>20,352</strong></td>
+  <td class="num"><strong>+16.0%</strong></td>
+  <td class="num">$412,065</td>
+  <td class="num"><strong>$65,739</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">10232</td>
+  <td class="ap-desc">Milk Chocolate Clasen</td>
+  <td class="num">$3.80</td>
+  <td class="num">0.7956</td>
+  <td class="num">404,437</td>
+  <td class="num">397,793</td>
+  <td class="num">-1.6%</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">(28,199)</td>
+  <td class="num">(8,961)</td>
+  <td class="num"><strong>(37,210)</strong></td>
+  <td class="num"><strong>-9.4%</strong></td>
+  <td class="num">$1,511,613</td>
+  <td class="num"><strong>$(141,398)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">21084</td>
+  <td class="ap-desc">Ground Grahams</td>
+  <td class="num">$2.38</td>
+  <td class="num">0.1682</td>
+  <td class="num">85,485</td>
+  <td class="num">85,868</td>
+  <td class="num">+0.4%</td>
+  <td class="num">(610)</td>
+  <td class="num">780</td>
+  <td class="num">(7,313)</td>
+  <td class="num">(3,847)</td>
+  <td class="num"><strong>(10,990)</strong></td>
+  <td class="num"><strong>-12.8%</strong></td>
+  <td class="num">$204,365</td>
+  <td class="num"><strong>$(26,155)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">21135</td>
+  <td class="ap-desc">Caramel Vanilla LWA</td>
+  <td class="num">$1.83</td>
+  <td class="num">0.4295</td>
+  <td class="num">218,344</td>
+  <td class="num">218,761</td>
+  <td class="num">+0.2%</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">70</td>
+  <td class="num">(6,358)</td>
+  <td class="num"><strong>(6,288)</strong></td>
+  <td class="num"><strong>-2.9%</strong></td>
+  <td class="num">$400,333</td>
+  <td class="num"><strong>$(11,507)</strong></td>
+</tr>
+<tr class="totals">
+  <td colspan="2"><strong>Total Pounds / $</strong></td>
+  <td class="num"></td>
+  <td class="num"><strong>1.6438</strong></td>
+  <td class="num"><strong>835,614</strong></td>
+  <td class="num"><strong>829,996</strong></td>
+  <td class="num"><strong>-0.7%</strong></td>
+  <td class="num"><strong>(610)</strong></td>
+  <td class="num"><strong>1,396</strong></td>
+  <td class="num"><strong>(11,808)</strong></td>
+  <td class="num"><strong>(23,063)</strong></td>
+  <td class="num"><strong>(34,135)</strong></td>
+  <td class="num"><strong>-4.1%</strong></td>
+  <td class="num"><strong>$2,528,376</strong></td>
+  <td class="num"><strong>$(113,321)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">40674</td>
+  <td class="ap-desc">Pouch — 30539 (US Costco)</td>
+  <td class="num">$0.24</td>
+  <td class="num">1</td>
+  <td class="num">364,227</td>
+  <td class="num">364,227</td>
+  <td class="num">+0.0%</td>
+  <td class="num">—</td>
+  <td class="num">(38,683)</td>
+  <td class="num">(8,579)</td>
+  <td class="num">(60,751)</td>
+  <td class="num"><strong>(108,013)</strong></td>
+  <td class="num"><strong>-29.7%</strong></td>
+  <td class="num">$87,414</td>
+  <td class="num"><strong>$(25,923)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">40730-V2</td>
+  <td class="ap-desc">Pouch — 30555 (Canada)</td>
+  <td class="num">$0.24</td>
+  <td class="num">1</td>
+  <td class="num">93,488</td>
+  <td class="num">93,488</td>
+  <td class="num">+0.0%</td>
+  <td class="num">—</td>
+  <td class="num">(13,000)</td>
+  <td class="num">—</td>
+  <td class="num">(17,512)</td>
+  <td class="num"><strong>(30,512)</strong></td>
+  <td class="num"><strong>-32.6%</strong></td>
+  <td class="num">$22,063</td>
+  <td class="num"><strong>$(7,201)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">40860</td>
+  <td class="ap-desc">Pouch — 30713 (Mexico)</td>
+  <td class="num">$0.31</td>
+  <td class="num">1</td>
+  <td class="num">50,640</td>
+  <td class="num">50,640</td>
+  <td class="num">+0.0%</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">(12,897)</td>
+  <td class="num"><strong>(12,897)</strong></td>
+  <td class="num"><strong>-25.5%</strong></td>
+  <td class="num">$15,698</td>
+  <td class="num"><strong>$(3,998)</strong></td>
+</tr>
+  </tbody>
+</table>
+
+<div class="goal-box goal-warn">
+  <div class="goal-row">
+    <div class="goal-cell">
+      <div class="goal-label">Total Adjustments ($) — net</div>
+      <div class="goal-value">$(150,443)</div>
+    </div>
+    <div class="goal-cell">
+      <div class="goal-label">Production Revenue (at Selling Price)</div>
+      <div class="goal-value">$4,920,049</div>
+    </div>
+    <div class="goal-cell goal-headline">
+      <div class="goal-label">Total Scrap as % of Revenue Produced</div>
+      <div class="goal-value">-3.1%</div>
+    </div>
+  </div>
+</div>
+
+<p class="caption" style="margin-top: 8pt;">Numbers in parentheses indicate inventory removed (loss). Source: NetSuite WOCompl (component lines, seq &gt; 3, qty &lt; 0) + InvAdjst (custbody_atlas_inv_adj_reason). Pouches consumed reflect all S'mores pouch SKUs used in this run window (40674 / 40730-V2 / 40860 by SKU mix). Selling prices sourced from NetSuite CustInvc on pallet SKUs (rate ÷ 240 pouches/pallet): 30539 $9.745, 30555/30713/30773 $9.510. Total Scrap as % of Revenue Produced computed as net Total Adjustments ($) ÷ Revenue.</p>
+
+<div class="sheet-footer"><span class="doc">S'mores Material Analysis</span><span class="page-no">Page 7 of 9</span></div>
+</section>
+<section class="sheet landscape">
+<h2>Run 3 — Inventory Adjustments Detail</h2>
+<p style="margin-bottom: 4pt;"><strong>Window:</strong> Mar 26 – Apr 11 &nbsp;·&nbsp; <strong>Production days:</strong> 11 &nbsp;·&nbsp; <strong>SKUs:</strong> 30539, 30555, 30713, 30773</p>
+
+<div class="run-meta-strip">
+  <div class="meta-item"><span class="meta-label">Produced Pallets:</span> <span class="meta-val">1,790</span></div>
+  <div class="meta-item"><span class="meta-label">Produced Pouches:</span> <span class="meta-val">431,329</span></div>
+  <div class="meta-item"><span class="meta-label">Production $ (at Selling Price):</span> <span class="meta-val">$4,161,919</span></div>
+</div>
+
+<table class="appendix-wide">
+  <thead>
+    <tr>
+      <th rowspan="2">Input</th>
+      <th rowspan="2">Description</th>
+      <th rowspan="2" class="num">Ingredient<br>Cost</th>
+      <th rowspan="2" class="num">BOM<br>(lbs/pouch)</th>
+      <th rowspan="2" class="num">BOM<br>Consumption (lbs)</th>
+      <th rowspan="2" class="num">Actual<br>Consumption (lbs)</th>
+      <th rowspan="2" class="num">Variance</th>
+      <th colspan="4" class="ap-grouphead">Inventory Adjustments (lbs)</th>
+      <th rowspan="2" class="num">Total<br>Adjustments<br>(lbs)</th>
+      <th rowspan="2" class="num">Inv. Adj. %<br>of Consumption</th>
+      <th rowspan="2" class="num">Cost Consumed<br>in Production</th>
+      <th rowspan="2" class="num">Total<br>Adjustments<br>($)</th>
+    </tr>
+    <tr>
+      <th class="num">Quality Fail</th>
+      <th class="num">Cycle Count</th>
+      <th class="num">Production<br>Adjustment</th>
+      <th class="num">Scrap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td class="ap-input">10088</td>
+  <td class="ap-desc">Marshmallow mini</td>
+  <td class="num">$3.23</td>
+  <td class="num">0.2505</td>
+  <td class="num">108,052</td>
+  <td class="num">108,254</td>
+  <td class="num">+0.2%</td>
+  <td class="num">—</td>
+  <td class="num">1,000</td>
+  <td class="num">16,341</td>
+  <td class="num">(1,550)</td>
+  <td class="num"><strong>15,504</strong></td>
+  <td class="num"><strong>+14.3%</strong></td>
+  <td class="num">$349,659</td>
+  <td class="num"><strong>$50,077</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">10232</td>
+  <td class="ap-desc">Milk Chocolate Clasen</td>
+  <td class="num">$3.80</td>
+  <td class="num">0.7956</td>
+  <td class="num">343,157</td>
+  <td class="num">368,197</td>
+  <td class="num">+7.3%</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">(35,382)</td>
+  <td class="num">(5,505)</td>
+  <td class="num"><strong>(40,597)</strong></td>
+  <td class="num"><strong>-11.0%</strong></td>
+  <td class="num">$1,399,148</td>
+  <td class="num"><strong>$(154,269)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">21084</td>
+  <td class="ap-desc">Ground Grahams</td>
+  <td class="num">$2.38</td>
+  <td class="num">0.1682</td>
+  <td class="num">72,532</td>
+  <td class="num">72,873</td>
+  <td class="num">+0.5%</td>
+  <td class="num">—</td>
+  <td class="num">(880)</td>
+  <td class="num">(3,641)</td>
+  <td class="num">(3,276)</td>
+  <td class="num"><strong>(8,237)</strong></td>
+  <td class="num"><strong>-11.3%</strong></td>
+  <td class="num">$173,437</td>
+  <td class="num"><strong>$(19,605)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">21135</td>
+  <td class="ap-desc">Caramel Vanilla LWA</td>
+  <td class="num">$1.83</td>
+  <td class="num">0.4295</td>
+  <td class="num">185,260</td>
+  <td class="num">185,632</td>
+  <td class="num">+0.2%</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">(2,180)</td>
+  <td class="num">(5,676)</td>
+  <td class="num"><strong>(7,657)</strong></td>
+  <td class="num"><strong>-4.1%</strong></td>
+  <td class="num">$339,706</td>
+  <td class="num"><strong>$(14,012)</strong></td>
+</tr>
+<tr class="totals">
+  <td colspan="2"><strong>Total Pounds / $</strong></td>
+  <td class="num"></td>
+  <td class="num"><strong>1.6438</strong></td>
+  <td class="num"><strong>709,001</strong></td>
+  <td class="num"><strong>734,955</strong></td>
+  <td class="num"><strong>+3.7%</strong></td>
+  <td class="num"><strong>—</strong></td>
+  <td class="num"><strong>120</strong></td>
+  <td class="num"><strong>(24,862)</strong></td>
+  <td class="num"><strong>(16,007)</strong></td>
+  <td class="num"><strong>(40,988)</strong></td>
+  <td class="num"><strong>-5.6%</strong></td>
+  <td class="num"><strong>$2,261,950</strong></td>
+  <td class="num"><strong>$(137,809)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">40674</td>
+  <td class="ap-desc">Pouch — 30539 (US Costco)</td>
+  <td class="num">$0.24</td>
+  <td class="num">1</td>
+  <td class="num">268,433</td>
+  <td class="num">268,433</td>
+  <td class="num">+0.0%</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">(22,349)</td>
+  <td class="num">(6,784)</td>
+  <td class="num"><strong>(13,133)</strong></td>
+  <td class="num"><strong>-4.9%</strong></td>
+  <td class="num">$64,424</td>
+  <td class="num"><strong>$(3,152)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">40730-V2</td>
+  <td class="ap-desc">Pouch — 30555 (Canada)</td>
+  <td class="num">$0.24</td>
+  <td class="num">1</td>
+  <td class="num">119,280</td>
+  <td class="num">119,280</td>
+  <td class="num">+0.0%</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">(12,560)</td>
+  <td class="num">(7,660)</td>
+  <td class="num"><strong>(20,220)</strong></td>
+  <td class="num"><strong>-17.0%</strong></td>
+  <td class="num">$28,150</td>
+  <td class="num"><strong>$(4,772)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">40860</td>
+  <td class="ap-desc">Pouch — 30713 (Mexico)</td>
+  <td class="num">$0.31</td>
+  <td class="num">1</td>
+  <td class="num">43,616</td>
+  <td class="num">43,616</td>
+  <td class="num">+0.0%</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">(1,248)</td>
+  <td class="num">(1,407)</td>
+  <td class="num"><strong>(2,655)</strong></td>
+  <td class="num"><strong>-6.1%</strong></td>
+  <td class="num">$13,521</td>
+  <td class="num"><strong>$(823)</strong></td>
+</tr>
+  </tbody>
+</table>
+
+<div class="goal-box goal-warn">
+  <div class="goal-row">
+    <div class="goal-cell">
+      <div class="goal-label">Total Adjustments ($) — net</div>
+      <div class="goal-value">$(146,556)</div>
+    </div>
+    <div class="goal-cell">
+      <div class="goal-label">Production Revenue (at Selling Price)</div>
+      <div class="goal-value">$4,161,919</div>
+    </div>
+    <div class="goal-cell goal-headline">
+      <div class="goal-label">Total Scrap as % of Revenue Produced</div>
+      <div class="goal-value">-3.5%</div>
+    </div>
+  </div>
+</div>
+
+<p class="caption" style="margin-top: 8pt;">Numbers in parentheses indicate inventory removed (loss). Source: NetSuite WOCompl (component lines, seq &gt; 3, qty &lt; 0) + InvAdjst (custbody_atlas_inv_adj_reason). Pouches consumed reflect all S'mores pouch SKUs used in this run window (40674 / 40730-V2 / 40860 by SKU mix). Selling prices sourced from NetSuite CustInvc on pallet SKUs (rate ÷ 240 pouches/pallet): 30539 $9.745, 30555/30713/30773 $9.510. Total Scrap as % of Revenue Produced computed as net Total Adjustments ($) ÷ Revenue.</p>
+
+<div class="sheet-footer"><span class="doc">S'mores Material Analysis</span><span class="page-no">Page 8 of 9</span></div>
+</section>
+<section class="sheet landscape">
+<h2>Run 4 — Inventory Adjustments Detail</h2>
+<p style="margin-bottom: 4pt;"><strong>Window:</strong> Apr 24 – May 2 &nbsp;·&nbsp; <strong>Production days:</strong> 8 &nbsp;·&nbsp; <strong>SKUs:</strong> 30539</p>
+
+<div class="run-meta-strip">
+  <div class="meta-item"><span class="meta-label">Produced Pallets:</span> <span class="meta-val">1,589</span></div>
+  <div class="meta-item"><span class="meta-label">Produced Pouches:</span> <span class="meta-val">378,695</span></div>
+  <div class="meta-item"><span class="meta-label">Production $ (at Selling Price):</span> <span class="meta-val">$3,690,383</span></div>
+</div>
+
+<table class="appendix-wide">
+  <thead>
+    <tr>
+      <th rowspan="2">Input</th>
+      <th rowspan="2">Description</th>
+      <th rowspan="2" class="num">Ingredient<br>Cost</th>
+      <th rowspan="2" class="num">BOM<br>(lbs/pouch)</th>
+      <th rowspan="2" class="num">BOM<br>Consumption (lbs)</th>
+      <th rowspan="2" class="num">Actual<br>Consumption (lbs)</th>
+      <th rowspan="2" class="num">Variance</th>
+      <th colspan="4" class="ap-grouphead">Inventory Adjustments (lbs)</th>
+      <th rowspan="2" class="num">Total<br>Adjustments<br>(lbs)</th>
+      <th rowspan="2" class="num">Inv. Adj. %<br>of Consumption</th>
+      <th rowspan="2" class="num">Cost Consumed<br>in Production</th>
+      <th rowspan="2" class="num">Total<br>Adjustments<br>($)</th>
+    </tr>
+    <tr>
+      <th class="num">Quality Fail</th>
+      <th class="num">Cycle Count</th>
+      <th class="num">Production<br>Adjustment</th>
+      <th class="num">Scrap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+  <td class="ap-input">10088</td>
+  <td class="ap-desc">Marshmallow mini</td>
+  <td class="num">$3.23</td>
+  <td class="num">0.2505</td>
+  <td class="num">94,867</td>
+  <td class="num">94,967</td>
+  <td class="num">+0.1%</td>
+  <td class="num">(216)</td>
+  <td class="num">(615)</td>
+  <td class="num">14,422</td>
+  <td class="num">(1,724)</td>
+  <td class="num"><strong>11,866</strong></td>
+  <td class="num"><strong>+12.5%</strong></td>
+  <td class="num">$306,743</td>
+  <td class="num"><strong>$38,328</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">10232</td>
+  <td class="ap-desc">Milk Chocolate Clasen</td>
+  <td class="num">$3.80</td>
+  <td class="num">0.7956</td>
+  <td class="num">301,282</td>
+  <td class="num">301,597</td>
+  <td class="num">+0.1%</td>
+  <td class="num">—</td>
+  <td class="num">(6,000)</td>
+  <td class="num">(27,803)</td>
+  <td class="num">(3,505)</td>
+  <td class="num"><strong>(37,308)</strong></td>
+  <td class="num"><strong>-12.4%</strong></td>
+  <td class="num">$1,146,069</td>
+  <td class="num"><strong>$(141,770)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">21084</td>
+  <td class="ap-desc">Ground Grahams</td>
+  <td class="num">$2.38</td>
+  <td class="num">0.1682</td>
+  <td class="num">63,681</td>
+  <td class="num">63,850</td>
+  <td class="num">+0.3%</td>
+  <td class="num">(861)</td>
+  <td class="num">(355)</td>
+  <td class="num">(15,038)</td>
+  <td class="num">(1,742)</td>
+  <td class="num"><strong>(17,996)</strong></td>
+  <td class="num"><strong>-28.2%</strong></td>
+  <td class="num">$151,964</td>
+  <td class="num"><strong>$(42,831)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">21135</td>
+  <td class="ap-desc">Caramel Vanilla LWA</td>
+  <td class="num">$1.83</td>
+  <td class="num">0.4295</td>
+  <td class="num">162,653</td>
+  <td class="num">162,838</td>
+  <td class="num">+0.1%</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">(1,648)</td>
+  <td class="num">(2,287)</td>
+  <td class="num"><strong>(3,935)</strong></td>
+  <td class="num"><strong>-2.4%</strong></td>
+  <td class="num">$297,993</td>
+  <td class="num"><strong>$(7,200)</strong></td>
+</tr>
+<tr class="totals">
+  <td colspan="2"><strong>Total Pounds / $</strong></td>
+  <td class="num"></td>
+  <td class="num"><strong>1.6438</strong></td>
+  <td class="num"><strong>622,484</strong></td>
+  <td class="num"><strong>623,252</strong></td>
+  <td class="num"><strong>+0.1%</strong></td>
+  <td class="num"><strong>(1,077)</strong></td>
+  <td class="num"><strong>(6,970)</strong></td>
+  <td class="num"><strong>(30,067)</strong></td>
+  <td class="num"><strong>(9,258)</strong></td>
+  <td class="num"><strong>(47,372)</strong></td>
+  <td class="num"><strong>-7.6%</strong></td>
+  <td class="num"><strong>$1,902,768</strong></td>
+  <td class="num"><strong>$(153,472)</strong></td>
+</tr>
+<tr>
+  <td class="ap-input">40674</td>
+  <td class="ap-desc">Pouch — 30539 (US Costco)</td>
+  <td class="num">$0.24</td>
+  <td class="num">1</td>
+  <td class="num">378,695</td>
+  <td class="num">378,695</td>
+  <td class="num">+0.0%</td>
+  <td class="num">—</td>
+  <td class="num">—</td>
+  <td class="num">(31,891)</td>
+  <td class="num">(12,443)</td>
+  <td class="num"><strong>(44,334)</strong></td>
+  <td class="num"><strong>-11.7%</strong></td>
+  <td class="num">$90,887</td>
+  <td class="num"><strong>$(10,640)</strong></td>
+</tr>
+  </tbody>
+</table>
+
+<div class="goal-box goal-warn">
+  <div class="goal-row">
+    <div class="goal-cell">
+      <div class="goal-label">Total Adjustments ($) — net</div>
+      <div class="goal-value">$(164,112)</div>
+    </div>
+    <div class="goal-cell">
+      <div class="goal-label">Production Revenue (at Selling Price)</div>
+      <div class="goal-value">$3,690,383</div>
+    </div>
+    <div class="goal-cell goal-headline">
+      <div class="goal-label">Total Scrap as % of Revenue Produced</div>
+      <div class="goal-value">-4.4%</div>
+    </div>
+  </div>
+</div>
+
+<p class="caption" style="margin-top: 8pt;">Numbers in parentheses indicate inventory removed (loss). Source: NetSuite WOCompl (component lines, seq &gt; 3, qty &lt; 0) + InvAdjst (custbody_atlas_inv_adj_reason). Pouches consumed reflect all S'mores pouch SKUs used in this run window (40674 / 40730-V2 / 40860 by SKU mix). Selling prices sourced from NetSuite CustInvc on pallet SKUs (rate ÷ 240 pouches/pallet): 30539 $9.745, 30555/30713/30773 $9.510. Total Scrap as % of Revenue Produced computed as net Total Adjustments ($) ÷ Revenue.</p>
+
+<div class="sheet-footer"><span class="doc">S'mores Material Analysis</span><span class="page-no">Page 9 of 9</span></div>
+</section>
+</div>
+</body>
+</html>
