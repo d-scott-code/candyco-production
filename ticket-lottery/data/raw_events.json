@@ -1,5 +1,5 @@
 {
-  "_comment": "Full event list from deltacenter.com (Modern Events Calendar REST API + detail-page dates). Input to import_events.py.",
+  "_comment": "Full event list from deltacenter.com (Modern Events Calendar REST API + detail-page dates). Input to import_events.py. Utah Jazz home games (2026-27) added from ESPN (site.api.espn.com NBA team schedule); only the preseason Spurs game was available — the 2026-27 regular-season schedule was not yet published at scrape time.",
   "source": "https://www.deltacenter.com/wp-json/wp/v2/mec-events",
   "scraped": "2026-08-11",
   "events": [
@@ -34,6 +34,14 @@
       "category": "Other",
       "source_url": "https://www.deltacenter.com/events/ufc-332/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/08/UFC_web900x500-768x427.jpg"
+    },
+    {
+      "title": "Utah Jazz vs. San Antonio Spurs",
+      "date": "2026-10-12",
+      "time": "7:00 pm",
+      "category": "NBA",
+      "source_url": "https://www.espn.com/nba/game/_/gameId/401898721/spurs-jazz",
+      "image_url": ""
     },
     {
       "title": "Utah Mammoth vs. Toronto Maple Leafs",

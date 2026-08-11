@@ -103,9 +103,12 @@ event carries its **card image** (`image_url`), which the board renders.
 Center events" and it will re-pull + import — a good candidate for a scheduled step.
 
 **Two caveats worth knowing:**
-- **No Jazz games.** deltacenter.com lists Utah Mammoth, concerts, and other events but
-  **not Utah Jazz** (published separately). Add Jazz to `raw_events.json` from `utahjazz.com`
-  when you want them in the pool.
+- **Jazz games** come from the ESPN team-schedule API (they're not on deltacenter.com), merged
+  into `raw_events.json`. As of the last pull only the **preseason** home game was published;
+  the 2026-27 **regular season** wasn't out yet. Re-pull the ESPN schedule
+  (`.../basketball/nba/teams/utah/schedule?season=2027&seasontype=2`) once it releases (mid/late
+  August) to add the ~41 regular-season home games; ESPN doesn't provide card art, so Jazz
+  events have no `image_url`.
 - **Tiers are a heuristic.** Marquee opponents and all concerts/other default to `premium`
   (leadership draft, `max_party: 2`); everything else is `standard` (general lottery). Adjust
   any event by hand — a merge refresh keeps your overrides.

@@ -58,6 +58,18 @@
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/08/UFC_web900x500-768x427.jpg"
     },
     {
+      "id": "2026-10-12-utah-jazz-vs-san-antonio-spurs",
+      "date": "2026-10-12",
+      "tipoff": "19:00",
+      "league": "NBA",
+      "title": "Utah Jazz vs. San Antonio Spurs",
+      "tier": "standard",
+      "seats": 4,
+      "entry_close": "2026-10-05",
+      "status": "open",
+      "source_url": "https://www.espn.com/nba/game/_/gameId/401898721/spurs-jazz"
+    },
+    {
       "id": "2026-10-13-utah-mammoth-vs-toronto-maple-leafs",
       "date": "2026-10-13",
       "tipoff": "",
@@ -69,8 +81,7 @@
       "status": "claimed",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/utah-mammoth-vs-toronto-maple-leafs/",
-      "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_TOR-1024x569.png",
-      "claimed_by": "Chad Stone"
+      "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_TOR-1024x569.png"
     },
     {
       "id": "2026-10-14-disney-descendants-zombies-camp-rock-worlds-collide-concert-tour",
@@ -98,8 +109,7 @@
       "status": "claimed",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/kacey-musgraves/",
-      "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/04/KaceyMusgraves_web_900x500-768x427.jpg",
-      "claimed_by": "Dave R."
+      "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/04/KaceyMusgraves_web_900x500-768x427.jpg"
     },
     {
       "id": "2026-10-17-utah-mammoth-vs-edmonton-oilers",
@@ -113,8 +123,7 @@
       "status": "claimed",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/utah-mammoth-vs-edmonton-oilers/",
-      "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_EDM-1024x569.png",
-      "claimed_by": "Scott Maxfield"
+      "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_EDM-1024x569.png"
     },
     {
       "id": "2026-10-19-utah-mammoth-vs-pittsburgh-penguins",
