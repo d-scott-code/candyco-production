@@ -1,0 +1,9 @@
+{
+  "_comment": "Winner responses to the 'confirm your seats' link (a second Microsoft Form landing in a SharePoint list). response: confirm | decline. A winner who never responds times out at the 48h deadline. These sample rows exercise: a confirm, a decline (cascades to the waitlist), and a no-response timeout.",
+  "confirmations": [
+    { "member_id": "e012", "event_id": "2026-10-24-jazz-lakers",       "response": "confirm", "timestamp": "2026-08-12T10:00" },
+    { "member_id": "e010", "event_id": "2026-10-24-jazz-lakers",       "response": "decline", "timestamp": "2026-08-12T11:00" },
+    { "member_id": "e006", "event_id": "2026-10-30-mammoth-avalanche", "response": "confirm", "timestamp": "2026-08-12T09:00" },
+    { "member_id": "e007", "event_id": "2026-11-05-jazz-thunder",      "response": "confirm", "timestamp": "2026-08-12T09:30" }
+  ]
+}

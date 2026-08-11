@@ -1,0 +1,11 @@
+{
+  "_comment": "Settings for the Phase 1 automation. Replace the two Form URLs with your real Microsoft Forms links before going live.",
+  "season": "2026-27",
+  "seat_location": "Section 104, Row 12, Seats 5-8",
+  "board_url": "https://d-scott-code.github.io/candyco-production/ticket-lottery/",
+  "form_url": "https://forms.office.com/r/REPLACE_WITH_YOUR_ENTRY_FORM_ID",
+  "confirm_url": "https://forms.office.com/r/REPLACE_WITH_YOUR_CONFIRM_FORM_ID",
+  "confirm_window_hours": 48,
+  "reminder_days_before_close": 3,
+  "hr_from_name": "CandyCo HR"
+}

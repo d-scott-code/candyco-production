@@ -47,14 +47,22 @@ a small script + a static page served on GitHub Pages, plus Outlook emails.
 ```
 ticket-lottery/
 ├── index.html          Employee board (GitHub Pages). Reads events.json + results.json.
+├── config.json         Phase 1 settings (Form URLs, seat location, 48h window, board URL).
 ├── draw.py             The draw engine (weighted lottery + cooldown + waitlist).
+├── notify.py           Renders winner + reminder emails into outbox/.            [Phase 1]
+├── reconcile.py        Confirmations + 48h timeouts + waitlist cascade + follow-ups. [Phase 1]
+├── weekly.py           One entrypoint the scheduler calls: draw / reconcile / reminder. [Phase 1]
+├── common.py           Shared helpers for the Phase 1 scripts.
 ├── data/
-│   ├── events.json     Ticket inventory — one row per event. SAFE to publish.
-│   ├── members.json    Pilot participants + earned points. PRIVATE (names/emails).
-│   ├── entries.json    Who entered which event. PRIVATE.
-│   ├── results.json    Draw output for the board. SAFE (first name + last initial only).
-│   └── draw_details.json  Generated. PRIVATE (full names + emails). Git-ignored.
-└── emails/             Outlook-safe HTML templates: winner, entered, reminder.
+│   ├── events.json       Ticket inventory — one row per event. SAFE to publish.
+│   ├── members.json      Pilot participants + earned points. PRIVATE (names/emails).
+│   ├── entries.json      Who entered which event. PRIVATE.
+│   ├── confirmations.json Winner confirm/decline responses. PRIVATE.              [Phase 1]
+│   ├── results.json      Draw output for the board. SAFE (first name + last initial only).
+│   └── draw_details.json Generated. PRIVATE (full names + emails). Git-ignored.
+├── emails/             Outlook-safe HTML templates: winner, entered, reminder, lastminute.
+├── outbox/             Generated, git-ignored. Rendered emails awaiting send.     [Phase 1]
+└── SCHEDULING.md       How to run the loop on a schedule (cron/launchd/Routine).  [Phase 1]
 ```
 
 **Privacy:** the public board only ever reads `events.json` and `results.json`, neither of
@@ -79,33 +87,57 @@ A dry run writes `results.json` (board) and `draw_details.json` (emails) but doe
 change member state. `--commit` records the wins so the cooldown applies going forward.
 No dependencies — standard-library Python 3 only.
 
-## The weekly loop (near-zero-touch, HR-owned)
+## The weekly loop — automated (Phase 1)
 
-1. **Entries in** — employees tap *Enter* on the board → a **Microsoft Form** →
-   rows land in a **SharePoint list**. Export/sync that list to `entries.json`.
-   *(Set `FORM_URL` at the top of `index.html` to your Form's link.)*
-2. **Draw** — run `python3 draw.py --all --commit` (later: a scheduled task/Routine,
-   exactly like the 9:05 AM production-report job).
-3. **Notify** — fill the `emails/` templates from `draw_details.json` and send via Outlook
-   (winners + the "entered" confirmations); broadcast the `reminder` before deadlines.
-4. **Publish** — commit `events.json` + `results.json`; GitHub Pages updates the board.
+Phase 1 runs the cycle itself through one entrypoint. Full wiring (Forms→SharePoint
+sync, the send step, cron/launchd/Routine) is in **`SCHEDULING.md`**.
 
-## What's manual in Phase 0 vs. automated in Phase 1
+```bash
+python3 weekly.py draw        # Mon: draw closed events, mark them drawn, render winner emails
+python3 weekly.py reconcile   # daily: confirmations + 48h timeouts + waitlist cascade + follow-ups
+python3 weekly.py reconcile --commit   # ...same, and persist cooldown for confirmed winners
+python3 weekly.py reminder    # Thu: broadcast for events closing soon
+```
 
-- **Phase 0 (now):** Form + SharePoint list by hand; run the draw on demand; send emails
-  from the templates. Proves the fairness rules and gauges demand at low build cost.
-- **Phase 1:** schedule the draw, auto-generate + send the emails, and auto-cascade the
-  48-hour waitlist. Then **Phase 2** extends to the plants (QR flyers, kiosk, SMS) and adds
-  the AI helpers (demand forecasting, last-minute broadcast, fairness auditing, HR digest).
+What each stage does:
+
+1. **Draw** (`draw.py`) — weighted lottery over open events; winners start `pending`.
+2. **Notify** (`notify.py`) — one "you won" email per pending winner with a confirm link
+   and a **48-hour deadline**, plus the deadline **reminder** broadcast. Emails render to
+   the git-ignored `outbox/`; a send step delivers them (see `SCHEDULING.md`).
+3. **Reconcile** (`reconcile.py`) — the follow-through: **confirm** keeps the seats,
+   **decline** or a **48h timeout** frees them, and freed seats **cascade down the ordered
+   waitlist** (parties kept together, up to `max_party`). Promoted winners get their own
+   email + deadline; any seats left after the waitlist is exhausted trigger a **last-minute
+   broadcast** so nothing is wasted. `--commit` records cooldown for confirmed winners.
+4. **Publish** — commit `results.json`; GitHub Pages refreshes the board.
+
+Every step accepts `--as-of <ISO>` so you can simulate the 48-hour window in seconds.
+
+**Cooldown timing:** in the automated loop, cooldown is applied at **confirmation**
+(`reconcile --commit`), not at draw time — so it lands on people who actually get tickets,
+including promoted winners. (`draw.py --commit` remains the manual one-shot path from Phase 0.)
+
+## Phase roadmap
+
+- **Phase 0 (done):** board + weighted draw + email templates, run on demand.
+- **Phase 1 (this):** scheduled draw, auto-rendered emails, 48-hour confirm + waitlist
+  cascade + last-minute broadcast — the loop runs itself.
+- **Phase 2 (next):** extend to the plants (QR flyers, kiosk, SMS) and add the AI helpers
+  (demand forecasting, targeted nudges, fairness auditing, HR digest).
 
 ---
 
 ## Configure before launch
 
-- [ ] Create the **Microsoft Form** and set `FORM_URL` in `index.html`.
-- [ ] Create the **SharePoint list** for entries (and one for members/points).
-- [ ] Replace the sample `members.json` / `entries.json` with the real pilot roster.
+- [ ] Create the **entry** Microsoft Form (→ `FORM_URL` in `index.html` and `config.json`)
+      and the **confirm** Form (→ `confirm_url` in `config.json`).
+- [ ] Fill the rest of `config.json` (seat location, board URL, broadcast address).
+- [ ] Create the **SharePoint lists** for entries, confirmations, and members/points, and
+      wire the Forms→SharePoint→JSON syncs (see `SCHEDULING.md`).
+- [ ] Replace the sample `members.json` / `entries.json` / `confirmations.json` with real data.
 - [ ] Load real upcoming events into `events.json` (set `tier` and `max_party`).
+- [ ] Schedule the three `weekly.py` jobs (see `SCHEDULING.md`).
 - [ ] Decide access: the board is on **public** GitHub Pages — keep it PII-free (it is), or
       move it behind M365 auth (SharePoint page) if you'd rather it be internal-only.
 - [ ] HR/legal sign-off on earning criteria; Finance note on fringe-benefit tax.
