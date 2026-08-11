@@ -391,30 +391,36 @@
     }
 
     async function init(){
-      let events = {events:[]}, results = {draws:[]};
-      try { events = await fetchJSON('data/events.json'); }
-      catch(e){
-        document.getElementById('content').innerHTML = `
-          <div class="state-panel">
-            <div class="state-title">Almost there</div>
-            <div class="state-desc">Add your events to <code>data/events.json</code> and results will appear here. See <code>README.md</code>.</div>
-          </div>`;
-        return;
+      // Prefer the live Cloudflare API (reflects leadership moves); fall back to
+      // the static catalog — default-public (basketball + hockey) events — on
+      // plain hosting without the Function.
+      let events = null;
+      try { events = await fetchJSON('/api/board'); } catch(e){ /* no Function here */ }
+      if (!events || !Array.isArray(events.events)) {
+        let all;
+        try { all = await fetchJSON('data/events.json'); }
+        catch(e){
+          document.getElementById('content').innerHTML = `
+            <div class="state-panel">
+              <div class="state-title">Almost there</div>
+              <div class="state-desc">Add your events to <code>data/events.json</code>. See <code>README.md</code>.</div>
+            </div>`;
+          return;
+        }
+        events = { season: all.season, events: (all.events || []).filter(e =>
+          e.include !== false && e.status !== 'claimed' && (e.league === 'NBA' || e.league === 'NHL')) };
       }
+      let results = { draws: [] };
       try { results = await fetchJSON('data/results.json'); } catch(e){ /* no draws yet */ }
-      let leadStatus = null;
-      try { leadStatus = await fetchJSON('data/leadership_status.json'); } catch(e){ /* no draft */ }
       eventsById = Object.fromEntries((events.events || []).map(e => [e.id, e]));
 
-      const open = events.events.filter(e => e.status === 'open' && e.include !== false)
+      const open = events.events.filter(e => (e.status || 'open') === 'open')
         .sort((a,b)=> a.date < b.date ? -1 : 1);
-      // Only show events that were genuinely drawn (had at least one entrant).
       const drawn = (results.draws || []).filter(d => d.entrant_count > 0)
         .slice().sort((a,b)=> a.date > b.date ? -1 : 1);
       const openSeats = drawn.filter(d => d.seats_open > 0);
 
       let html = '';
-      html += renderLeadership(events.events || [], leadStatus);
       html += `<div class="section-title">Open for entry <span class="count">${open.length}</span></div>`;
       html += open.length ? open.map(eventCard).join('') : `<div class="empty">No events open right now — check back soon.</div>`;
 

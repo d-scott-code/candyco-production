@@ -38,7 +38,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-09-25",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/carin-leon/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/02/CarinLeon_web_900x500-1-768x427.jpg"
@@ -52,7 +52,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-09-26",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/ufc-332/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/08/UFC_web900x500-768x427.jpg"
@@ -66,7 +66,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-05",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.espn.com/nba/game/_/gameId/401898721/spurs-jazz",
       "image_url": "https://a.espncdn.com/i/teamlogos/nba/500/sa.png",
@@ -81,11 +81,10 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-06",
-      "status": "claimed",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/utah-mammoth-vs-toronto-maple-leafs/",
-      "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_TOR-1024x569.png",
-      "claimed_by": "Chad Stone"
+      "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_TOR-1024x569.png"
     },
     {
       "id": "2026-10-14-disney-descendants-zombies-camp-rock-worlds-collide-concert-tour",
@@ -96,7 +95,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-07",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/disney-worlds-collide-concert-tour/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/03/DisneyWorldsCollide_web_900x500_V2-768x427.jpg"
@@ -110,11 +109,10 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-08",
-      "status": "claimed",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/kacey-musgraves/",
-      "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/04/KaceyMusgraves_web_900x500-768x427.jpg",
-      "claimed_by": "Dave R."
+      "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/04/KaceyMusgraves_web_900x500-768x427.jpg"
     },
     {
       "id": "2026-10-17-utah-mammoth-vs-edmonton-oilers",
@@ -125,11 +123,10 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-10",
-      "status": "claimed",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/utah-mammoth-vs-edmonton-oilers/",
-      "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_EDM-1024x569.png",
-      "claimed_by": "Scott Maxfield"
+      "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_EDM-1024x569.png"
     },
     {
       "id": "2026-10-19-utah-mammoth-vs-pittsburgh-penguins",
@@ -140,7 +137,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-12",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/utah-mammoth-vs-pittsburgh-penguins/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_PIT-1024x569.png"
@@ -154,7 +151,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-13",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/gorillaz/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/03/Gorillaz-900x500-1-768x427.jpg"
@@ -168,7 +165,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-14",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/phoebe-bridgers/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/06/Static_Venue_900x500_PhoebeBridgers_2026_Regional_DeltaCenter_1021-768x427.jpg"
@@ -182,7 +179,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-17",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/utah-mammoth-vs-tampa-bay-lightning/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_TAM-1024x569.png"
@@ -209,7 +206,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-22",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/smashing-pumpkins/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/05/SmashingPumpkins_web900x500-768x427.jpg"
@@ -223,7 +220,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-23",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/dan-shay/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/05/DanShay_web900x500-768x427.jpg"
@@ -237,7 +234,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-25",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/don-omar/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/05/DonOmar_web900x500-768x427.jpg"
@@ -251,7 +248,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-27",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/teddy-swims/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/04/TeddySwims_web_900x500-REV1-768x427.jpg"
@@ -265,7 +262,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-30",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/disney-on-ice-presents-find-your-hero/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/05/Web_900x500_DateOnly-768x427.jpg"
@@ -279,7 +276,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-10-31",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/disney-on-ice-presents-find-your-hero-4/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/05/Web_900x500_DateOnly-768x427.jpg"
@@ -293,7 +290,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-11-01",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/disney-on-ice-presents-find-your-hero-6/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/05/Web_900x500_DateOnly-768x427.jpg"
@@ -346,7 +343,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-11-11",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/utah-mammoth-vs-colorado-avalanche/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_COL-1024x569.png"
@@ -373,7 +370,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2026-11-23",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/utah-mammoth-vs-montreal-canadiens/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_MTL-1024x569.png"
@@ -478,7 +475,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2027-01-06",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/utah-mammoth-vs-detroit-red-wings/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_DET-1024x569.png"
@@ -505,7 +502,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2027-01-16",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/utah-mammoth-vs-boston-bruins/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_BOS-1024x569.png"
@@ -584,7 +581,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2027-01-29",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/pbr/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/05/PBR_web900x500-768x427.jpg"
@@ -598,7 +595,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2027-01-30",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/pbr-2/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2026/05/PBR_web900x500-768x427.jpg"
@@ -677,7 +674,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2027-03-02",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/utah-mammoth-vs-new-york-rangers/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_NYR-1024x569.png"
@@ -756,7 +753,7 @@
       "tier": "premium",
       "seats": 4,
       "entry_close": "2027-03-27",
-      "status": "leadership",
+      "status": "open",
       "max_party": 2,
       "source_url": "https://www.deltacenter.com/events/154/",
       "image_url": "https://www.deltacenter.com/wp-content/uploads/2025/07/0093-Matchup_Graphics-Mammoth_900x500_VGK-1024x569.png"

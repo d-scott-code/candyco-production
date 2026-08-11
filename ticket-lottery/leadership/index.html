@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CandyCo Tickets — Leadership</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f5f4f1;--surface:#fff;--surface-2:#f0eee9;--ink:#17181c;--muted:#6c6a72;
+      --line:#e5e2dc;--accent:#e07c34;--accent-text:#a9551e;--on-accent:#1b1206;
+      --font-display:"Fraunces",Georgia,serif;--font-sans:"Manrope",-apple-system,"Segoe UI",sans-serif;
+    }
+    @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+      --bg:#0f1115;--surface:#181b21;--surface-2:#1f232b;--ink:#eceae4;--muted:#9a98a2;
+      --line:#292d36;--accent:#f0904a;--accent-text:#f0a365;}}
+    body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+    .topbar{background:#14151a;color:#fff;padding:12px 22px;display:flex;align-items:center;gap:11px;
+      border-bottom:1px solid rgba(255,255,255,.07)}
+    .logo-mark{height:18px;filter:brightness(0) invert(1)}
+    .brand-x{font-weight:600;letter-spacing:.12em;font-size:12px;text-transform:uppercase;color:#9a9dab}
+    .wrap{max-width:980px;margin:0 auto;padding:26px 22px 72px}
+    h1{font-family:var(--font-display);font-weight:500;font-size:30px;letter-spacing:-.02em;margin-bottom:6px}
+    .whoami{font-size:13px;color:var(--muted);margin-bottom:6px}
+    .whoami b{color:var(--ink)}
+    .owner-flag{display:inline-block;font-size:11px;font-weight:800;background:var(--accent);color:var(--on-accent);
+      border-radius:6px;padding:2px 8px;margin-left:6px;letter-spacing:.03em}
+    .note{font-size:12.5px;color:var(--muted);line-height:1.6;margin:10px 0 8px;max-width:70ch}
+    .section-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.13em;
+      margin:30px 0 12px;display:flex;align-items:center;gap:11px}
+    .section-title::before{content:"";width:20px;height:3px;border-radius:2px;background:var(--accent)}
+    .section-title .count{font-size:11px;font-weight:700;color:var(--muted);background:var(--surface-2);
+      border:1px solid var(--line);border-radius:20px;padding:2px 10px}
+    .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 14px;
+      margin-bottom:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .thumb{width:104px;height:60px;border-radius:9px;object-fit:cover;background:var(--surface-2);flex-shrink:0}
+    .thumb.logo{object-fit:contain;background:#fff;padding:8px}
+    .main{flex:1;min-width:180px}
+    .date{font-size:12px;color:var(--muted);font-weight:700;font-variant-numeric:tabular-nums}
+    .title{font-size:16px;font-weight:800;letter-spacing:-.01em;margin:2px 0 6px}
+    .badges{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+    .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px;background:var(--surface-2);
+      color:var(--muted);border:1px solid var(--line)}
+    .badge.claim{background:var(--ink);color:var(--bg);border:none}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;
+      padding:8px 14px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap}
+    .btn:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+    .btn.primary{background:var(--accent);color:var(--on-accent);border:none}
+    .btn:disabled{opacity:.5;cursor:default}
+    .empty{color:var(--muted);font-size:13px;padding:10px 2px}
+    .msg{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);
+      padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:opacity .2s;z-index:50}
+    .msg.show{opacity:1}
+    .state{padding:70px 20px;text-align:center;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <img class="logo-mark" src="../assets/candyco-logo.png" alt="CandyCo">
+    <span class="brand-x">× Delta Center · Leadership</span>
+  </div>
+  <div class="wrap">
+    <h1>Leadership event board</h1>
+    <div class="whoami" id="whoami">Checking your access…</div>
+    <div class="note">
+      Events here are held for leadership first. <b>Send an event to the public board</b> to open it to the
+      employee lottery. Basketball and hockey games default to the public board; everything else starts here.
+      Claiming is capped at 4 per person — except the owner, who is unlimited and not in the round-robin.
+    </div>
+    <div id="content"><div class="state">Loading…</div></div>
+  </div>
+  <div class="msg" id="msg"></div>
+
+  <script>
+    const DAY=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const fmt=iso=>{const[y,m,d]=iso.split('-').map(Number);const t=new Date(y,m-1,d);
+      return `${DAY[t.getDay()]}, ${MON[t.getMonth()]} ${t.getDate()}`;};
+    const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    let STATE=null;
+
+    function toast(t){const m=document.getElementById('msg');m.textContent=t;m.classList.add('show');
+      setTimeout(()=>m.classList.remove('show'),2200);}
+
+    async function api(path,opts){const r=await fetch(path,opts);const j=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(j.error||('HTTP '+r.status));return j;}
+
+    function thumb(ev){if(!ev.image_url)return '<div class="thumb"></div>';
+      return `<img class="thumb${ev.logo?' logo':''}" src="${esc(ev.image_url)}" alt="">`;}
+
+    function claimant(id){const p=(STATE.picks||[]).find(p=>p.id===id);return p?p.who:null;}
+
+    function card(ev){
+      const who=claimant(ev.id);
+      const mineClaim=who&&who.toLowerCase()===STATE.you.toLowerCase();
+      let acts='';
+      if(ev.list==='leadership'){
+        acts += who
+          ? `<span class="badge claim">Claimed · ${esc(who.split('@')[0])}</span>` +
+            (mineClaim?`<button class="btn" onclick="pick('${ev.id}','release')">Release</button>`:'')
+          : `<button class="btn" onclick="pick('${ev.id}','claim')">Claim</button>`;
+        acts += `<button class="btn primary" onclick="move('${ev.id}','public')">Send to public →</button>`;
+      } else {
+        acts += `<button class="btn" onclick="move('${ev.id}','leadership')">← Pull to leadership</button>`;
+      }
+      return `<div class="card">${thumb(ev)}
+        <div class="main">
+          <div class="date">${fmt(ev.date)}${ev.tipoff?' · '+ev.tipoff:''}</div>
+          <div class="title">${esc(ev.title)}</div>
+          <div class="badges"><span class="badge">${esc(ev.league)}</span></div>
+        </div>
+        <div class="actions">${acts}</div></div>`;
+    }
+
+    async function move(id,to){try{await api('/api/move',{method:'POST',headers:{'content-type':'application/json'},
+      body:JSON.stringify({id,to})});toast(to==='public'?'Sent to the public board':'Pulled to leadership');load();}
+      catch(e){toast(e.message);}}
+    async function pick(id,action){try{await api('/api/pick',{method:'POST',headers:{'content-type':'application/json'},
+      body:JSON.stringify({id,action})});toast(action==='claim'?'Claimed':'Released');load();}catch(e){toast(e.message);}}
+    window.move=move;window.pick=pick;
+
+    async function load(){
+      let data;
+      try{data=await api('/api/admin');}
+      catch(e){document.getElementById('content').innerHTML=
+        `<div class="state">Couldn't load the board (${esc(e.message)}).<br>This page must be served by Cloudflare with the Function + Access configured — see CLOUDFLARE.md.</div>`;
+        document.getElementById('whoami').textContent='';return;}
+      STATE=data;
+      const owner=data.isOwner?'<span class="owner-flag">Owner · unlimited</span>':'';
+      document.getElementById('whoami').innerHTML=
+        `Signed in as <b>${esc(data.you)}</b>${owner} · ${data.myPicks} pick${data.myPicks!==1?'s':''}${data.isOwner?'':' of 4'}`;
+      const lead=data.events.filter(e=>e.list==='leadership').sort((a,b)=>a.date<b.date?-1:1);
+      const pub=data.events.filter(e=>e.list==='public').sort((a,b)=>a.date<b.date?-1:1);
+      let h=`<div class="section-title">Leadership list <span class="count">${lead.length}</span></div>`;
+      h+=lead.length?lead.map(card).join(''):'<div class="empty">Nothing held for leadership.</div>';
+      h+=`<div class="section-title">On the public board <span class="count">${pub.length}</span></div>`;
+      h+=pub.length?pub.map(card).join(''):'<div class="empty">No public events.</div>';
+      document.getElementById('content').innerHTML=h;
+    }
+    load();
+  </script>
+</body>
+</html>
