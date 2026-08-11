@@ -1,8 +1,0 @@
-# Generated files that contain full names + emails. NEVER publish (this repo is
-# served publicly by GitHub Pages). Keep them local / in the M365 tenant.
-data/draw_details.json
-outbox/
-
-# Python bytecode
-__pycache__/
-*.pyc

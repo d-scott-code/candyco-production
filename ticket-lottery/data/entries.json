@@ -1,4 +1,0 @@
-{
-  "_comment": "One row per person-per-event they entered. seats_requested (1-4) lets someone ask for a pair or a group; the engine keeps parties together. In production these rows come from a Microsoft Form submission landing in a SharePoint list. Empty to start — real entries arrive once the entry form is live.",
-  "entries": []
-}
