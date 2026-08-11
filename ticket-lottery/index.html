@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CandyCo Ticket Lottery</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --shadow:  #272838;
+      --emerald: #23CE6B;
+      --steel:   #1982C4;
+      --gold:    #FFCA3A;
+      --red:     #FF0022;
+      --ink:     #1a1a1a;
+      --muted:   #64748b;
+      --line:    #e2e8f0;
+      --bg:      #f8fafc;
+      --card:    #ffffff;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Assistant", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .app-header {
+      background: var(--shadow);
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .app-title {
+      font-size: 17px; font-weight: 700; letter-spacing: 0.02em;
+      display: flex; align-items: center; gap: 9px;
+    }
+    .app-title-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--emerald); flex-shrink: 0; }
+    .app-subtitle { font-size: 11px; color: #a8aabf; margin-top: 3px; }
+    .header-right { font-size: 11px; color: #a8aabf; text-align: right; line-height: 1.5; }
+
+    /* ── Layout ── */
+    .wrap { max-width: 920px; margin: 0 auto; padding: 22px 18px 60px; }
+
+    .how {
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+      padding: 16px 18px; margin-bottom: 24px;
+    }
+    .how h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 10px; }
+    .how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .how-step { font-size: 12.5px; line-height: 1.45; color: #334155; }
+    .how-step b { display: block; color: var(--shadow); font-size: 13px; margin-bottom: 2px; }
+    .how-step .n {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%; background: var(--emerald);
+      color: white; font-size: 11px; font-weight: 700; margin-right: 6px;
+    }
+
+    .section-title {
+      font-size: 14px; font-weight: 700; color: var(--shadow);
+      margin: 26px 0 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title .count {
+      font-size: 11px; font-weight: 600; color: var(--muted);
+      background: #eef2f7; border-radius: 10px; padding: 2px 9px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+      padding: 16px 18px; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .card-main { flex: 1; min-width: 200px; }
+    .card-date { font-size: 12px; color: var(--muted); font-weight: 600; }
+    .card-title { font-size: 17px; font-weight: 700; color: var(--shadow); margin: 2px 0 8px; }
+    .badges { display: flex; gap: 6px; flex-wrap: wrap; }
+    .badge {
+      font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .b-nba     { background: #e7f2fb; color: var(--steel); }
+    .b-nhl     { background: #fdeaec; color: var(--red); }
+    .b-concert { background: #fff6da; color: #a67c00; }
+    .b-premium { background: var(--shadow); color: var(--gold); }
+    .b-standard{ background: #eef2f7; color: #475569; }
+
+    .card-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .deadline { font-size: 12px; color: var(--muted); }
+    .deadline b { color: var(--shadow); }
+    .deadline.urgent b { color: var(--red); }
+
+    .btn {
+      background: var(--emerald); color: white; border: none; border-radius: 8px;
+      padding: 10px 20px; font-size: 14px; font-weight: 700; font-family: inherit;
+      cursor: pointer; text-decoration: none; display: inline-block; white-space: nowrap;
+      transition: filter .15s;
+    }
+    .btn:hover { filter: brightness(0.94); }
+    .btn.secondary { background: var(--steel); }
+
+    /* ── Winners list ── */
+    .winners { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .winner-chip {
+      font-size: 12.5px; background: #ecfdf3; color: #15803d; border: 1px solid #bbf7d0;
+      border-radius: 20px; padding: 4px 12px; font-weight: 600;
+    }
+    .winner-chip .seats { color: #16a34a; font-weight: 700; }
+    .fill-note { font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+
+    /* ── State ── */
+    .empty { color: var(--muted); font-size: 13px; padding: 10px 2px; }
+    .state-panel { text-align: center; padding: 70px 24px; }
+    .state-icon { font-size: 40px; margin-bottom: 14px; }
+    .state-title { font-size: 16px; font-weight: 700; color: var(--shadow); margin-bottom: 6px; }
+    .state-desc { font-size: 13px; color: var(--muted); max-width: 380px; margin: 0 auto; line-height: 1.6; }
+    .state-desc code { background: #eef2f7; border-radius: 3px; padding: 1px 5px; font-size: 12px; }
+
+    footer { text-align: center; font-size: 11.5px; color: #94a3b8; margin-top: 34px; line-height: 1.6; }
+
+    @media (max-width: 640px) {
+      .how-steps { grid-template-columns: 1fr 1fr; }
+      .card { align-items: flex-start; }
+      .card-right { align-items: flex-start; text-align: left; width: 100%; }
+      .header-right { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="app-header">
+    <div>
+      <div class="app-title"><span class="app-title-dot"></span> CandyCo Ticket Lottery</div>
+      <div class="app-subtitle">Delta Center · Jazz · Mammoth · Live Events</div>
+    </div>
+    <div class="header-right" id="header-right"></div>
+  </header>
+
+  <div class="wrap">
+
+    <div class="how">
+      <h2>How it works</h2>
+      <div class="how-steps">
+        <div class="how-step"><b><span class="n">1</span>Earn entries</b>Everyone gets 1 base entry. Earn more through safety, recognition, and reliability.</div>
+        <div class="how-step"><b><span class="n">2</span>Put in</b>Tap <em>Enter</em> on any event you'd like before its deadline. Ask for 1–4 seats.</div>
+        <div class="how-step"><b><span class="n">3</span>Weighted draw</b>A random draw picks winners — more entries means better odds. Winners get a cooldown so tickets spread.</div>
+        <div class="how-step"><b><span class="n">4</span>Get notified</b>Winners are emailed and have 48 hours to confirm. Unclaimed seats open to everyone.</div>
+      </div>
+    </div>
+
+    <div id="content">
+      <div class="state-panel">
+        <div class="state-icon">⏳</div>
+        <div class="state-title">Loading events…</div>
+        <div class="state-desc">Fetching the lottery board.</div>
+      </div>
+    </div>
+
+    <footer id="footer"></footer>
+  </div>
+
+  <script>
+    // ── CONFIG ─────────────────────────────────────────────────────────────
+    // Point this at the Microsoft Form that captures entries. The event title
+    // is appended so you can see which event a submission was for (and, once the
+    // Form has a prefill parameter, land people on the right question).
+    const FORM_URL = "https://forms.office.com/r/REPLACE_WITH_YOUR_FORM_ID";
+    // ───────────────────────────────────────────────────────────────────────
+
+    const DAY   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const MONTH = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    function d(iso){ const [y,m,dd]=iso.split('-').map(Number); return new Date(y,m-1,dd); }
+    function fmt(iso){ const t=d(iso); return `${DAY[t.getDay()]}, ${MONTH[t.getMonth()]} ${t.getDate()}`; }
+    function daysUntil(iso){ return Math.ceil((d(iso) - new Date(new Date().toDateString())) / 86400000); }
+    function leagueClass(l){ return l==='NBA'?'b-nba':l==='NHL'?'b-nhl':'b-concert'; }
+    function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+    function eventCard(ev){
+      const dleft = daysUntil(ev.entry_close);
+      const urgent = dleft <= 2;
+      const deadline = dleft < 0
+        ? `Entry closed`
+        : dleft === 0 ? `Closes <b>today</b>`
+        : `Closes in <b>${dleft} day${dleft!==1?'s':''}</b>`;
+      const link = `${FORM_URL}?event=${encodeURIComponent(ev.title + ' · ' + ev.date)}`;
+      const partyNote = ev.max_party && ev.max_party < 4
+        ? `<div class="fill-note">Up to ${ev.max_party} seats per person on this event</div>` : '';
+      return `
+        <div class="card">
+          <div class="card-main">
+            <div class="card-date">${fmt(ev.date)} · ${ev.tipoff}</div>
+            <div class="card-title">${esc(ev.title)}</div>
+            <div class="badges">
+              <span class="badge ${leagueClass(ev.league)}">${esc(ev.league)}</span>
+              <span class="badge b-${ev.tier}">${ev.tier==='premium'?'★ Premium':'Standard'}</span>
+              <span class="badge b-standard">${ev.seats} seats</span>
+            </div>
+            ${partyNote}
+          </div>
+          <div class="card-right">
+            <div class="deadline ${urgent?'urgent':''}">${deadline}</div>
+            <a class="btn" href="${link}" target="_blank" rel="noopener">Enter →</a>
+          </div>
+        </div>`;
+    }
+
+    function resultCard(dr){
+      const chips = dr.winners.map(w =>
+        `<span class="winner-chip">${esc(w.display_name)} · ${esc(w.dept)} <span class="seats">${w.seats} seat${w.seats!==1?'s':''}</span></span>`
+      ).join('');
+      const fill = `${dr.seats_filled}/${dr.seats_total} seats claimed · ${dr.entrant_count} entered`;
+      return `
+        <div class="card">
+          <div class="card-main">
+            <div class="card-date">${fmt(dr.date)}</div>
+            <div class="card-title">${esc(dr.title)}</div>
+            <div class="winners">${chips || '<span class="empty">No entries</span>'}</div>
+            <div class="fill-note">${fill}</div>
+          </div>
+        </div>`;
+    }
+
+    function openSeatCard(dr){
+      const link = `${FORM_URL}?event=${encodeURIComponent('LAST-MINUTE: ' + dr.title + ' · ' + dr.date)}`;
+      return `
+        <div class="card">
+          <div class="card-main">
+            <div class="card-date">${fmt(dr.date)}</div>
+            <div class="card-title">${esc(dr.title)}</div>
+            <div class="badges">
+              <span class="badge b-nhl">${dr.seats_open} seat${dr.seats_open!==1?'s':''} open</span>
+              <span class="badge ${leagueClass(dr.league)}">${esc(dr.league)}</span>
+            </div>
+            <div class="fill-note">Unclaimed — first to grab them wins.</div>
+          </div>
+          <div class="card-right">
+            <a class="btn secondary" href="${link}" target="_blank" rel="noopener">Claim →</a>
+          </div>
+        </div>`;
+    }
+
+    async function fetchJSON(path){
+      const r = await fetch(`${path}?_=${Date.now()}`);
+      if (!r.ok) throw new Error(path);
+      return r.json();
+    }
+
+    async function init(){
+      let events = {events:[]}, results = {draws:[]};
+      try { events = await fetchJSON('data/events.json'); }
+      catch(e){
+        document.getElementById('content').innerHTML = `
+          <div class="state-panel">
+            <div class="state-icon">🔧</div>
+            <div class="state-title">Almost there</div>
+            <div class="state-desc">Add your events to <code>data/events.json</code> and results will appear here. See <code>README.md</code>.</div>
+          </div>`;
+        return;
+      }
+      try { results = await fetchJSON('data/results.json'); } catch(e){ /* no draws yet */ }
+
+      const open = events.events.filter(e => e.status === 'open')
+        .sort((a,b)=> a.date < b.date ? -1 : 1);
+      // Only show events that were genuinely drawn (had at least one entrant).
+      const drawn = (results.draws || []).filter(d => d.entrant_count > 0)
+        .slice().sort((a,b)=> a.date > b.date ? -1 : 1);
+      const openSeats = drawn.filter(d => d.seats_open > 0);
+
+      let html = '';
+      html += `<div class="section-title">Open for entry <span class="count">${open.length}</span></div>`;
+      html += open.length ? open.map(eventCard).join('') : `<div class="empty">No events open right now — check back soon.</div>`;
+
+      if (openSeats.length){
+        html += `<div class="section-title">⚡ Last-minute open seats <span class="count">${openSeats.length}</span></div>`;
+        html += openSeats.map(openSeatCard).join('');
+      }
+
+      html += `<div class="section-title">Recent draws <span class="count">${drawn.length}</span></div>`;
+      html += drawn.length ? drawn.map(resultCard).join('') : `<div class="empty">No draws have run yet.</div>`;
+
+      document.getElementById('content').innerHTML = html;
+
+      const gen = results.generated ? new Date(results.generated) : null;
+      document.getElementById('header-right').innerHTML =
+        `${events.events.length} events · ${events.season || ''}` +
+        (gen ? `<br>Last draw: ${MONTH[gen.getMonth()]} ${gen.getDate()}` : '');
+      document.getElementById('footer').innerHTML =
+        `Winners shown by first name + last initial to protect privacy. Questions? Contact HR.<br>` +
+        `CandyCo employee benefit · Delta Center ${events.season || ''} season box.`;
+    }
+
+    init();
+  </script>
+</body>
+</html>

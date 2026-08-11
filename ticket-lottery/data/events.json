@@ -1,0 +1,76 @@
+{
+  "_comment": "Ticket inventory for the CandyCo Delta Center box (4 seats). One object per event. During the pilot this is maintained by hand / exported from a SharePoint list. status: open | drawn | closed. tier: premium | standard. max_party (optional, 1-4) caps group size so seats spread across more households; omit to allow a full group of 4.",
+  "season": "2026-27",
+  "seat_location": "Section 104, Row 12, Seats 5-8",
+  "events": [
+    {
+      "id": "2026-10-24-jazz-lakers",
+      "date": "2026-10-24",
+      "tipoff": "19:00",
+      "league": "NBA",
+      "title": "Jazz vs. Lakers",
+      "tier": "premium",
+      "seats": 4,
+      "max_party": 2,
+      "entry_close": "2026-10-19",
+      "status": "open"
+    },
+    {
+      "id": "2026-10-30-mammoth-avalanche",
+      "date": "2026-10-30",
+      "tipoff": "19:00",
+      "league": "NHL",
+      "title": "Mammoth vs. Avalanche",
+      "tier": "premium",
+      "seats": 4,
+      "max_party": 2,
+      "entry_close": "2026-10-25",
+      "status": "open"
+    },
+    {
+      "id": "2026-11-05-jazz-thunder",
+      "date": "2026-11-05",
+      "tipoff": "19:00",
+      "league": "NBA",
+      "title": "Jazz vs. Thunder",
+      "tier": "standard",
+      "seats": 4,
+      "entry_close": "2026-10-31",
+      "status": "open"
+    },
+    {
+      "id": "2026-11-12-mammoth-kings",
+      "date": "2026-11-12",
+      "tipoff": "19:30",
+      "league": "NHL",
+      "title": "Mammoth vs. Kings",
+      "tier": "standard",
+      "seats": 4,
+      "entry_close": "2026-11-07",
+      "status": "open"
+    },
+    {
+      "id": "2026-11-18-concert-brooks",
+      "date": "2026-11-18",
+      "tipoff": "20:00",
+      "league": "Concert",
+      "title": "Garth Brooks — Live",
+      "tier": "premium",
+      "seats": 4,
+      "max_party": 2,
+      "entry_close": "2026-11-08",
+      "status": "open"
+    },
+    {
+      "id": "2026-09-26-jazz-preseason",
+      "date": "2026-09-26",
+      "tipoff": "19:00",
+      "league": "NBA",
+      "title": "Jazz vs. Trail Blazers (Preseason)",
+      "tier": "standard",
+      "seats": 4,
+      "entry_close": "2026-09-21",
+      "status": "drawn"
+    }
+  ]
+}
