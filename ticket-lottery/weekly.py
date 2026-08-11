@@ -49,12 +49,16 @@ def mark_drawn():
 
 def main():
     ap = argparse.ArgumentParser(description="Run a weekly-loop job.")
-    ap.add_argument("job", choices=["draw", "reconcile", "reminder"])
+    ap.add_argument("job", choices=["leadership", "draw", "reconcile", "reminder"])
     ap.add_argument("--commit", action="store_true",
-                    help="reconcile: persist cooldown + event status")
+                    help="reconcile/leadership: persist state to events.json")
     args = ap.parse_args()
 
-    if args.job == "draw":
+    if args.job == "leadership":
+        # Advance the premium draft, render the current leader's turn email, and
+        # (with --commit) persist claims / release leftovers to the lottery.
+        run("leadership.py", *(["--commit"] if args.commit else []))
+    elif args.job == "draw":
         run("draw.py", "--all")
         mark_drawn()
         run("notify.py", "winners")

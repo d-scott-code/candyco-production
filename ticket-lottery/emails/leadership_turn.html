@@ -1,0 +1,31 @@
+<!-- Leadership "on the clock" email. Placeholders: {{name}} {{deadline}} {{remaining}} {{picks_left}} {{event_rows}} {{board_url}} {{pass_link}} -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;padding:24px 0;font-family:-apple-system,'Segoe UI',Arial,sans-serif;">
+  <tr><td align="center">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0;">
+      <tr><td style="background:#272838;padding:22px 28px;">
+        <span style="color:#ffffff;font-size:18px;font-weight:700;">🏟 You're on the clock</span><br>
+        <span style="color:#a8aabf;font-size:12px;">CandyCo premium ticket draft</span>
+      </td></tr>
+      <tr><td style="padding:28px;">
+        <p style="margin:0 0 14px;font-size:15px;color:#1a1a1a;">Hi {{name}},</p>
+        <p style="margin:0 0 18px;font-size:15px;color:#1a1a1a;line-height:1.6;">
+          It's your pick in the premium-event draft. You may <b>claim one</b> of the events below
+          or pass. You have <b>{{picks_left}}</b> pick(s) remaining, and there are <b>{{remaining}}</b>
+          premium events still available. Please act by <b>{{deadline}}</b> — after that it passes to
+          the next person.
+        </p>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px;">
+          {{event_rows}}
+        </table>
+        <table role="presentation" cellpadding="0" cellspacing="0">
+          <tr><td style="padding-right:10px;">
+            <a href="{{pass_link}}" style="display:inline-block;padding:10px 22px;font-size:14px;font-weight:700;color:#475569;text-decoration:none;border:1px solid #cbd5e1;border-radius:8px;">Pass this round</a>
+          </td></tr>
+        </table>
+      </td></tr>
+      <tr><td style="padding:16px 28px;border-top:1px solid #e2e8f0;font-size:12px;color:#94a3b8;line-height:1.6;">
+        Track the draft on the <a href="{{board_url}}" style="color:#1982C4;">lottery board</a>. — CandyCo HR
+      </td></tr>
+    </table>
+  </td></tr>
+</table>

@@ -92,6 +92,28 @@
     .b-premium { background: var(--shadow); color: var(--gold); }
     .b-standard{ background: #eef2f7; color: #475569; }
 
+    .card-thumb {
+      width: 148px; height: 82px; border-radius: 8px; object-fit: cover;
+      flex-shrink: 0; background: #eef2f7; display: block;
+    }
+
+    /* ── Leadership draft ── */
+    .lead-banner {
+      background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--gold);
+      border-radius: 10px; padding: 12px 16px; margin-bottom: 14px;
+      font-size: 13px; color: #334155; line-height: 1.5;
+    }
+    .lead-banner b { color: var(--shadow); }
+    .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .pill {
+      font-size: 11.5px; font-weight: 600; background: #eef2f7; color: #475569;
+      border-radius: 20px; padding: 3px 10px;
+    }
+    .pill.on { background: var(--gold); color: var(--shadow); }
+    .pill .n { opacity: .6; margin-left: 2px; }
+    .b-claimed { background: #ecfdf3; color: #15803d; }
+    .b-await   { background: #fff6da; color: #a67c00; }
+
     .card-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
     .deadline { font-size: 12px; color: var(--muted); }
     .deadline b { color: var(--shadow); }
@@ -128,6 +150,7 @@
     @media (max-width: 640px) {
       .how-steps { grid-template-columns: 1fr 1fr; }
       .card { align-items: flex-start; }
+      .card-thumb { width: 100%; height: 150px; }
       .card-right { align-items: flex-start; text-align: left; width: 100%; }
       .header-right { display: none; }
     }
@@ -182,6 +205,8 @@
     function daysUntil(iso){ return Math.ceil((d(iso) - new Date(new Date().toDateString())) / 86400000); }
     function leagueClass(l){ return l==='NBA'?'b-nba':l==='NHL'?'b-nhl':'b-concert'; }
     function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+    let eventsById = {};
+    function thumb(url){ return url ? `<img class="card-thumb" src="${esc(url)}" alt="" loading="lazy">` : ''; }
 
     function eventCard(ev){
       const dleft = daysUntil(ev.entry_close);
@@ -195,8 +220,9 @@
         ? `<div class="fill-note">Up to ${ev.max_party} seats per person on this event</div>` : '';
       return `
         <div class="card">
+          ${thumb(ev.image_url)}
           <div class="card-main">
-            <div class="card-date">${fmt(ev.date)} · ${ev.tipoff}</div>
+            <div class="card-date">${fmt(ev.date)}${ev.tipoff ? ' · ' + ev.tipoff : ''}</div>
             <div class="card-title">${esc(ev.title)}</div>
             <div class="badges">
               <span class="badge ${leagueClass(ev.league)}">${esc(ev.league)}</span>
@@ -212,6 +238,58 @@
         </div>`;
     }
 
+    function leadCard(ev, claimedBy){
+      const status = claimedBy
+        ? `<span class="badge b-claimed">Claimed · ${esc(claimedBy)}</span>`
+        : `<span class="badge b-await">Awaiting pick</span>`;
+      return `
+        <div class="card">
+          ${thumb(ev.image_url)}
+          <div class="card-main">
+            <div class="card-date">${fmt(ev.date)}${ev.tipoff ? ' · ' + ev.tipoff : ''}</div>
+            <div class="card-title">${esc(ev.title)}</div>
+            <div class="badges">
+              <span class="badge ${leagueClass(ev.league)}">${esc(ev.league)}</span>
+              <span class="badge b-premium">★ Premium</span>
+              ${status}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderLeadership(evs, status){
+      const byDate = (a,b)=> a.date < b.date ? -1 : 1;
+      const pool = evs.filter(e => e.status === 'leadership').sort(byDate);
+      const claimed = evs.filter(e => e.status === 'claimed').sort(byDate);
+      if (!pool.length && !claimed.length) return '';
+      const claimedBy = {};
+      (status && status.claims || []).forEach(c => claimedBy[c.event_id] = c.leader);
+
+      const cap = status ? status.picks_per_leader : 4;
+      let h = `<div class="section-title">🏟 Leadership premium draft ` +
+              `<span class="count">${status && status.phase==='complete' ? 'complete' : 'in progress'}</span></div>`;
+      if (status){
+        const dl = status.turn_deadline ? new Date(status.turn_deadline) : null;
+        h += `<div class="lead-banner">` +
+          (status.on_clock
+            ? `<b>On the clock: ${esc(status.on_clock)}</b>${dl ? ` · pick by ${MONTH[dl.getMonth()]} ${dl.getDate()}` : ''}. `
+            : (status.phase==='complete'
+                ? `Draft complete — remaining premium events have opened to the general lottery. `
+                : `Draft in progress. `)) +
+          `Premium events are offered to leadership (up to ${cap} each) before the rest open to everyone.`;
+        if (status.order && status.order.length){
+          h += `<div class="pills">` + status.order.map(n => {
+            const cnt = (status.counts && status.counts[n]) || 0;
+            return `<span class="pill ${n===status.on_clock?'on':''}">${esc(n)}<span class="n">${cnt}/${cap}</span></span>`;
+          }).join('') + `</div>`;
+        }
+        h += `</div>`;
+      }
+      h += claimed.map(e => leadCard(e, claimedBy[e.id] || '(claimed)')).join('');
+      h += pool.map(e => leadCard(e, '')).join('');
+      return h;
+    }
+
     function resultCard(dr){
       const chips = dr.winners.map(w =>
         `<span class="winner-chip">${esc(w.display_name)} · ${esc(w.dept)} <span class="seats">${w.seats} seat${w.seats!==1?'s':''}</span></span>`
@@ -219,6 +297,7 @@
       const fill = `${dr.seats_filled}/${dr.seats_total} seats claimed · ${dr.entrant_count} entered`;
       return `
         <div class="card">
+          ${thumb((eventsById[dr.event_id]||{}).image_url)}
           <div class="card-main">
             <div class="card-date">${fmt(dr.date)}</div>
             <div class="card-title">${esc(dr.title)}</div>
@@ -232,6 +311,7 @@
       const link = `${FORM_URL}?event=${encodeURIComponent('LAST-MINUTE: ' + dr.title + ' · ' + dr.date)}`;
       return `
         <div class="card">
+          ${thumb((eventsById[dr.event_id]||{}).image_url)}
           <div class="card-main">
             <div class="card-date">${fmt(dr.date)}</div>
             <div class="card-title">${esc(dr.title)}</div>
@@ -266,6 +346,9 @@
         return;
       }
       try { results = await fetchJSON('data/results.json'); } catch(e){ /* no draws yet */ }
+      let leadStatus = null;
+      try { leadStatus = await fetchJSON('data/leadership_status.json'); } catch(e){ /* no draft */ }
+      eventsById = Object.fromEntries((events.events || []).map(e => [e.id, e]));
 
       const open = events.events.filter(e => e.status === 'open')
         .sort((a,b)=> a.date < b.date ? -1 : 1);
@@ -275,6 +358,7 @@
       const openSeats = drawn.filter(d => d.seats_open > 0);
 
       let html = '';
+      html += renderLeadership(events.events || [], leadStatus);
       html += `<div class="section-title">Open for entry <span class="count">${open.length}</span></div>`;
       html += open.length ? open.map(eventCard).join('') : `<div class="empty">No events open right now — check back soon.</div>`;
 

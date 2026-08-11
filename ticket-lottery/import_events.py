@@ -98,12 +98,16 @@ def build_event(raw, config):
         "tier": "premium" if premium else "standard",
         "seats": config.get("seats_per_event", 4),
         "entry_close": close,
-        "status": "open",
+        # premium events go through the leadership draft first; standard events
+        # go straight to the general entry pool.
+        "status": "leadership" if premium else "open",
     }
     if premium:
         ev["max_party"] = 2
     if raw.get("source_url"):
         ev["source_url"] = raw["source_url"]
+    if raw.get("image_url"):
+        ev["image_url"] = raw["image_url"]
     return ev
 
 

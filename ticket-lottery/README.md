@@ -49,6 +49,7 @@ ticket-lottery/
 ├── index.html          Employee board (GitHub Pages). Reads events.json + results.json.
 ├── config.json         Phase 1 settings (Form URLs, seat location, 48h window, board URL).
 ├── import_events.py    Turn scraped deltacenter.com events into events.json.     [events]
+├── leadership.py       Premium-event leadership draft (round-robin, 4 each).      [premium]
 ├── draw.py             The draw engine (weighted lottery + cooldown + waitlist).
 ├── notify.py           Renders winner + reminder emails into outbox/.            [Phase 1]
 ├── reconcile.py        Confirmations + 48h timeouts + waitlist cascade + follow-ups. [Phase 1]
@@ -57,6 +58,8 @@ ticket-lottery/
 ├── data/
 │   ├── events.json       Ticket inventory — one row per event. SAFE to publish.
 │   ├── raw_events.json   Events scraped from deltacenter.com (input to import). SAFE.  [events]
+│   ├── leadership_picks.json  Leadership draft claims/passes (input). SAFE.            [premium]
+│   ├── leadership_status.json Draft state for the board (names + titles). SAFE.        [premium]
 │   ├── members.json      Pilot participants + earned points. PRIVATE (names/emails).
 │   ├── entries.json      Who entered which event. PRIVATE.
 │   ├── confirmations.json Winner confirm/decline responses. PRIVATE.              [Phase 1]
@@ -90,17 +93,55 @@ computes `entry_close` (date − `entry_close_days`) and a stable `id`, and — 
 preserves the `status` and any manual `tier`/`max_party` you set. Tweak individual events
 in `events.json` afterward; a merge refresh won't clobber those.
 
-**To refresh:** re-scrape `deltacenter.com/events` into `data/raw_events.json`, then run
-`python3 import_events.py`. The site shows a rolling window with a "Load More" button, so
-re-run periodically to pick up newly announced events. (Ask Claude to "refresh the Delta
-Center events" and it will re-scrape + import — a good candidate for a scheduled step.)
+The full slate (currently ~57 events, Sep 2026 → Apr 2027) comes from the site's **Modern
+Events Calendar REST API** — `https://www.deltacenter.com/wp-json/wp/v2/mec-events` for the
+list + featured images, with exact dates/times filled in from each event's detail page. Each
+event carries its **card image** (`image_url`), which the board renders.
+
+**To refresh:** re-pull that REST list into `data/raw_events.json`, then run
+`python3 import_events.py` (a merge that preserves statuses). Ask Claude to "refresh the Delta
+Center events" and it will re-pull + import — a good candidate for a scheduled step.
 
 **Two caveats worth knowing:**
-- **No Jazz games.** `deltacenter.com/events` lists Utah Mammoth, concerts, and other
-  events but **not Utah Jazz** (published separately). Add Jazz to `raw_events.json` from
-  `utahjazz.com` when you want them in the pool.
-- **Tiers are a heuristic.** Marquee opponents and all concerts default to `premium`
-  (`max_party: 2`); adjust any event by hand.
+- **No Jazz games.** deltacenter.com lists Utah Mammoth, concerts, and other events but
+  **not Utah Jazz** (published separately). Add Jazz to `raw_events.json` from `utahjazz.com`
+  when you want them in the pool.
+- **Tiers are a heuristic.** Marquee opponents and all concerts/other default to `premium`
+  (leadership draft, `max_party: 2`); everything else is `standard` (general lottery). Adjust
+  any event by hand — a merge refresh keeps your overrides.
+
+**Card images** hotlink from deltacenter.com. They render on the live GitHub Pages board;
+if the venue ever blocks hotlinking, download the images into the repo and point `image_url`
+at the local copies instead.
+
+## Premium events — the leadership draft
+
+Premium events (concerts, marquee games, other high-demand events) don't go straight to
+the general lottery. They're offered to the leadership team first, in a serial draft, then
+whatever's left opens to everyone. Run by `leadership.py`; the board shows it live.
+
+- **Order** comes from `config.leadership.order` (Scott first, then Dave, Aubrey, Chad, Ryan,
+  Kathleen, Stephanie, Matt Hatch). Fill in the real email addresses there.
+- **Even round-robin:** the leader on the clock **claims one** available premium event or
+  **passes**. Either way the turn advances to the next person; a claim also sends that leader
+  to the **bottom** of the order (so those who haven't claimed keep priority).
+- **Up to `picks_per_leader` (4) claims each.** When every leader is capped, or a full round
+  passes with no claim, or the pool empties, the draft is **complete** and unclaimed premium
+  events are **released to the general lottery** (`status` → `open`).
+- **48h per turn** (`turn_window_hours`); no response auto-passes to the next person.
+
+```bash
+python3 leadership.py --as-of 2026-08-14T09:00            # dry run: status board + turn email
+python3 leadership.py --as-of 2026-08-14T09:00 --commit    # persist claims / releases to events.json
+# or via the scheduler:
+python3 weekly.py leadership --commit
+```
+
+Claims/passes come from a **leadership Microsoft Form** (→ `data/leadership_picks.json`),
+mirroring how entries and confirmations sync in. Premium events carry `status: "leadership"`
+until claimed (`"claimed"`) or released (`"open"`); the importer sets this automatically.
+`leadership_status.json` (names + claimed titles only — no emails) drives the board's
+"Leadership premium draft" section.
 
 ## Running a draw
 
