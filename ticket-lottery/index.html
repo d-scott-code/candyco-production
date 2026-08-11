@@ -55,7 +55,7 @@
 
     /* ── Hero ── */
     .hero {
-      position: relative; overflow: hidden; min-height: 520px; display: flex; align-items: flex-end;
+      position: relative; overflow: hidden; min-height: 340px; display: flex; align-items: flex-end;
       background: linear-gradient(135deg, #1a1c24 0%, #101116 100%); isolation: isolate;
     }
     .hero-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.66; z-index:0; }
@@ -64,15 +64,10 @@
         linear-gradient(90deg, rgba(14,15,20,.92) 0%, rgba(14,15,20,.55) 42%, rgba(14,15,20,.05) 100%),
         linear-gradient(0deg, rgba(14,15,20,.9) 2%, rgba(14,15,20,.05) 55%); }
     .hero-inner { position:relative; z-index:2; width: 100%; max-width: 940px; margin: 0 auto;
-      padding: 92px 22px 44px; color:#fff; }
-    .hero-logo { height: 40px; margin-bottom: 26px; filter: brightness(0) invert(1)
+      padding: 64px 22px 34px; color:#fff; }
+    .hero-logo { height: 44px; margin-bottom: 22px; filter: brightness(0) invert(1)
       drop-shadow(0 2px 14px rgba(0,0,0,.55)); }
-    .hero-title { font-family: var(--font-display); font-weight: 500; line-height: 1.0;
-      font-size: clamp(42px, 7.4vw, 74px); letter-spacing: -0.018em; text-wrap: balance;
-      text-shadow: 0 2px 34px rgba(0,0,0,.45); }
-    .hero-title .pop { font-style: italic; color: var(--accent); }
-    .hero-sub { margin-top: 20px; max-width: 50ch; font-size: 16.5px; line-height: 1.55; color: #dcdae2; }
-    .hero-actions { margin-top: 28px; display: flex; align-items: center; gap: 18px 22px; flex-wrap: wrap; }
+    .hero-actions { display: flex; align-items: center; gap: 18px 22px; flex-wrap: wrap; }
     .hero-meta { display: flex; gap: 6px 20px; flex-wrap: wrap; font-size: 12.5px; letter-spacing: .03em;
       color: #b6b8c6; font-variant-numeric: tabular-nums; }
     .hero-meta b { color: #fff; font-weight: 700; }
@@ -216,12 +211,10 @@
   </div>
 
   <header class="hero">
-    <img class="hero-bg" src="https://d8j0ntlcm91z4.cloudfront.net/user_3H924nf8ia0xmY81S1MY3n8ZZuo/hf_20260811_191741_7916ce5b-268d-4e73-b2a8-51610022c94d.png" alt="" aria-hidden="true">
+    <img class="hero-bg" src="https://d8j0ntlcm91z4.cloudfront.net/user_3H924nf8ia0xmY81S1MY3n8ZZuo/hf_20260811_201224_a45ad79a-b17b-44b6-b195-6ce71dd6d1ff.png" alt="" aria-hidden="true">
     <div class="hero-scrim"></div>
     <div class="hero-inner">
       <img class="logo-mark hero-logo" src="assets/candyco-logo.png" alt="CandyCo">
-      <h1 class="hero-title">Sweet seats,<br><span class="pop">on the house.</span></h1>
-      <p class="hero-sub">Four seats to every Jazz game, Mammoth game, concert and event at the Delta Center — shared across the CandyCo family all season long.</p>
       <div class="hero-actions">
         <a class="btn" href="#content">Browse events →</a>
         <div class="hero-meta" id="header-right"></div>
@@ -234,7 +227,7 @@
     <div class="how">
       <h2>How the box works</h2>
       <div class="how-steps">
-        <div class="how-step"><b><span class="n">1</span>Premium first</b>Concerts &amp; marquee games go to a leadership draft — first pick before anything opens up.</div>
+        <div class="how-step"><b><span class="n">1</span>Leadership first</b>Concerts and other special events go to the leadership team for first pick before anything opens up.</div>
         <div class="how-step"><b><span class="n">2</span>Put in</b>Everyone gets a base entry on open events. Earn more through recognition, safety, and reliability.</div>
         <div class="how-step"><b><span class="n">3</span>Weighted draw</b>More entries, better odds. Winners get a cooldown so the seats spread around.</div>
         <div class="how-step"><b><span class="n">4</span>Win &amp; confirm</b>Winners are emailed with 48 hours to confirm. Unclaimed seats open to everyone.</div>
@@ -292,7 +285,6 @@
             <div class="card-title">${esc(ev.title)}</div>
             <div class="badges">
               <span class="badge ${leagueClass(ev.league)}">${esc(ev.league)}</span>
-              <span class="badge b-${ev.tier}">${ev.tier==='premium'?'★ Premium':'Standard'}</span>
               <span class="badge b-standard">${ev.seats} seats</span>
             </div>
             ${partyNote}
@@ -316,7 +308,6 @@
             <div class="card-title">${esc(ev.title)}</div>
             <div class="badges">
               <span class="badge ${leagueClass(ev.league)}">${esc(ev.league)}</span>
-              <span class="badge b-premium">★ Premium</span>
               ${status}
             </div>
           </div>
@@ -332,7 +323,7 @@
       (status && status.claims || []).forEach(c => claimedBy[c.event_id] = c.leader);
 
       const cap = status ? status.picks_per_leader : 4;
-      let h = `<div class="section-title">Leadership premium draft ` +
+      let h = `<div class="section-title">Leadership draft ` +
               `<span class="count">${status && status.phase==='complete' ? 'complete' : 'in progress'}</span></div>`;
       if (status){
         const dl = status.turn_deadline ? new Date(status.turn_deadline) : null;
@@ -342,7 +333,7 @@
             : (status.phase==='complete'
                 ? `Draft complete — remaining premium events have opened to the general lottery. `
                 : `Draft in progress. `)) +
-          `Premium events are offered to leadership (up to ${cap} each) before the rest open to everyone.`;
+          `These events are offered to leadership before the rest open to everyone.`;
         if (status.order && status.order.length){
           h += `<div class="pills">` + status.order.map(n => {
             const cnt = (status.counts && status.counts[n]) || 0;
@@ -415,7 +406,7 @@
       try { leadStatus = await fetchJSON('data/leadership_status.json'); } catch(e){ /* no draft */ }
       eventsById = Object.fromEntries((events.events || []).map(e => [e.id, e]));
 
-      const open = events.events.filter(e => e.status === 'open')
+      const open = events.events.filter(e => e.status === 'open' && e.include !== false)
         .sort((a,b)=> a.date < b.date ? -1 : 1);
       // Only show events that were genuinely drawn (had at least one entrant).
       const drawn = (results.draws || []).filter(d => d.entrant_count > 0)
