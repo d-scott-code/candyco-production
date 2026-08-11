@@ -4,178 +4,260 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CandyCo Ticket Lottery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Yeseva+One&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --shadow:  #272838;
+      /* The Four Candies */
       --emerald: #23CE6B;
       --steel:   #1982C4;
       --gold:    #FFCA3A;
       --red:     #FF0022;
-      --ink:     #1a1a1a;
-      --muted:   #64748b;
-      --line:    #e2e8f0;
-      --bg:      #f8fafc;
-      --card:    #ffffff;
+      --shadow:  #272838;
+      /* chosen neutrals — warm, candy-tinted */
+      --bg:      #fbf7f1;
+      --surface: #ffffff;
+      --surface-2:#fdf9f4;
+      --ink:     #23212b;
+      --muted:   #736b76;
+      --line:    #ece3d8;
+      --ring:    rgba(35,206,107,.45);
+      --candy: linear-gradient(90deg, var(--red), var(--gold), var(--emerald), var(--steel));
+      --font-display: "Yeseva One", Georgia, "Times New Roman", serif;
+      --font-sans: "Assistant", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #14151b; --surface: #1e2029; --surface-2: #23252f;
+        --ink: #f2efe9; --muted: #a3a7b4; --line: #2b2e39;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #14151b; --surface: #1e2029; --surface-2: #23252f;
+      --ink: #f2efe9; --muted: #a3a7b4; --line: #2b2e39;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Assistant", sans-serif;
+      font-family: var(--font-sans);
       background: var(--bg);
       color: var(--ink);
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
+    a { color: inherit; }
 
-    /* ── Header ── */
-    .app-header {
-      background: var(--shadow);
-      color: white;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    /* ── Sticky brand bar ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 60;
+      background: color-mix(in srgb, var(--shadow) 96%, transparent);
+      color: #fff; padding: 11px 20px;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 1px 0 rgba(0,0,0,.25);
     }
-    .app-title {
-      font-size: 17px; font-weight: 700; letter-spacing: 0.02em;
-      display: flex; align-items: center; gap: 9px;
+    .topbar::before { content:""; position:absolute; inset:0 0 auto 0; height:3px; background:var(--candy); }
+    /* black-on-transparent logo -> crisp white on the dark bands */
+    .logo-mark { display: block; height: 22px; width: auto; filter: brightness(0) invert(1); }
+    .topbar .logo-mark { height: 19px; }
+    .brand-x { font-weight: 700; letter-spacing: .14em; font-size: 12px; text-transform: uppercase; color: #b7bacb; }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative; overflow: hidden;
+      background: radial-gradient(130% 150% at 82% -10%, #34364c 0%, #1c1d27 55%, #16171f 100%);
+      isolation: isolate;
     }
-    .app-title-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--emerald); flex-shrink: 0; }
-    .app-subtitle { font-size: 11px; color: #a8aabf; margin-top: 3px; }
-    .header-right { font-size: 11px; color: #a8aabf; text-align: right; line-height: 1.5; }
+    .hero::before { content:""; position:absolute; inset:0 0 auto 0; height:5px; background:var(--candy); z-index: 3; }
+    .hero-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.5; z-index:0; }
+    .hero-scrim { position:absolute; inset:0; z-index:1;
+      background:
+        linear-gradient(90deg, rgba(20,21,27,.9) 0%, rgba(20,21,27,.55) 45%, rgba(20,21,27,.15) 100%),
+        linear-gradient(0deg, rgba(20,21,27,.95) 0%, rgba(20,21,27,.25) 60%); }
+    .hero-inner { position:relative; z-index:2; max-width: 920px; margin: 0 auto;
+      padding: 54px 20px 52px; color:#fff; }
+    .hero-logo { height: 52px; margin-bottom: 26px; opacity: .97;
+      filter: brightness(0) invert(1) drop-shadow(0 2px 12px rgba(0,0,0,.5)); }
+    .hero-title { font-family: var(--font-display); font-weight: 400; line-height: .98;
+      font-size: clamp(40px, 8vw, 76px); text-wrap: balance; letter-spacing: -0.01em;
+      text-shadow: 0 2px 30px rgba(0,0,0,.4); }
+    .hero-title .pop { color: var(--gold); }
+    .hero-sub { margin-top: 18px; max-width: 46ch; font-size: 16px; line-height: 1.55;
+      color: #e7e5ee; }
+    .hero-meta { margin-top: 22px; font-size: 12.5px; letter-spacing: .04em; color: #b9bccb;
+      display: flex; gap: 8px 18px; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+    .hero-meta b { color: #fff; }
 
     /* ── Layout ── */
-    .wrap { max-width: 920px; margin: 0 auto; padding: 22px 18px 60px; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 6px 18px 64px; }
 
     .how {
-      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
-      padding: 16px 18px; margin-bottom: 24px;
+      background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+      padding: 18px 20px; margin: -30px auto 30px; position: relative; z-index: 5;
+      box-shadow: 0 12px 30px rgba(39,40,56,.10);
     }
-    .how h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 10px; }
-    .how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .how-step { font-size: 12.5px; line-height: 1.45; color: #334155; }
-    .how-step b { display: block; color: var(--shadow); font-size: 13px; margin-bottom: 2px; }
+    .how h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .16em; color: var(--muted);
+      margin-bottom: 14px; font-weight: 700; }
+    .how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .how-step { font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+    .how-step b { display: block; color: var(--ink); font-size: 13.5px; margin-bottom: 3px; font-weight: 700; }
     .how-step .n {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 20px; height: 20px; border-radius: 50%; background: var(--emerald);
-      color: white; font-size: 11px; font-weight: 700; margin-right: 6px;
-    }
+      width: 21px; height: 21px; border-radius: 7px; color: #fff; font-size: 12px;
+      font-weight: 800; margin-right: 7px; }
+    .how-step:nth-child(1) .n { background: var(--red); }
+    .how-step:nth-child(2) .n { background: var(--gold); color: var(--shadow); }
+    .how-step:nth-child(3) .n { background: var(--emerald); }
+    .how-step:nth-child(4) .n { background: var(--steel); }
 
+    /* ── Section headers ── */
     .section-title {
-      font-size: 14px; font-weight: 700; color: var(--shadow);
-      margin: 26px 0 12px; display: flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 800; color: var(--ink); text-transform: uppercase;
+      letter-spacing: .12em; margin: 34px 0 14px; display: flex; align-items: center; gap: 10px;
     }
+    .section-title::before { content:""; width: 22px; height: 10px; border-radius: 3px;
+      background: var(--candy); flex-shrink: 0; }
     .section-title .count {
-      font-size: 11px; font-weight: 600; color: var(--muted);
-      background: #eef2f7; border-radius: 10px; padding: 2px 9px;
+      font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: .04em;
+      background: var(--surface-2); border: 1px solid var(--line); border-radius: 20px; padding: 2px 10px;
     }
 
     /* ── Cards ── */
     .card {
-      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
-      padding: 16px 18px; margin-bottom: 12px;
+      background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+      padding: 14px; margin-bottom: 12px; position: relative; overflow: hidden;
       display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
     }
-    .card-main { flex: 1; min-width: 200px; }
-    .card-date { font-size: 12px; color: var(--muted); font-weight: 600; }
-    .card-title { font-size: 17px; font-weight: 700; color: var(--shadow); margin: 2px 0 8px; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(39,40,56,.12);
+      border-color: color-mix(in srgb, var(--emerald) 40%, var(--line)); }
+    .card-main { flex: 1; min-width: 190px; }
+    .card-date { font-size: 12px; color: var(--muted); font-weight: 700; letter-spacing: .02em;
+      font-variant-numeric: tabular-nums; }
+    .card-title { font-size: 18px; font-weight: 800; color: var(--ink); margin: 3px 0 9px;
+      line-height: 1.15; letter-spacing: -0.01em; text-wrap: balance; }
     .badges { display: flex; gap: 6px; flex-wrap: wrap; }
     .badge {
-      font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
-      letter-spacing: 0.02em; white-space: nowrap;
+      font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px;
+      letter-spacing: .03em; white-space: nowrap;
     }
-    .b-nba     { background: #e7f2fb; color: var(--steel); }
-    .b-nhl     { background: #fdeaec; color: var(--red); }
-    .b-concert { background: #fff6da; color: #a67c00; }
+    .b-nba     { background: #e7f2fb; color: #12699f; }
+    .b-nhl     { background: #fde9ec; color: #c50018; }
+    .b-concert { background: #fff4d6; color: #9a6b00; }
     .b-premium { background: var(--shadow); color: var(--gold); }
-    .b-standard{ background: #eef2f7; color: #475569; }
+    .b-standard{ background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+    .b-claimed { background: #e7faf0; color: #128a4d; }
+    .b-await   { background: #fff4d6; color: #9a6b00; }
 
     .card-thumb {
-      width: 148px; height: 82px; border-radius: 8px; object-fit: cover;
-      flex-shrink: 0; background: #eef2f7; display: block;
+      width: 152px; height: 88px; border-radius: 11px; object-fit: cover;
+      flex-shrink: 0; background: var(--surface-2); display: block;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
     }
-    .card-thumb.logo { object-fit: contain; background: #fff; padding: 10px; }
+    .card-thumb.logo { object-fit: contain; background: #fff; padding: 12px; }
 
-    /* ── Leadership draft ── */
-    .lead-banner {
-      background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--gold);
-      border-radius: 10px; padding: 12px 16px; margin-bottom: 14px;
-      font-size: 13px; color: #334155; line-height: 1.5;
-    }
-    .lead-banner b { color: var(--shadow); }
-    .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-    .pill {
-      font-size: 11.5px; font-weight: 600; background: #eef2f7; color: #475569;
-      border-radius: 20px; padding: 3px 10px;
-    }
-    .pill.on { background: var(--gold); color: var(--shadow); }
-    .pill .n { opacity: .6; margin-left: 2px; }
-    .b-claimed { background: #ecfdf3; color: #15803d; }
-    .b-await   { background: #fff6da; color: #a67c00; }
-
-    .card-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-    .deadline { font-size: 12px; color: var(--muted); }
-    .deadline b { color: var(--shadow); }
+    .card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 9px; text-align: right; }
+    .deadline { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .deadline b { color: var(--ink); }
     .deadline.urgent b { color: var(--red); }
 
     .btn {
-      background: var(--emerald); color: white; border: none; border-radius: 8px;
-      padding: 10px 20px; font-size: 14px; font-weight: 700; font-family: inherit;
+      background: var(--emerald); color: #fff; border: none; border-radius: 10px;
+      padding: 10px 20px; font-size: 14px; font-weight: 800; font-family: inherit;
       cursor: pointer; text-decoration: none; display: inline-block; white-space: nowrap;
-      transition: filter .15s;
+      transition: filter .15s, transform .15s; box-shadow: 0 6px 14px rgba(35,206,107,.28);
     }
-    .btn:hover { filter: brightness(0.94); }
-    .btn.secondary { background: var(--steel); }
+    .btn:hover { filter: brightness(1.04); transform: translateY(-1px); }
+    .btn:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+    .btn.secondary { background: var(--steel); box-shadow: 0 6px 14px rgba(25,130,196,.28); }
 
-    /* ── Winners list ── */
+    /* ── Winners ── */
     .winners { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
     .winner-chip {
-      font-size: 12.5px; background: #ecfdf3; color: #15803d; border: 1px solid #bbf7d0;
-      border-radius: 20px; padding: 4px 12px; font-weight: 600;
+      font-size: 12.5px; background: #e7faf0; color: #128a4d; border: 1px solid #b8eccd;
+      border-radius: 20px; padding: 4px 12px; font-weight: 700;
     }
-    .winner-chip .seats { color: #16a34a; font-weight: 700; }
-    .fill-note { font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+    .winner-chip .seats { color: #0f7a43; font-weight: 800; }
+    .fill-note { font-size: 11.5px; color: var(--muted); margin-top: 7px; }
 
-    /* ── State ── */
-    .empty { color: var(--muted); font-size: 13px; padding: 10px 2px; }
+    /* ── Leadership "draft night" spotlight ── */
+    .lead-banner {
+      position: relative; overflow: hidden; border-radius: 16px; margin-bottom: 14px;
+      padding: 18px 20px; color: #e9e7f0; border: 1px solid #34374a;
+      background: radial-gradient(130% 200% at 12% -20%, #3a3d55 0%, #262838 55%, #1e2030 100%);
+      box-shadow: 0 10px 26px rgba(20,21,31,.18);
+    }
+    .lead-banner::before { content:""; position:absolute; inset:0 0 auto 0; height:4px; background: var(--candy); }
+    .lead-banner b { color: #fff; }
+    .pills { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+    .pill {
+      font-size: 11.5px; font-weight: 700; background: rgba(255,255,255,.09); color: #d3d5e0;
+      border-radius: 20px; padding: 4px 11px; font-variant-numeric: tabular-nums;
+    }
+    .pill.on { background: var(--gold); color: var(--shadow); box-shadow: 0 0 0 0 rgba(255,202,58,.6);
+      animation: pulse 2.2s ease-out infinite; }
+    .pill .n { opacity: .55; margin-left: 4px; }
+
+    /* ── States / footer ── */
+    .empty { color: var(--muted); font-size: 13px; padding: 12px 2px; }
     .state-panel { text-align: center; padding: 70px 24px; }
     .state-icon { font-size: 40px; margin-bottom: 14px; }
-    .state-title { font-size: 16px; font-weight: 700; color: var(--shadow); margin-bottom: 6px; }
+    .state-title { font-size: 16px; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
     .state-desc { font-size: 13px; color: var(--muted); max-width: 380px; margin: 0 auto; line-height: 1.6; }
-    .state-desc code { background: #eef2f7; border-radius: 3px; padding: 1px 5px; font-size: 12px; }
+    .state-desc code { background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px;
+      padding: 1px 5px; font-size: 12px; }
 
-    footer { text-align: center; font-size: 11.5px; color: #94a3b8; margin-top: 34px; line-height: 1.6; }
+    footer {
+      text-align: center; font-size: 11.5px; color: var(--muted); line-height: 1.7;
+      margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--line);
+    }
 
+    @keyframes slide { to { background-position: 200% 0; } }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(255,202,58,.55); }
+      70%  { box-shadow: 0 0 0 9px rgba(255,202,58,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,202,58,0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
     @media (max-width: 640px) {
+      .how { margin-top: -22px; }
       .how-steps { grid-template-columns: 1fr 1fr; }
       .card { align-items: flex-start; }
-      .card-thumb { width: 100%; height: 150px; }
+      .card-thumb { width: 100%; height: 160px; }
       .card-right { align-items: flex-start; text-align: left; width: 100%; }
-      .header-right { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <header class="app-header">
-    <div>
-      <div class="app-title"><span class="app-title-dot"></span> CandyCo Ticket Lottery</div>
-      <div class="app-subtitle">Delta Center · Jazz · Mammoth · Live Events</div>
+  <div class="topbar">
+    <img class="logo-mark" src="assets/candyco-logo.png" alt="CandyCo">
+    <span class="brand-x">× Delta Center</span>
+  </div>
+
+  <header class="hero">
+    <img class="hero-bg" src="https://d8j0ntlcm91z4.cloudfront.net/user_3H924nf8ia0xmY81S1MY3n8ZZuo/hf_20260811_185742_05b953a0-61d3-4f5e-8012-acefbf11204f.png" alt="" aria-hidden="true">
+    <div class="hero-scrim"></div>
+    <div class="hero-inner">
+      <img class="logo-mark hero-logo" src="assets/candyco-logo.png" alt="CandyCo">
+      <h1 class="hero-title">Sweet seats,<br><span class="pop">on the house.</span></h1>
+      <p class="hero-sub">Four seats to every Jazz game, Mammoth game, concert and event at the Delta Center — shared across the CandyCo family all season long.</p>
+      <div class="hero-meta" id="header-right"></div>
     </div>
-    <div class="header-right" id="header-right"></div>
   </header>
 
   <div class="wrap">
 
     <div class="how">
-      <h2>How it works</h2>
+      <h2>How the box works</h2>
       <div class="how-steps">
-        <div class="how-step"><b><span class="n">1</span>Earn entries</b>Everyone gets 1 base entry. Earn more through safety, recognition, and reliability.</div>
-        <div class="how-step"><b><span class="n">2</span>Put in</b>Tap <em>Enter</em> on any event you'd like before its deadline. Ask for 1–4 seats.</div>
-        <div class="how-step"><b><span class="n">3</span>Weighted draw</b>A random draw picks winners — more entries means better odds. Winners get a cooldown so tickets spread.</div>
-        <div class="how-step"><b><span class="n">4</span>Get notified</b>Winners are emailed and have 48 hours to confirm. Unclaimed seats open to everyone.</div>
+        <div class="how-step"><b><span class="n">1</span>Premium first</b>Concerts &amp; marquee games go to a leadership draft — first pick before anything opens up.</div>
+        <div class="how-step"><b><span class="n">2</span>Put in</b>Everyone gets a base entry on open events. Earn more through recognition, safety, and reliability.</div>
+        <div class="how-step"><b><span class="n">3</span>Weighted draw</b>More entries, better odds. Winners get a cooldown so the seats spread around.</div>
+        <div class="how-step"><b><span class="n">4</span>Win &amp; confirm</b>Winners are emailed with 48 hours to confirm. Unclaimed seats open to everyone.</div>
       </div>
     </div>
 
@@ -271,7 +353,7 @@
       (status && status.claims || []).forEach(c => claimedBy[c.event_id] = c.leader);
 
       const cap = status ? status.picks_per_leader : 4;
-      let h = `<div class="section-title">🏟 Leadership premium draft ` +
+      let h = `<div class="section-title">Leadership premium draft ` +
               `<span class="count">${status && status.phase==='complete' ? 'complete' : 'in progress'}</span></div>`;
       if (status){
         const dl = status.turn_deadline ? new Date(status.turn_deadline) : null;
@@ -368,7 +450,7 @@
       html += open.length ? open.map(eventCard).join('') : `<div class="empty">No events open right now — check back soon.</div>`;
 
       if (openSeats.length){
-        html += `<div class="section-title">⚡ Last-minute open seats <span class="count">${openSeats.length}</span></div>`;
+        html += `<div class="section-title">Last-minute open seats <span class="count">${openSeats.length}</span></div>`;
         html += openSeats.map(openSeatCard).join('');
       }
 
@@ -379,11 +461,11 @@
 
       const gen = results.generated ? new Date(results.generated) : null;
       document.getElementById('header-right').innerHTML =
-        `${events.events.length} events · ${events.season || ''}` +
-        (gen ? `<br>Last draw: ${MONTH[gen.getMonth()]} ${gen.getDate()}` : '');
+        `<span><b>${events.events.length}</b> events</span><span><b>${events.season || ''}</b> season</span>` +
+        (gen ? `<span>Last draw <b>${MONTH[gen.getMonth()]} ${gen.getDate()}</b></span>` : '');
       document.getElementById('footer').innerHTML =
         `Winners shown by first name + last initial to protect privacy. Questions? Contact HR.<br>` +
-        `CandyCo employee benefit · Delta Center ${events.season || ''} season box.`;
+        `A CandyCo employee benefit · Delta Center ${events.season || ''} season box.`;
     }
 
     init();
