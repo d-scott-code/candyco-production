@@ -10,6 +10,7 @@
   "hr_from_name": "CandyCo HR",
   "seats_per_event": 4,
   "entry_close_days": 7,
+  "premium_overrides": ["Utah Jazz vs. San Antonio"],
   "leadership": {
     "_comment": "Premium events go through this leadership draft before any leftovers open to the general lottery. Even round-robin: on your turn you claim one available premium event or pass; the turn advances either way, and claiming sends you to the bottom of the order. Up to picks_per_leader claims each, then the rest release to the general lottery. Emails below are placeholders except Scott's — fill in the real addresses.",
     "picks_per_leader": 4,

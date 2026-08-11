@@ -33,6 +33,48 @@ from datetime import timedelta
 
 import common
 
+# Opponent -> ESPN logo abbreviation, used to give games without matchup art a
+# team-logo image (e.g. Jazz games, which don't ship card art).
+NBA_LOGOS = {
+    "atlanta hawks": "atl", "boston celtics": "bos", "brooklyn nets": "bkn",
+    "charlotte hornets": "cha", "chicago bulls": "chi", "cleveland cavaliers": "cle",
+    "dallas mavericks": "dal", "denver nuggets": "den", "detroit pistons": "det",
+    "golden state warriors": "gs", "houston rockets": "hou", "indiana pacers": "ind",
+    "la clippers": "lac", "los angeles clippers": "lac", "los angeles lakers": "lal",
+    "memphis grizzlies": "mem", "miami heat": "mia", "milwaukee bucks": "mil",
+    "minnesota timberwolves": "min", "new orleans pelicans": "no", "new york knicks": "ny",
+    "oklahoma city thunder": "okc", "orlando magic": "orl", "philadelphia 76ers": "phi",
+    "phoenix suns": "phx", "portland trail blazers": "por", "sacramento kings": "sac",
+    "san antonio spurs": "sa", "toronto raptors": "tor", "utah jazz": "utah",
+    "washington wizards": "wsh",
+}
+NHL_LOGOS = {
+    "anaheim ducks": "ana", "boston bruins": "bos", "buffalo sabres": "buf",
+    "calgary flames": "cgy", "carolina hurricanes": "car", "chicago blackhawks": "chi",
+    "colorado avalanche": "col", "columbus blue jackets": "cbj", "dallas stars": "dal",
+    "detroit red wings": "det", "edmonton oilers": "edm", "florida panthers": "fla",
+    "los angeles kings": "la", "minnesota wild": "min", "montreal canadiens": "mtl",
+    "nashville predators": "nsh", "new jersey devils": "nj", "new york islanders": "nyi",
+    "new york rangers": "nyr", "ottawa senators": "ott", "philadelphia flyers": "phi",
+    "pittsburgh penguins": "pit", "san jose sharks": "sj", "seattle kraken": "sea",
+    "st louis blues": "stl", "st. louis blues": "stl", "tampa bay lightning": "tb",
+    "toronto maple leafs": "tor", "vancouver canucks": "van", "vegas golden knights": "vgk",
+    "washington capitals": "wsh", "winnipeg jets": "wpg", "utah mammoth": "utah",
+}
+
+
+def opponent_logo(title, league):
+    """A team-logo image URL for a 'X vs. Opponent' game, else None."""
+    parts = re.split(r"\bvs\.?\b", title, flags=re.I)
+    opp = parts[-1].strip().lower() if len(parts) > 1 else title.lower()
+    table = NBA_LOGOS if league == "NBA" else NHL_LOGOS if league == "NHL" else {}
+    league_path = "nba" if league == "NBA" else "nhl"
+    for name, abbr in table.items():
+        if name in opp:
+            return f"https://a.espncdn.com/i/teamlogos/{league_path}/500/{abbr}.png"
+    return None
+
+
 # Marquee opponents that default to premium (high demand).
 MARQUEE = {
     "oilers", "maple leafs", "penguins", "avalanche", "bruins", "rangers",
@@ -74,8 +116,12 @@ def league_of(raw):
     return "Other"
 
 
-def is_premium(raw, league):
+def is_premium(raw, league, config):
     title = raw["title"].lower()
+    # Manual overrides win (config.premium_overrides: title substrings).
+    for pat in config.get("premium_overrides", []):
+        if pat.lower() in title:
+            return True
     if league in ("Concert", "Other"):
         return True
     if "preseason" in title:
@@ -85,7 +131,7 @@ def is_premium(raw, league):
 
 def build_event(raw, config):
     league = league_of(raw)
-    premium = is_premium(raw, league)
+    premium = is_premium(raw, league, config)
     date = raw["date"]
     close = (common.parse_dt(date) - timedelta(days=config.get("entry_close_days", 7))
              ).strftime("%Y-%m-%d")
@@ -108,6 +154,12 @@ def build_event(raw, config):
         ev["source_url"] = raw["source_url"]
     if raw.get("image_url"):
         ev["image_url"] = raw["image_url"]
+    else:
+        # No matchup art (e.g. Jazz games) -> fall back to the opponent team logo.
+        logo = opponent_logo(ev["title"], league)
+        if logo:
+            ev["image_url"] = logo
+            ev["logo"] = True
     return ev
 
 

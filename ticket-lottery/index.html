@@ -96,6 +96,7 @@
       width: 148px; height: 82px; border-radius: 8px; object-fit: cover;
       flex-shrink: 0; background: #eef2f7; display: block;
     }
+    .card-thumb.logo { object-fit: contain; background: #fff; padding: 10px; }
 
     /* ── Leadership draft ── */
     .lead-banner {
@@ -206,7 +207,11 @@
     function leagueClass(l){ return l==='NBA'?'b-nba':l==='NHL'?'b-nhl':'b-concert'; }
     function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
     let eventsById = {};
-    function thumb(url){ return url ? `<img class="card-thumb" src="${esc(url)}" alt="" loading="lazy">` : ''; }
+    function thumb(ev){
+      if (!ev || !ev.image_url) return '';
+      const cls = ev.logo ? 'card-thumb logo' : 'card-thumb';
+      return `<img class="${cls}" src="${esc(ev.image_url)}" alt="" loading="lazy">`;
+    }
 
     function eventCard(ev){
       const dleft = daysUntil(ev.entry_close);
@@ -220,7 +225,7 @@
         ? `<div class="fill-note">Up to ${ev.max_party} seats per person on this event</div>` : '';
       return `
         <div class="card">
-          ${thumb(ev.image_url)}
+          ${thumb(ev)}
           <div class="card-main">
             <div class="card-date">${fmt(ev.date)}${ev.tipoff ? ' · ' + ev.tipoff : ''}</div>
             <div class="card-title">${esc(ev.title)}</div>
@@ -244,7 +249,7 @@
         : `<span class="badge b-await">Awaiting pick</span>`;
       return `
         <div class="card">
-          ${thumb(ev.image_url)}
+          ${thumb(ev)}
           <div class="card-main">
             <div class="card-date">${fmt(ev.date)}${ev.tipoff ? ' · ' + ev.tipoff : ''}</div>
             <div class="card-title">${esc(ev.title)}</div>
@@ -297,7 +302,7 @@
       const fill = `${dr.seats_filled}/${dr.seats_total} seats claimed · ${dr.entrant_count} entered`;
       return `
         <div class="card">
-          ${thumb((eventsById[dr.event_id]||{}).image_url)}
+          ${thumb(eventsById[dr.event_id])}
           <div class="card-main">
             <div class="card-date">${fmt(dr.date)}</div>
             <div class="card-title">${esc(dr.title)}</div>
@@ -311,7 +316,7 @@
       const link = `${FORM_URL}?event=${encodeURIComponent('LAST-MINUTE: ' + dr.title + ' · ' + dr.date)}`;
       return `
         <div class="card">
-          ${thumb((eventsById[dr.event_id]||{}).image_url)}
+          ${thumb(eventsById[dr.event_id])}
           <div class="card-main">
             <div class="card-date">${fmt(dr.date)}</div>
             <div class="card-title">${esc(dr.title)}</div>

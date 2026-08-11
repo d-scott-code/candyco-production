@@ -107,11 +107,14 @@ Center events" and it will re-pull + import — a good candidate for a scheduled
   into `raw_events.json`. As of the last pull only the **preseason** home game was published;
   the 2026-27 **regular season** wasn't out yet. Re-pull the ESPN schedule
   (`.../basketball/nba/teams/utah/schedule?season=2027&seasontype=2`) once it releases (mid/late
-  August) to add the ~41 regular-season home games; ESPN doesn't provide card art, so Jazz
-  events have no `image_url`.
+  August) to add the ~41 regular-season home games. ESPN doesn't ship matchup art, so the
+  importer falls back to the **opponent team logo** (ESPN CDN) as each Jazz game's card image.
 - **Tiers are a heuristic.** Marquee opponents and all concerts/other default to `premium`
-  (leadership draft, `max_party: 2`); everything else is `standard` (general lottery). Adjust
-  any event by hand — a merge refresh keeps your overrides.
+  (leadership draft, `max_party: 2`); everything else is `standard` (general lottery). Force
+  specific events premium with `config.premium_overrides` (title substrings, e.g. `"Utah Jazz
+  vs. San Antonio"`), or edit any event by hand — a merge refresh keeps your overrides.
+- **Card images.** Events with matchup art use it; NBA/NHL events without art fall back to the
+  **opponent team logo** (rendered contained on white). The board handles both.
 
 **Card images** hotlink from deltacenter.com. They render on the live GitHub Pages board;
 if the venue ever blocks hotlinking, download the images into the repo and point `image_url`
