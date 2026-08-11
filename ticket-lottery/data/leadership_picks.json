@@ -1,9 +1,0 @@
-{
-  "_comment": "Record of leadership draft actions (from a leadership Microsoft Form / SharePoint list). action: claim (needs event_id) | pass. The engine replays these in timestamp order against config.leadership.started. Sample data below demonstrates a draft in progress.",
-  "picks": [
-    { "leader_id": "scott", "action": "claim", "event_id": "2026-10-17-utah-mammoth-vs-edmonton-oilers", "timestamp": "2026-08-12T10:15" },
-    { "leader_id": "dave",  "action": "claim", "event_id": "2026-10-15-kacey-musgraves",                 "timestamp": "2026-08-12T14:30" },
-    { "leader_id": "aubrey","action": "pass",                                                            "timestamp": "2026-08-12T16:00" },
-    { "leader_id": "chad",  "action": "claim", "event_id": "2026-10-13-utah-mammoth-vs-toronto-maple-leafs", "timestamp": "2026-08-13T09:00" }
-  ]
-}

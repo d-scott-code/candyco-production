@@ -1,4 +1,0 @@
-{
-  "_comment": "Winner responses to the 'confirm your seats' link (a second Microsoft Form landing in a SharePoint list). response: confirm | decline. A winner who never responds times out at the 48h deadline. Empty to start.",
-  "confirmations": []
-}
