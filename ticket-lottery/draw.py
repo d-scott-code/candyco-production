@@ -125,6 +125,7 @@ def draw_event(event, entries, members_by_id, cooldown_days, rng):
                 "dept": m.get("dept", ""),
                 "site": m.get("site", ""),
                 "seats": want,
+                "status": "pending",  # -> confirmed / declined / timed_out via reconcile.py
             })
             remaining -= want
         else:
@@ -160,6 +161,7 @@ def draw_event(event, entries, members_by_id, cooldown_days, rng):
         "seats_total": seats_total,
         "seats_filled": seats_total - remaining,
         "seats_open": remaining,
+        "max_party": min(4, event.get("max_party", 4)),
         "entrant_count": len(entrants),
         "winners": winners,
         "waitlist": waitlist,
@@ -199,6 +201,8 @@ def main():
              for ev in targets]
 
     stamp = datetime.now().isoformat(timespec="seconds")
+    for d in draws:
+        d["drawn_at"] = stamp  # confirm window (reconcile.py) counts from here
 
     # PUBLIC results file (no emails, no full names) for the board
     public = {"generated": stamp, "draws": []}

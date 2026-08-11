@@ -1,0 +1,48 @@
+{
+  "generated": "2026-08-11T18:43:30",
+  "phase": "in_progress",
+  "on_clock": "Ryan",
+  "turn_deadline": "2026-08-15T09:00:00",
+  "picks_per_leader": 4,
+  "order": [
+    "Aubrey",
+    "Ryan",
+    "Kathleen",
+    "Stephanie",
+    "Matt Hatch",
+    "Scott Maxfield",
+    "Dave R.",
+    "Chad Stone"
+  ],
+  "counts": {
+    "Scott Maxfield": 1,
+    "Dave R.": 1,
+    "Aubrey": 0,
+    "Chad Stone": 1,
+    "Ryan": 0,
+    "Kathleen": 0,
+    "Stephanie": 0,
+    "Matt Hatch": 0
+  },
+  "claims": [
+    {
+      "leader": "Chad Stone",
+      "event_id": "2026-10-13-utah-mammoth-vs-toronto-maple-leafs",
+      "title": "Utah Mammoth vs. Toronto Maple Leafs",
+      "date": "2026-10-13"
+    },
+    {
+      "leader": "Dave R.",
+      "event_id": "2026-10-15-kacey-musgraves",
+      "title": "Kacey Musgraves",
+      "date": "2026-10-15"
+    },
+    {
+      "leader": "Scott Maxfield",
+      "event_id": "2026-10-17-utah-mammoth-vs-edmonton-oilers",
+      "title": "Utah Mammoth vs. Edmonton Oilers",
+      "date": "2026-10-17"
+    }
+  ],
+  "available_count": 23
+}

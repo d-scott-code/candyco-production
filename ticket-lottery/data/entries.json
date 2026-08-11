@@ -1,23 +1,4 @@
 {
-  "_comment": "One row per person-per-event they entered. seats_requested (1-4) lets someone ask for a pair or a group; the engine keeps parties together. In the real system these rows come from a Microsoft Form submission landing in a SharePoint list. timestamp is used only as a tiebreak / audit trail.",
-  "entries": [
-    { "member_id": "e001", "event_id": "2026-10-24-jazz-lakers",        "seats_requested": 2, "timestamp": "2026-10-10T09:12" },
-    { "member_id": "e003", "event_id": "2026-10-24-jazz-lakers",        "seats_requested": 2, "timestamp": "2026-10-10T10:03" },
-    { "member_id": "e005", "event_id": "2026-10-24-jazz-lakers",        "seats_requested": 4, "timestamp": "2026-10-11T14:20" },
-    { "member_id": "e008", "event_id": "2026-10-24-jazz-lakers",        "seats_requested": 2, "timestamp": "2026-10-12T08:45" },
-    { "member_id": "e010", "event_id": "2026-10-24-jazz-lakers",        "seats_requested": 2, "timestamp": "2026-10-12T16:30" },
-    { "member_id": "e011", "event_id": "2026-10-24-jazz-lakers",        "seats_requested": 2, "timestamp": "2026-10-13T11:15" },
-    { "member_id": "e012", "event_id": "2026-10-24-jazz-lakers",        "seats_requested": 4, "timestamp": "2026-10-14T09:00" },
-
-    { "member_id": "e002", "event_id": "2026-10-30-mammoth-avalanche",  "seats_requested": 2, "timestamp": "2026-10-15T09:00" },
-    { "member_id": "e004", "event_id": "2026-10-30-mammoth-avalanche",  "seats_requested": 2, "timestamp": "2026-10-15T10:30" },
-    { "member_id": "e006", "event_id": "2026-10-30-mammoth-avalanche",  "seats_requested": 4, "timestamp": "2026-10-16T13:00" },
-    { "member_id": "e009", "event_id": "2026-10-30-mammoth-avalanche",  "seats_requested": 2, "timestamp": "2026-10-17T15:45" },
-
-    { "member_id": "e007", "event_id": "2026-11-05-jazz-thunder",       "seats_requested": 2, "timestamp": "2026-10-20T09:00" },
-
-    { "member_id": "e002", "event_id": "2026-09-26-jazz-preseason",     "seats_requested": 2, "timestamp": "2026-09-15T09:00" },
-    { "member_id": "e004", "event_id": "2026-09-26-jazz-preseason",     "seats_requested": 2, "timestamp": "2026-09-15T09:30" },
-    { "member_id": "e007", "event_id": "2026-09-26-jazz-preseason",     "seats_requested": 2, "timestamp": "2026-09-16T10:00" }
-  ]
+  "_comment": "One row per person-per-event they entered. seats_requested (1-4) lets someone ask for a pair or a group; the engine keeps parties together. In production these rows come from a Microsoft Form submission landing in a SharePoint list. Empty to start — real entries arrive once the entry form is live.",
+  "entries": []
 }
