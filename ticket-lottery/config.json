@@ -7,5 +7,7 @@
   "confirm_url": "https://forms.office.com/r/REPLACE_WITH_YOUR_CONFIRM_FORM_ID",
   "confirm_window_hours": 48,
   "reminder_days_before_close": 3,
-  "hr_from_name": "CandyCo HR"
+  "hr_from_name": "CandyCo HR",
+  "seats_per_event": 4,
+  "entry_close_days": 7
 }

@@ -48,6 +48,7 @@ a small script + a static page served on GitHub Pages, plus Outlook emails.
 ticket-lottery/
 ├── index.html          Employee board (GitHub Pages). Reads events.json + results.json.
 ├── config.json         Phase 1 settings (Form URLs, seat location, 48h window, board URL).
+├── import_events.py    Turn scraped deltacenter.com events into events.json.     [events]
 ├── draw.py             The draw engine (weighted lottery + cooldown + waitlist).
 ├── notify.py           Renders winner + reminder emails into outbox/.            [Phase 1]
 ├── reconcile.py        Confirmations + 48h timeouts + waitlist cascade + follow-ups. [Phase 1]
@@ -55,6 +56,7 @@ ticket-lottery/
 ├── common.py           Shared helpers for the Phase 1 scripts.
 ├── data/
 │   ├── events.json       Ticket inventory — one row per event. SAFE to publish.
+│   ├── raw_events.json   Events scraped from deltacenter.com (input to import). SAFE.  [events]
 │   ├── members.json      Pilot participants + earned points. PRIVATE (names/emails).
 │   ├── entries.json      Who entered which event. PRIVATE.
 │   ├── confirmations.json Winner confirm/decline responses. PRIVATE.              [Phase 1]
@@ -71,6 +73,34 @@ reaches the public site. In production, `members.json` / `entries.json` live in 
 not git — the sample copies here are fictional data so you can run the pilot end-to-end today.
 
 ---
+
+## Loading events from deltacenter.com
+
+The event pool is pulled from the Delta Center's public listing rather than typed by
+hand. `data/events.json` was built from `data/raw_events.json` (a scrape of
+<https://www.deltacenter.com/events>) by:
+
+```bash
+python3 import_events.py --replace   # first real import (drops the samples)
+python3 import_events.py             # later: merge refresh, keeps drawn/edited events
+```
+
+`import_events.py` classifies league, sets `tier` (concerts + marquee games → premium),
+computes `entry_close` (date − `entry_close_days`) and a stable `id`, and — on a merge —
+preserves the `status` and any manual `tier`/`max_party` you set. Tweak individual events
+in `events.json` afterward; a merge refresh won't clobber those.
+
+**To refresh:** re-scrape `deltacenter.com/events` into `data/raw_events.json`, then run
+`python3 import_events.py`. The site shows a rolling window with a "Load More" button, so
+re-run periodically to pick up newly announced events. (Ask Claude to "refresh the Delta
+Center events" and it will re-scrape + import — a good candidate for a scheduled step.)
+
+**Two caveats worth knowing:**
+- **No Jazz games.** `deltacenter.com/events` lists Utah Mammoth, concerts, and other
+  events but **not Utah Jazz** (published separately). Add Jazz to `raw_events.json` from
+  `utahjazz.com` when you want them in the pool.
+- **Tiers are a heuristic.** Marquee opponents and all concerts default to `premium`
+  (`max_party: 2`); adjust any event by hand.
 
 ## Running a draw
 
